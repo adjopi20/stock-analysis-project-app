@@ -24,7 +24,6 @@ def get_all_info():
             stock_arr.append(stock_info)
         except Exception as e:
             logging.error(f"error getting symbol for {symbol}: {e}")
-            print(f"Error getting stock info for {symbol}: {e}")
     return jsonify(stock_arr)
 
 @info_bp.route('/info/excel', methods=['GET'])

@@ -34,7 +34,6 @@ def get_all_income_statement():
             })
         except Exception as e:
             logging.error(f"error getting symbol for {symbol}: {e}")
-            print(f"Error getting stock info for {symbol}: {e}")
     return jsonify(financials_arr)
 
 @financials_bp.route('/financials/quarterly-income-statement/<symbol>', methods=['GET'])
@@ -65,7 +64,6 @@ def get_all_quarterly_income_statement():
             })
         except Exception as e:
             logging.error(f"error getting symbol for {symbol}: {e}")
-            print(f"Error getting stock info for {symbol}: {e}")
     return jsonify(financials_arr)
 
 @financials_bp.route('/financials/balance-sheet/<symbol>', methods=['GET'])
@@ -96,7 +94,6 @@ def get_all_balance_sheet():
             })
         except Exception as e:
             logging.error(f"error getting symbol for {symbol}: {e}")
-            print(f"Error getting stock info for {symbol}: {e}")
     return jsonify(financials_arr)
 
 @financials_bp.route('/financials/quarterly-balance-sheet/<symbol>', methods=['GET'])   
@@ -127,7 +124,6 @@ def get_all_quarterly_balance_sheet():
             })
         except Exception as e:
             logging.error(f"error getting symbol for {symbol}: {e}")
-            print(f"Error getting stock info for {symbol}: {e}")
     return jsonify(financials_arr)
 
 @financials_bp.route('/financials/cash-flow/<symbol>', methods=['GET'])
@@ -158,7 +154,6 @@ def get_all_cash_flow():
             })
         except Exception as e:
             logging.error(f"error getting symbol for {symbol}: {e}")
-            print(f"Error getting stock info for {symbol}: {e}")
     return jsonify(financials_arr)
 
 @financials_bp.route('/financials/quarterly-cash-flow/<symbol>', methods=['GET'])   
@@ -189,5 +184,4 @@ def get_all_quarterly_cash_flow():
             })
         except Exception as e:
             logging.error(f"error getting symbol for {symbol}: {e}")
-            print(f"Error getting stock info for {symbol}: {e}")
     return jsonify(financials_arr)
