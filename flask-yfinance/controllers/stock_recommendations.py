@@ -13,12 +13,9 @@ def get_recommendations(symbol):
         stock = yf.Ticker(symbol)
         recommendations = stock.recommendations
         recommendations_dict = convert_timestamp(recommendations.to_dict())
-        recommendations_summary = stock.recommendations_summary
-        recommendations_summary_dict = convert_timestamp(recommendations_summary.to_dict())
         upgrades_downgrades = stock.upgrades_downgrades
         upgrades_downgrades_dict = convert_timestamp(upgrades_downgrades.to_dict())
         return jsonify({
-            'recommendations_summary': recommendations_summary_dict,
             'recommendations': recommendations_dict,
             'upgrades_downgrades': upgrades_downgrades_dict,
             'symbol': symbol
@@ -35,13 +32,10 @@ def get_all_recommendations():
             stock = yf.Ticker(symbol)
             recommendations = stock.recommendations
             recommendations_dict = convert_timestamp(recommendations.to_dict())
-            recommendations_summary = stock.recommendations_summary
-            recommendations_summary_dict = convert_timestamp(recommendations_summary.to_dict())
             upgrades_downgrades = stock.upgrades_downgrades
             upgrades_downgrades_dict = convert_timestamp(upgrades_downgrades.to_dict())
             recommendations_arr.append({
                 'symbol': symbol,
-                'recommendations_summary': recommendations_summary_dict,
                 'recommendations': recommendations_dict,
                 'upgrades_downgrades': upgrades_downgrades_dict
             })
