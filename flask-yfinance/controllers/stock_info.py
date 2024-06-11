@@ -3,6 +3,7 @@ import yfinance as yf
 import pandas as pd
 from utils.excelParser import symbol_arr
 import logging
+from utils.idx_list_scrape import *
 
 info_bp = Blueprint('info', __name__)
 
@@ -32,3 +33,16 @@ def get_excel_info():
     stocklist = pd.read_excel(src_path)
     return jsonify(stocklist.to_dict(orient='index'))
 
+@info_bp.route('/scrape', methods=['GET'])
+def get_scrape():
+    stocks = scrape_stock()
+    if not stocks:
+        return jsonify({"error": "No stock data found or an error occurred during scraping."}), 404
+    return jsonify(stocks)
+
+@info_bp.route('/scrape2', methods=['GET'])
+def get_scrape2():
+    stocks = scrape_stock2()
+    if not stocks:
+        return jsonify({"error": "No stock data found or an error occurred during scraping."}), 404
+    return jsonify(stocks)
