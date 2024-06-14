@@ -1,6 +1,6 @@
 import pandas as pd
 
-src_path = 'assets/Daftar Saham  - 20240601.xlsx'
+src_path = '../assets/Daftar Saham  - 20240601.xlsx'
 symbol_arr = [] 
 
 def addJK():

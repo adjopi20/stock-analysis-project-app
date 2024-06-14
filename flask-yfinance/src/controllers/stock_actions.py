@@ -32,6 +32,5 @@ def get_all_actions():
             })
         except Exception as e:
             logging.error(f"error getting symbol for {symbol}: {e}")
-            print(f"Error getting stock info for {symbol}: {e}")
     return jsonify(actions_arr)
 
