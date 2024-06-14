@@ -29,7 +29,7 @@ def get_all_info():
 
 @info_bp.route('/info/excel', methods=['GET'])
 def get_excel_info():
-    src_path = 'assets/Daftar Saham  - 20240601.xlsx'
+    src_path = '../assets/Daftar Saham  - 20240601.xlsx'
     stocklist = pd.read_excel(src_path)
     return jsonify(stocklist.to_dict(orient='index'))
 

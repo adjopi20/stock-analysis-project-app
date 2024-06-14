@@ -6,27 +6,47 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
+from pyvirtualdisplay import Display
+
+
 
 def scrape_stock():
     url = "https://www.idx.co.id/id/data-pasar/data-saham/daftar-saham"
-
-    # Fetch data
-    response = requests.get(url)
-    html_content = response.text
-
-    # Parse HTML content using BeautifulSoup
-    soup = BeautifulSoup(html_content, 'html.parser')
-
-    # Find the table by its id
-    table = soup.find('table', id='vgt-table')
     
-    if table is None:
+    # Initialize the WebDriver
+    service = Service(executable_path="/usr/local/bin/chromedriver")
+    options = webdriver.ChromeOptions()
+    options.add_argument('--headless')
+    options.add_argument('--disable-gpu')
+    options.add_argument('--no-sandbox')
+    
+    driver = webdriver.Chrome(service=service, options=options)
+    driver.get(url)
+
+    # Wait until the table is loaded
+    try:
+        WebDriverWait(driver, 20).until(
+            EC.presence_of_element_located((By.ID, "vgt-table"))
+        )
+    except Exception as e:
+        print("Error:", e)
+        driver.quit()
+        return []
+
+    html_content = driver.page_source
+    driver.quit()
+
+    soup = BeautifulSoup(html_content, 'html.parser')
+    table = soup.find('table', {'id': 'vgt-table'})
+    
+    if not table:
         print("No table found on the page.")
         return []
 
     stocks = []
-    for row in table.find_all('tr')[1:]:  # Skip the header row
-        
+    rows = table.find('tbody').find_all('tr')
+
+    for row in rows:
         columns = row.find_all('td')
         if len(columns) >= 5:
             symbol = columns[0].text.strip()
@@ -38,15 +58,20 @@ def scrape_stock():
                 'symbol': symbol,
                 'company_name': company_name,
                 'listing_date': listing_date,
-                'stock_shares': int(stocks_shares.replace('.', '')),  # Removing dots for numbers
+                'stock_shares': int(stocks_shares.replace('.', '')),
                 'listing_board': listing_board
             })
 
     return stocks
 
 
+
 def scrape_stock2():
     url = "https://www.idx.co.id/id/data-pasar/data-saham/daftar-saham"
+
+    #set display 
+    display = Display(visible=0, size=(800,600))
+    display.start()
 
     # Initialize the WebDriver
     service = Service(executable_path="/usr/local/bin/chromedriver")
@@ -60,7 +85,7 @@ def scrape_stock2():
     driver.get(url)
 
     # Wait until the table is loaded
-    WebDriverWait(driver, 20).until(
+    WebDriverWait(driver, 10).until(
         EC.presence_of_element_located((By.ID, "vgt-table"))
     )
 
@@ -89,8 +114,12 @@ def scrape_stock2():
             })
 
     driver.quit()
+    display.stop()
+    # driver.close()
     return stocks
+    
 
-stocks = scrape_stock()
+
+stocks = scrape_stock2()
 for stock in stocks:
     print(stock)
