@@ -40,9 +40,3 @@ def get_scrape():
         return jsonify({"error": "No stock data found or an error occurred during scraping."}), 404
     return jsonify(stocks)
 
-@info_bp.route('/scrape2', methods=['GET'])
-def get_scrape2():
-    stocks = scrape_stock2()
-    if not stocks:
-        return jsonify({"error": "No stock data found or an error occurred during scraping."}), 404
-    return jsonify(stocks)
