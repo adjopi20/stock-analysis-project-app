@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify
 import yfinance as yf 
 import pandas as pd
-from utils.excelParser import symbol_arr
+from utils.add_jk import symbol_arr
 import logging
 
 history_bp = Blueprint('history', __name__)

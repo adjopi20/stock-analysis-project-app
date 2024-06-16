@@ -1,11 +1,11 @@
 from flask import Blueprint, jsonify
 import yfinance as yf 
 import pandas as pd
-from utils.excelParser import symbol_arr
+from utils.add_jk import symbol_arr
 from utils.convertTimestamp import convert_timestamp
 import logging
 
-actions_bp = Blueprint('acttions', __name__)
+actions_bp = Blueprint('actions', __name__)
 
 @actions_bp.route('/actions/<symbol>', methods=['GET'])
 def get_actions(symbol):

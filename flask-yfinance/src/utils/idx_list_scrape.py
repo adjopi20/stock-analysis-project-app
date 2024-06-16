@@ -10,6 +10,8 @@ import time
 from pyvirtualdisplay import Display
 
 
+# Parse the table rows
+stocks = []
 
 def scrape_stock():
     url = "https://www.idx.co.id/id/data-pasar/data-saham/daftar-saham"
@@ -72,12 +74,9 @@ def scrape_stock():
             print("No rows found in the table.")
             return []
 
-        # Parse the table rows
-        stocks = []
-
+        
         for row in rows:
             columns = row.find_elements(By.TAG_NAME, 'td')
-            print(f"Number of columns in row: {len(columns)}")
             if len(columns) >= 5:
                 symbol = columns[0].text.strip()
                 company_name = columns[1].text.strip()
@@ -85,7 +84,7 @@ def scrape_stock():
                 stocks_shares = columns[3].text.strip().replace('.', '')
                 listing_board = columns[4].text.strip()
                 stocks.append({
-                    'symbol': symbol,
+                    'symbol': str(symbol + ".JK"),
                     'company_name': company_name,
                     'listing_date': listing_date,
                     'stock_shares': int(stocks_shares.replace('.', '')),
@@ -104,7 +103,7 @@ def scrape_stock():
         display.stop()
 
 # Example usage:
-# stocks = scrape_stock()
+# print(scrape_stock())
 # if stocks:
 #     for stock in stocks:
 #         print(stock)
