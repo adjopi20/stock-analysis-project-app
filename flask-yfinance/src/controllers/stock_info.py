@@ -4,8 +4,14 @@ import pandas as pd
 from utils.add_jk import symbol_arr, symbol_arr2
 import logging
 from services.idx_list_scrape import *
+from configs.yfinance_session_cache_config import cache_session_config
+from flask_caching import Cache
+from flask import current_app
 
 info_bp = Blueprint('info', __name__)
+
+with current_app.app_context():
+    cache = current_app.extensions.get('cache')
 
 @info_bp.route('/')
 def index():
@@ -28,6 +34,7 @@ def get_all_info():
     return jsonify(stock_arr)
 
 @info_bp.route('/info/stocklist2', methods=['GET'])
+@cache.cached(timeout=86400)
 def get_all_info2():
     fetched_stocks = []
     stock_info = {}
@@ -37,7 +44,8 @@ def get_all_info2():
     #iterate over the symbol that has been added .JK from the scraped stock
     for symbol, scraped_stock in zip(symbol_arr2, scraped_stocks):
         try:
-            stock = yf.Ticker(symbol)
+            session = cache_session_config()
+            stock = yf.Ticker(symbol, session=session)
             stock_info = stock.info
             fetched_stocks.append(stock_info)
             if scraped_stock["symbol"] == stock_info["symbol"]:
