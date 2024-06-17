@@ -1,5 +1,5 @@
 import pandas as pd
-from utils.idx_list_scrape import *
+from services.idx_list_scrape import *
 
 src_path = '../assets/Daftar Saham  - 20240601.xlsx'
 symbol_arr = []

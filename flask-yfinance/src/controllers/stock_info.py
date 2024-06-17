@@ -3,11 +3,9 @@ import yfinance as yf
 import pandas as pd
 from utils.add_jk import symbol_arr, symbol_arr2
 import logging
-from utils.idx_list_scrape import *
+from services.idx_list_scrape import *
 
 info_bp = Blueprint('info', __name__)
-scraped_info = []
-fetched_info = []
 
 @info_bp.route('/')
 def index():
@@ -31,20 +29,24 @@ def get_all_info():
 
 @info_bp.route('/info/stocklist2', methods=['GET'])
 def get_all_info2():
-    stock_arr = []
-    for symbol in symbol_arr2:
+    fetched_stocks = []
+    stock_info = {}
+    stocks_info = []
+    scraped_stocks = scrape_stock()    
+
+    #iterate over the symbol that has been added .JK from the scraped stock
+    for symbol, scraped_stock in zip(symbol_arr2, scraped_stocks):
         try:
             stock = yf.Ticker(symbol)
             stock_info = stock.info
-            stock_arr.append(stock_info)
-            for stock in stock_arr:
-                for key in stock:
-                    symbol_val = str(stock[key]) if (lambda key: key=="symbol") else print("error getting stock key symbol from yfinance")
-                    if symbol == symbol_val:
-                        stock_info.update
+            fetched_stocks.append(stock_info)
+            if scraped_stock["symbol"] == stock_info["symbol"]:
+                stock_info = {**scraped_stock, **stock_info}
+                stocks_info.append(stock_info)
         except Exception as e:
             logging.error(f"error getting symbol for {symbol}: {e}")
-    return jsonify(stock_arr)
+
+    return jsonify(stocks_info)
 
 
 @info_bp.route('/info/excel', methods=['GET'])

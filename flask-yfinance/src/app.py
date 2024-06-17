@@ -1,6 +1,5 @@
 from flask import Flask
 from controllers import blueprints
-from services.append_info import append_info 
 
 import logging
     
@@ -14,5 +13,4 @@ for blueprint in blueprints:
 
 if __name__ == '__main__':
     app.run(host='localhost', port=5001, debug=False)
-    append_info()
 
