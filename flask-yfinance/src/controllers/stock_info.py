@@ -4,14 +4,11 @@ import pandas as pd
 from utils.add_jk import symbol_arr, symbol_arr2
 import logging
 from services.idx_list_scrape import *
-from configs.yfinance_session_cache_config import cache_session_config
-from flask_caching import Cache
-from flask import current_app
+from configs.config import session
+# from configs.yfinance_session_cache_config import cache_session_config
 
 info_bp = Blueprint('info', __name__)
 
-with current_app.app_context():
-    cache = current_app.extensions.get('cache')
 
 @info_bp.route('/')
 def index():
@@ -21,7 +18,7 @@ def index():
 def get_info(symbol):
     return jsonify(yf.Ticker(symbol).info)
 
-@info_bp.route('/info/stocklist', methods=['GET'])
+@info_bp.route('/info/stocklist2', methods=['GET']) #cadangan seandainya sumber data yang dr cache tidak tersedia
 def get_all_info():
     stock_arr = []
     for symbol in symbol_arr:
@@ -33,18 +30,17 @@ def get_all_info():
             logging.error(f"error getting symbol for {symbol}: {e}")
     return jsonify(stock_arr)
 
-@info_bp.route('/info/stocklist2', methods=['GET'])
-@cache.cached(timeout=86400)
+@info_bp.route('/info/stocklist', methods=['GET'])
 def get_all_info2():
     fetched_stocks = []
     stock_info = {}
     stocks_info = []
-    scraped_stocks = scrape_stock()    
+    scraped_stocks = scrape_stock_with_cache()   
 
     #iterate over the symbol that has been added .JK from the scraped stock
     for symbol, scraped_stock in zip(symbol_arr2, scraped_stocks):
         try:
-            session = cache_session_config()
+            
             stock = yf.Ticker(symbol, session=session)
             stock_info = stock.info
             fetched_stocks.append(stock_info)
@@ -57,6 +53,8 @@ def get_all_info2():
     return jsonify(stocks_info)
 
 
+
+
 @info_bp.route('/info/excel', methods=['GET'])
 def get_excel_info():
     src_path = '../assets/Daftar Saham  - 20240601.xlsx'
@@ -65,7 +63,7 @@ def get_excel_info():
 
 @info_bp.route('/scrape', methods=['GET'])
 def get_scrape():
-    stocks = scrape_stock()
+    stocks = scrape_stock_with_cache()
     if not stocks:
         return jsonify({"error": "No stock data found or an error occurred during scraping."}), 404
     return jsonify(stocks)
