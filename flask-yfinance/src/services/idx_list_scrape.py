@@ -1,19 +1,30 @@
+import pydantic.parse
 import requests
-from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import Select
 import time
 from pyvirtualdisplay import Display
+import json
+import pydantic
+from pydantic import BaseModel
+import redis
+from datetime import timedelta, datetime
 
+class ScrapedStock(BaseModel):
+    symbol: str
+    company_name: str
+    listing_date: str
+    stock_shares: int
+    listing_board: str
 
-# Parse the table rows
-stocks = []
+#initiate cache and cache saveplace
+client = redis.Redis()
+cache_ttl = int(timedelta(hours=24).total_seconds())
 
-def scrape_stock():
+def scrape_stock() :
     url = "https://www.idx.co.id/id/data-pasar/data-saham/daftar-saham"
 
     display = Display(visible=0, size=(800, 600))
@@ -59,7 +70,7 @@ def scrape_stock():
             # Get the current number of rows
             rows = driver.find_elements(By.XPATH, '//*[@id="vgt-table"]/tbody/tr')
             current_row_count = len(rows)
-            print(f"Number of rows found: {current_row_count}")
+            print(f"1. Number of rows found: {current_row_count}")
 
             if current_row_count == previous_row_count:
                 # If the number of rows hasn't changed in the last interval, assume loading is complete
@@ -74,23 +85,23 @@ def scrape_stock():
             print("No rows found in the table.")
             return []
 
-        
+        stocks = []
         for row in rows:
             columns = row.find_elements(By.TAG_NAME, 'td')
             if len(columns) >= 5:
-                symbol = columns[0].text.strip()
-                company_name = columns[1].text.strip()
-                listing_date = columns[2].text.strip()
-                stocks_shares = columns[3].text.strip().replace('.', '')
-                listing_board = columns[4].text.strip()
-                stocks.append({
-                    'symbol': str(symbol + ".JK"),
-                    'company_name': company_name,
-                    'listing_date': listing_date,
-                    'stock_shares': int(stocks_shares.replace('.', '')),
-                    'listing_board': listing_board
-                })
-
+                scrapedStock = ScrapedStock(
+                    symbol = str(columns[0].text.strip() + ".JK"),
+                    company_name= str(columns[1].text.strip()),
+                    listing_date = (columns[2].text.strip()),
+                    stock_shares = int(columns[3].text.strip().replace('.', '')),
+                    listing_board = str(columns[4].text.strip()),
+                )
+                stocks.append(
+                    # pydantic.TypeAdapter.dump_json(json, scrapedStock)
+                    scrapedStock.model_dump(mode='json')
+                    )
+        
+        
         return stocks
 
     except Exception as e:
@@ -101,11 +112,25 @@ def scrape_stock():
         # Quit the driver and stop the display
         driver.quit()
         display.stop()
+    
 
-# Example usage:
-# print(scrape_stock())
-# if stocks:
-#     for stock in stocks:
-#         print(stock)
-# else:
-#     print("No stock data found or an error occurred during scraping.")
+def scrape_stock_with_cache() :
+    cache_key = 'scrape_all_stock'
+    try:
+
+        cached_raw_value = client.get(cache_key)
+
+        if cached_raw_value is not None : #ambil yang lama--------
+            typeAdapter = pydantic.TypeAdapter(list)
+            retrieved_stocks = typeAdapter.validate_json(cached_raw_value)
+            return retrieved_stocks
+            
+        stocklist_to_cache = scrape_stock() #ambil yang baru--------
+        raw_value=json.dumps(stocklist_to_cache) #list nya dibikin ke json
+        client.set(cache_key, raw_value, ex=cache_ttl) # trus disimpan
+        print(stocklist_to_cache)
+
+        return stocklist_to_cache
+    except Exception as e:
+        print(f"error: {e}")
+
