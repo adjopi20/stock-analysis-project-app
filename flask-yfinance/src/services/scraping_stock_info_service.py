@@ -70,7 +70,7 @@ def scrape_stock() :
             # Get the current number of rows
             rows = driver.find_elements(By.XPATH, '//*[@id="vgt-table"]/tbody/tr')
             current_row_count = len(rows)
-            print(f"1. Number of rows found: {current_row_count}")
+            print(f"element found when scraping: {len(rows)}")
 
             if current_row_count == previous_row_count:
                 # If the number of rows hasn't changed in the last interval, assume loading is complete
@@ -101,7 +101,7 @@ def scrape_stock() :
                     scrapedStock.model_dump(mode='json')
                     )
         
-        
+        print(f"1. scrape stock without cache = {len(stocks)}")
         return stocks
 
     except Exception as e:
@@ -123,14 +123,17 @@ def scrape_stock_with_cache() :
         if cached_raw_value is not None : #ambil yang lama--------
             typeAdapter = pydantic.TypeAdapter(list)
             retrieved_stocks = typeAdapter.validate_json(cached_raw_value)
+            print(f"1. scrape stock with cache, get chace: {len(retrieved_stocks)}")
             return retrieved_stocks
+
             
         stocklist_to_cache = scrape_stock() #ambil yang baru--------
         raw_value=json.dumps(stocklist_to_cache) #list nya dibikin ke json
         client.set(cache_key, raw_value, ex=cache_ttl) # trus disimpan
-        print(stocklist_to_cache)
+        print(f"1. scrape stock with cache, set chace: {len(stocklist_to_cache)}")
 
         return stocklist_to_cache
     except Exception as e:
         print(f"error: {e}")
 
+    

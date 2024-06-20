@@ -1,12 +1,12 @@
 import pandas as pd
-from services.idx_list_scrape import *
+from services.scraping_stock_info_service import *
 
 src_path = '../assets/Daftar Saham  - 20240601.xlsx'
-symbol_arr = []
-symbol_arr2 = [] 
 
+#alternative way manual
 def addJK():
     dataframe = pd.read_excel(src_path)
+    symbol_arr = []
 
     if 'Kode' in dataframe.columns:
         for symbol in dataframe['Kode']:
@@ -18,14 +18,18 @@ def addJK():
 addJK()
 
 def addJK2():
+    symbol_arr2 = [] 
+
     try:
-        stocks = scrape_stock()
+        stocks = scrape_stock_with_cache()
         for stock in stocks:
             for key in stock:
                 if key=='symbol':
                     symbol_val = str(stock[key])
                     symbol_arr2.append(symbol_val)
-                    # print(symbol_arr2) 
+        print(f".JK has been added: {len(symbol_arr2)}")
+        return symbol_arr2
+    
     except Exception as e:
         print(f"exception: {e}")
 addJK2()
