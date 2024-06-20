@@ -1,10 +1,12 @@
 from flask import Blueprint, jsonify
 import yfinance as yf 
 import pandas as pd
-from utils.add_jk import symbol_arr
+from utils.add_jk import addJK
 import logging
 
 holders_bp = Blueprint('holders', __name__)
+
+symbol_arr = addJK()
 
 @holders_bp.route('/holders/<symbol>', methods=['GET'])
 def get_holders(symbol):

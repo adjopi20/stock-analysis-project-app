@@ -1,10 +1,12 @@
 from flask import Blueprint, jsonify
 import yfinance as yf 
 import pandas as pd
-from utils.add_jk import symbol_arr
+from utils.add_jk import addJK
 import logging
 
 history_bp = Blueprint('history', __name__)
+
+symbol_arr = addJK()
 
 @history_bp.route('/history-metadata/<period>', methods=['GET'])
 def get_all_history_metadata(period):

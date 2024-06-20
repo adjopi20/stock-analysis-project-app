@@ -1,11 +1,13 @@
 from flask import Blueprint, jsonify
 import yfinance as yf
 import pandas as pd
-from utils.add_jk import symbol_arr
+from utils.add_jk import addJK
 from utils.convertTimestamp import convert_timestamp
 import logging
 
 news_bp = Blueprint('news', __name__)
+
+symbol_arr = addJK()
 
 @news_bp.route('/news/<symbol>', methods=['GET'])
 def get_test(symbol):
