@@ -10,7 +10,7 @@ from pyvirtualdisplay import Display
 import json
 import pydantic
 from pydantic import BaseModel
-import redis
+from configs.cache_config import client
 from datetime import timedelta, datetime
 
 class ScrapedStock(BaseModel):
@@ -21,7 +21,6 @@ class ScrapedStock(BaseModel):
     listing_board: str
 
 #initiate cache and cache saveplace
-client = redis.Redis()
 cache_ttl = int(timedelta(hours=24).total_seconds())
 
 def scrape_stock() :

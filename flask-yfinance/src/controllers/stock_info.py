@@ -4,29 +4,35 @@ import pandas as pd
 from utils.add_jk import addJK
 import logging
 from services.scraping_stock_info_service import *
-from services.fetching_stock_info_service import fetched_info_without_cache
+from services.fetching_stock_info_service import fetched_info_with_cache, combine_fetched_scraped_info
 import pydantic.parse
 import pydantic
 import redis
-from datetime import timedelta
+from configs.cache_config import cache_ttl
 import json
 
 info_bp = Blueprint('info', __name__)
 
-cache_ttl = int(timedelta(hours=24).total_seconds())
 
-
-@info_bp.route('/')
-def index():
-    return 'Hello World'
 
 @info_bp.route('/info/<symbol>', methods=['GET'])
 def get_info(symbol):
-    return jsonify(yf.Ticker(symbol).info)
+    try:
+        stocks_info = combine_fetched_scraped_info()
+        for stock_info in stocks_info:
+            # Ensure stock_info is a dictionary and 'symbol' key exists and is a string
+            if isinstance(stock_info, dict) and 'symbol' in stock_info and isinstance(stock_info['symbol'], str):
+                if stock_info['symbol'].lower() == symbol.lower():
+                    return jsonify(stock_info)
+        # If symbol not found, return a 404 response
+        return jsonify({"error": "Symbol not found"}), 404
+    except Exception as e:
+        print(f"stock_info.get_info.error: {e}")
+        return jsonify({"error": str(e)}), 500
 
 #alternative way, manual
 @info_bp.route('/info/stocklist2', methods=['GET']) #cadangan seandainya sumber data yang dr cache tidak tersedia
-def get_all_info():
+def get_all_info2():
     stock_arr = []
     symbol_arr = addJK()
     for symbol in symbol_arr:
@@ -39,38 +45,24 @@ def get_all_info():
     return jsonify(stock_arr)
 
 @info_bp.route('/info/stocklist', methods=['GET'])
-def get_all_info_with_cache():
+def get_all_info():
     stock_info = {}
     stocks_info = []
     scraped_stocks = scrape_stock_with_cache()
     print(f"controller.get_all_info_with_cache.scraped_stocks: {len(scraped_stocks)}")        
-    fetched_stocks = fetched_info_without_cache()
+    fetched_stocks = fetched_info_with_cache()
     print(f"controller.get_all_info_with_cache.fetched_stocks: {len(fetched_stocks)}")        
-    cache_key = 'fetched_all_stock'
 
 
     try:
-        #get chaced file if it exist
-        cached_raw_value= client.get(cache_key)
-
-        if cached_raw_value is not None:
-            typeAdapter = pydantic.TypeAdapter(list) #buat adapter dengan tipe value yang akan kita keluarkan
-            retrieved_stock_info = typeAdapter.validate_json(cached_raw_value) #ambil jsonnya dan masukkan ke adapter
-            print(f"stock_info.get_all_info_with_cache.retrieved_stock_info: {len(retrieved_stock_info)}")
-            return retrieved_stock_info
 
         # if there is no cached list, take from method, and iterate over the both lists
-        for fetched_stock, scraped_stock in zip(fetched_stocks, scraped_stocks):
-                
+        for fetched_stock, scraped_stock in zip(fetched_stocks, scraped_stocks):            
             if scraped_stock["symbol"] == fetched_stock["symbol"]:
                 stock_info = {**scraped_stock, **fetched_stock}
                 stocks_info.append(stock_info)
 
-        #now, save it in chace
-        raw_value = json.dumps(stocks_info)
-        client.set(cache_key, raw_value, ex=cache_ttl)
-        
-        print(f"stock_info.get_all_info_with_cache.stocks_info: {len(stocks_info)}")
+        print(f"stock_info.get_all_info2.stocks_info: {len(stocks_info)}")
         return jsonify(stocks_info)
 
     except Exception as e:
@@ -85,7 +77,7 @@ def clear_cache():
     except Exception as e:
         logging.error(f"Error clearing cache: {e}")
         return jsonify({"error": "Error clearing cache"}), 500
-    
+
 @info_bp.route('/info/excel', methods=['GET'])
 def get_excel_info():
     src_path = '../assets/Daftar Saham  - 20240601.xlsx'
