@@ -35,11 +35,7 @@ def fetched_info_without_cache():
 
 
 def fetched_info_with_cache():
-      
-    fetched_stocks = fetched_info_without_cache()
-    print(f"service.fetching_dtock_info_service.fetched_stocks: {len(fetched_stocks)}")        
     cache_key = 'fetched_all_stock'
-
 
     try:
         #get chaced file if it exist
@@ -52,6 +48,7 @@ def fetched_info_with_cache():
             return retrieved_fetched_stock
 
         #now, save it in chace
+        fetched_stocks = fetched_info_without_cache()
         raw_value = json.dumps(fetched_stocks)
         client.set(cache_key, raw_value, ex=cache_ttl)
         
