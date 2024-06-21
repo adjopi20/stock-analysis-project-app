@@ -15,7 +15,7 @@ def addJK():
             # print(f"Symbols added to symbol_arr: {symbol_arr}")
     else:
         print('Kode not found in dataframe')
-addJK()
+
 
 def addJK2():
     symbol_arr2 = [] 
@@ -32,7 +32,6 @@ def addJK2():
     
     except Exception as e:
         print(f"exception: {e}")
-addJK2()
 
 
 

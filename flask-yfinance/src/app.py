@@ -1,5 +1,6 @@
 from flask import Flask
 from controllers import blueprints
+from services.bell_curve_service import bell_curve_stock_info
 import redis
 
     
@@ -12,7 +13,4 @@ for blueprint in blueprints:
 
 if __name__ == '__main__':
     app.run(host='localhost', port=5001, debug=False)
-    client.delete('fetched_all_stock')
-    client.delete('scrape_all_stock')
-
-
+    bell_curve_stock_info()
