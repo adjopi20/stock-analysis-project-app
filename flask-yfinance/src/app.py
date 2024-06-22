@@ -1,6 +1,6 @@
 from flask import Flask
 from controllers import blueprints
-from services.bell_curve_service import bell_curve_stock_info
+from services.bell_curve_stock_info_service import bell_curve_stock_info
 import redis
 
     
@@ -13,4 +13,5 @@ for blueprint in blueprints:
 
 if __name__ == '__main__':
     app.run(host='localhost', port=5001, debug=False)
-    bell_curve_stock_info()
+    # bell_curve_stock_info()
+    

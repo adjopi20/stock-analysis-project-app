@@ -1,15 +1,14 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, render_template_string, send_file
+import matplotlib.pyplot as plt
+import io
 import yfinance as yf
 import pandas as pd
 from utils.add_jk import addJK
 import logging
 from services.scraping_stock_info_service import *
 from services.fetching_stock_info_service import fetched_info_with_cache, combine_fetched_scraped_info
-import pydantic.parse
-import pydantic
-import redis
-from configs.cache_config import cache_ttl
-import json
+from services.bell_curve_stock_info_service import bell_curve_stock_info
+import numpy as np
 
 info_bp = Blueprint('info', __name__)
 
@@ -90,6 +89,39 @@ def get_scrape():
     if not stocks:
         return jsonify({"error": "No stock data found or an error occurred during scraping."}), 404
     return jsonify(stocks)
+
+@info_bp.route('/hist.png')
+def create_bell_curve ():
+    df = bell_curve_stock_info()
+    print(f"create_bell_curve.df: {df}")
+
+    if df is None:
+        return "No data to display", 400
+    
+    if 'returnOnEquity' in df:
+        # Filter out None or NaN values
+        valid_data = df['returnOnEquity'].dropna()
+
+        
+        if not valid_data.empty:
+            valid_data.plot.hist(bins=100, color='blue', edgecolor='black')
+            plt.xlabel('returnOnEquity')
+            plt.ylabel('Frequency')
+            
+            img = io.BytesIO()
+            plt.savefig(img, format='png')
+            img.seek(0)
+            plt.close()
+            return send_file(img, mimetype='image/png')
+        else:
+            return "No valid returnOnEquity data to display"
+    else: 
+        return "returnOnEquity column not found"
+    
+    
+@info_bp.route("/hist", methods=['GET'])
+def get_hist():
+    return render_template_string('''<img src="{{url_for('info.create_bell_curve')}}" alt="histogram" />''')
 
 
 
