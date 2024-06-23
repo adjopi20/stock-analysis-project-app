@@ -7,7 +7,7 @@ from utils.add_jk import addJK
 import logging
 from services.scraping_stock_info_service import *
 from services.fetching_stock_info_service import fetched_info_with_cache, combine_fetched_scraped_info
-from services.bell_curve_stock_info_service import bell_curve_stock_info
+from services.histogram_sector_service import *
 import numpy as np
 
 info_bp = Blueprint('info', __name__)
@@ -92,20 +92,20 @@ def get_scrape():
 
 @info_bp.route('/hist.png')
 def create_bell_curve ():
-    df = bell_curve_stock_info()
+    df = get_stock_info_for_histogram()
     print(f"create_bell_curve.df: {df}")
 
     if df is None:
         return "No data to display", 400
     
-    if 'returnOnEquity' in df:
+    if 'revenueGrowth' in df:
         # Filter out None or NaN values
-        valid_data = df['returnOnEquity'].dropna()
+        valid_data = df['revenueGrowth'].dropna()
 
         
         if not valid_data.empty:
             valid_data.plot.hist(bins=100, color='blue', edgecolor='black')
-            plt.xlabel('returnOnEquity')
+            plt.xlabel('revenueGrowth')
             plt.ylabel('Frequency')
             
             img = io.BytesIO()
