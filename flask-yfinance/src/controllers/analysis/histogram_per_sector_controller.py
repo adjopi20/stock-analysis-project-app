@@ -1,6 +1,8 @@
 from flask import Blueprint, jsonify
 from utils.histogram import histogram_tool
+from services.fetching_stock_info_service import combine_fetched_scraped_info
 import json
+import numpy as np
 
 hist_bp = Blueprint('hist', __name__)
 
@@ -17,6 +19,34 @@ def histogram_for_sector(sector: str, category: str):
                 "bin_edges": bin_edges_list
             }
             })
-       
+        
     except Exception as e:
         return jsonify({"error": f"Exception occurred: {str(e)}"}), 500
+
+@hist_bp.route('/table-for-sector/<sector>/<category>', methods=['GET'])
+def table_for_sector(sector: str, category: str):
+    try: 
+        stocklist = combine_fetched_scraped_info()
+        table = []
+        # count = 0
+        for stock in stocklist:
+            # if key, value in stock.items():
+            #     if isinstance(value, set):
+            if 'sector' in stock and stock['sector'] == sector and category in stock :
+                items = ({ #disini aku tau bahwa ternyata dictionary itu disebut juga dengan set
+                    'symbol': stock.get('symbol', np.nan),
+                    'listingBoard': stock.get('listing_board', np.nan),
+                    category : stock.get(category, np.nan),
+                    'sector': stock.get('sector', np.nan),
+                    'industry': stock.get('industry', np.nan),
+                })
+                
+                table.append(items)
+                # count +=1
+        
+        table.sort(key= lambda x: x[category], reverse=False)
+        # print(f"jumlah banyak: count: {count}")
+        return jsonify(table)
+
+    except Exception as e:
+        return jsonify({f"error: {e}"}), 500
