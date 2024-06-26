@@ -40,43 +40,8 @@ def get_stock_info_for_histogram():
                 "trailingPE" : stock.get("trailingPE", np.nan),
                 "trailingPegRatio" : stock.get("trailingPegRatio", np.nan),
                 })
-        # df = pd.DataFrame(stock_per_sector)
         print(f"sector quantitative: {len(stock_quantitative_data)}")
         return stock_quantitative_data
     except Exception as e:
         print(f"error: {e}")
 
-
-# def bell_curve_stock_info():
-#     try:
-#         stock_per_sector = []
-#         stocklist = get_stock_info_for_histogram()  # Replace with your actual data retrieval function
-
-#         for stock in stocklist:
-#             # Example of extracting relevant fields, modify as per your actual data structure
-#             if 'returnOnEquity' in stock:
-#                 stock_per_sector.append({
-#                     "symbol": stock.get("symbol", np.nan),
-#                     "returnOnEquity": stock["returnOnEquity"],
-#                     "revenueGrowth": stock.get("revenueGrowth", np.nan)
-#                     # Add other relevant fields
-#                 })
-            
-
-#         df = pd.DataFrame(stock_per_sector)
-#         print(f"a:{df[df['symbol'].isna()] }")
-#         return df
-
-#     except Exception as e:
-#         print(f"Error in bell_curve_stock_info: {e}")
-#         return None
-# bell_curve_stock_info()
-
-
-
-
-
-
-                                           
-
-        
