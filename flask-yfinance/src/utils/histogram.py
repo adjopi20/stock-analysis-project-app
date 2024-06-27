@@ -6,14 +6,23 @@ import numpy as np
 from astropy.stats import knuth_bin_width
 from services.histogram_sector_service import *
 
-def histogram_tool (
-        sector: str, category: str
-        ):
-    dataset = get_stock_info_for_histogram()
+def histogram_tool (sector, category, listBoard=None, industry=None, marketCap=None, recKey=None, recMean=None):
+    dataset = get_stock_info_for_histogram(sector, category, listBoard, industry, marketCap, recKey, recMean)
     values = []
     try: 
         for data in dataset :
-            if data['sector'] == sector and category in data and pd.notna(data[category]):            
+            if data['sector'] == sector and category in data and pd.notna(data[category]):     
+                if listBoard and data.get('listing_board') != listBoard:
+                    continue
+                if industry and data.get('industry') != industry:
+                    continue
+                if marketCap and data.get('marketCap') != marketCap:
+                    continue
+                if recKey and data.get('recommendationKey') != recKey:
+                    continue
+                if recMean and data.get('recommendationMean') != recMean:
+                    continue
+               
                 values.append(data[category])
             else:
                 pass

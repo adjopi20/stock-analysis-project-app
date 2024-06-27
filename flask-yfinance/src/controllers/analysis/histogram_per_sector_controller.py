@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 from utils.histogram import histogram_tool
 from services.fetching_stock_info_service import combine_fetched_scraped_info
 import json
@@ -10,6 +10,13 @@ hist_bp = Blueprint('hist', __name__)
 def histogram_for_sector(sector: str, category: str):
         
     try:
+        #request param
+        listingBoard = request.args.get('listingBoard')
+        industry = request.args.get('industry')
+        marketCap = request.args.get('marketCap')
+        recKey = request.args.get('recommendationKey')  
+        recMean = request.args.get('recommendationMean')  
+
         freq, bin_edges_list = histogram_tool(sector, category) #bin edges disini dtype sudah list dari metod yg di return
         freq_list = freq.tolist()
         
