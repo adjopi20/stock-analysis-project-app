@@ -1,11 +1,13 @@
 from flask import Blueprint, jsonify
 import yfinance as yf
 import pandas as pd
-from utils.excelParser import symbol_arr
+from utils.add_jk import addJK
 from utils.convertTimestamp import convert_timestamp
 import logging
 
 recommendations_bp = Blueprint('recommendations', __name__)
+
+symbol_arr = addJK()
 
 @recommendations_bp.route('/recommendations/<symbol>', methods=['GET'])
 def get_recommendations(symbol):

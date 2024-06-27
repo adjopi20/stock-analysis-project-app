@@ -1,10 +1,11 @@
-from controllers.stock_actions import *
-from controllers.stock_history import *
-from controllers.stock_info import *
-from controllers.stock_financials import *
-from controllers.stock_holders import *
-from controllers.stock_recommendations import *
-from controllers.stock_news import *
+from controllers.basic.stock_actions import actions_bp
+from controllers.basic.stock_history import history_bp
+from controllers.basic.stock_info import info_bp
+from controllers.basic.stock_financials import financials_bp
+from controllers.basic.stock_holders import holders_bp
+from controllers.basic.stock_recommendations import recommendations_bp
+from controllers.basic.stock_news import news_bp
+from controllers.analysis.histogram_per_sector_controller import hist_bp
 
 blueprints = [
     info_bp,
@@ -13,5 +14,6 @@ blueprints = [
     financials_bp,
     holders_bp,
     recommendations_bp,
-    news_bp
+    news_bp,
+    hist_bp
 ]

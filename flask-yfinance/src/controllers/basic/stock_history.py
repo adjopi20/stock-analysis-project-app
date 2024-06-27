@@ -1,10 +1,13 @@
 from flask import Blueprint, jsonify
 import yfinance as yf 
 import pandas as pd
-from utils.excelParser import symbol_arr
+from utils.add_jk import addJK
+from utils.convertTimestamp import convert_timestamp
 import logging
 
 history_bp = Blueprint('history', __name__)
+
+symbol_arr = addJK
 
 @history_bp.route('/history-metadata/<period>', methods=['GET'])
 def get_all_history_metadata(period):
@@ -24,16 +27,16 @@ def get_all_history_metadata(period):
             logging.error(f"error getting symbol for {symbol}: {e}")
     return jsonify(stock_arr)
 
-@history_bp.route('/history-metadata/<symbol>/<period>', methods=['GET'])
-def get_history_metadata(symbol, period):
+@history_bp.route('/history-metadata/<symbol>/<period>/<start_date>/<end_date>', methods=['GET'])
+def get_history_metadata(symbol, period, start_date, end_date):
     try:
         stock = yf.Ticker(symbol)
-        hist = stock.history(period=period)
-        hist.index = hist.index.strftime('%Y-%m-%d')
+        hist = stock.history(period=period, start=start_date, end=end_date)
+        hist_dict = convert_timestamp(hist.to_dict()) 
         metadata = stock.history_metadata
 
         return jsonify({
-            'history': hist.to_dict(orient='index'),
+            'history': hist_dict,
             'metadata': metadata
         })
 
