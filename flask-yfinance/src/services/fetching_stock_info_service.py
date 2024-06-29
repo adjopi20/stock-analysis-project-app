@@ -62,9 +62,11 @@ def combine_fetched_scraped_info():
     stock_info = {}
     stocks_info = []
     scraped_stocks = scrape_stock_with_cache()
+
     # print(f"controller.get_all_info_with_cache.scraped_stocks: {len(scraped_stocks)}")        
     fetched_stocks = fetched_info_with_cache()
     # print(f"controller.get_all_info_with_cache.fetched_stocks: {len(fetched_stocks)}")        
+
 
 
     try:
@@ -73,6 +75,7 @@ def combine_fetched_scraped_info():
             if scraped_stock["symbol"] == fetched_stock["symbol"]:
                 stock_info = {**scraped_stock, **fetched_stock}
                 stocks_info.append(stock_info)
+
 
         # print(f"p {len(stocks_info)}")
         return stocks_info
