@@ -13,7 +13,3 @@ class Sector (Enum):
     T = 'Technology'
     U = 'Utilities'
 
-def print_sector():
-    for sector in Sector: 
-        print(f"sector name: {sector.name}, sector value: {sector.value}")
-print_sector()

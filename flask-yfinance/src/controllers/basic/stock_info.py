@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, render_template_string, send_file
+from flask import Blueprint, jsonify, render_template_string, send_file, request
 import matplotlib.pyplot as plt
 import io
 import yfinance as yf
@@ -6,7 +6,7 @@ import pandas as pd
 from utils.add_jk import addJK
 import logging
 from services.scraping_stock_info_service import *
-from services.fetching_stock_info_service import fetched_info_with_cache, combine_fetched_scraped_info
+from services.fetching_stock_info_service import combine_fetched_scraped_info
 from services.histogram_sector_service import *
 import numpy as np
 
@@ -47,22 +47,47 @@ def get_all_info2():
 def get_all_info():
     stock_info = {}
     stocks_info = []
-    scraped_stocks = scrape_stock_with_cache()
-    print(f"controller.get_all_info_with_cache.scraped_stocks: {len(scraped_stocks)}")        
-    fetched_stocks = fetched_info_with_cache()
-    print(f"controller.get_all_info_with_cache.fetched_stocks: {len(fetched_stocks)}")        
-
+    
+    stocklist = combine_fetched_scraped_info()
+    energy_stock_list = list(filter(lambda x : x.get('sector') == 'Energy', stocklist))
+    print(f"stocklist: {len(energy_stock_list)}")
 
     try:
+        sector = request.args.get('sector')
+        industry = request.args.get('industry')
+        listingBoard = request.args.get('listingBoard')
+        minMarketCap = request.args.get('minMarketCap')
+        maxMarketCap = request.args.get('maxMarketCap')
+        minPrice = request.args.get('minPrice')
+        maxPrice = request.args.get('maxPrice')
+        recommendation = request.args.get('recommendation')
+        minDividendRate = request.args.get('minDividendRate')
+        maxDividendRate = request.args.get('maxDividendRate')
 
-        # if there is no cached list, take from method, and iterate over the both lists
-        for fetched_stock, scraped_stock in zip(fetched_stocks, scraped_stocks):            
-            if scraped_stock["symbol"] == fetched_stock["symbol"]:
-                stock_info = {**scraped_stock, **fetched_stock}
-                stocks_info.append(stock_info)
+        condition1 = lambda x: x.get('sector') == sector if sector is not None else True #anjing trnyata sebenarnya lambda x itu adalah def function(x)
+        condition2 = lambda x: x.get('industry') == industry if industry is not None else True
+        condition3 = lambda x: x.get('listing_board') == listingBoard if listingBoard is not None else True
+        condition4 = lambda x: int(x.get('marketCap'), 0)>= int(minMarketCap) if minMarketCap is not None else True
+        condition5 = lambda x: int(x.get('marketCap'), 0)< int(maxMarketCap) if maxMarketCap is not None else True
+        condition6 = lambda x: round(float(x.get('currentPrice',0.0)), 0) >= round(float(minPrice), 0) if minPrice is not None else True
+        condition7 = lambda x: round(float(x.get('currentPrice', 0.0)), 0) < round(float(maxPrice), 0) if maxPrice is not None else True 
+        condition8 = lambda x: x.get('recommendationKey') == recommendation if recommendation is not None else True
+        condition9 = lambda x: round(float(x.get('dividendRate',0.0)), 0) >= round(float(minDividendRate), 0) if minDividendRate is not None else True
+        condition10 = lambda x: round(float(x.get('dividendRate',0.0)), 0) < round(float(maxDividendRate), 0) if maxDividendRate is not None else True 
+        
+        filtered_stock = filter(lambda x : condition1(x) 
+                                and condition2(x) 
+                                and condition3(x) 
+                                and condition4(x) and condition5(x)
+                                and condition6(x) and condition7(x)
+                                and condition8(x)
+                                and condition9(x) and condition10(x)
+                                , stocklist) # karna refer ke object yang sama, jadi harus nya di lambda lagi dengan satu parameter x yang mana parameter x ini dimasukkan lagi ke dua function di dalamnya.
+        # karna kalau kita cuma pake condition1 and condition2 dia ga refer ke object yang sama, cuma flase atau true, kombinasi dari value itu
+        filtered_stock_list = list(filtered_stock)
 
-        print(f"stock_info.get_all_info2.stocks_info: {len(stocks_info)}")
-        return jsonify(stocks_info)
+        print(f"stock_info.get_all_info2.stocks_info: {len(filtered_stock_list)}")
+        return jsonify(list(filtered_stock_list))
 
     except Exception as e:
         logging.error(f"found error : {e}")
