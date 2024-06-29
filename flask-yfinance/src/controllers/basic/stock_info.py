@@ -63,6 +63,8 @@ def get_all_info():
         recommendation = request.args.get('recommendation')
         minDividendRate = request.args.get('minDividendRate')
         maxDividendRate = request.args.get('maxDividendRate')
+        key = request.args.get('sortBy')
+        order = request.args.get('order')
 
         condition1 = lambda x: x.get('sector') == sector if sector is not None else True #anjing trnyata sebenarnya lambda x itu adalah def function(x)
         condition2 = lambda x: x.get('industry') == industry if industry is not None else True
@@ -74,7 +76,8 @@ def get_all_info():
         condition8 = lambda x: x.get('recommendationKey') == recommendation if recommendation is not None else True
         condition9 = lambda x: round(float(x.get('dividendRate',0.0)), 0) >= round(float(minDividendRate), 0) if minDividendRate is not None else True
         condition10 = lambda x: round(float(x.get('dividendRate',0.0)), 0) < round(float(maxDividendRate), 0) if maxDividendRate is not None else True 
-        
+        # asc = lambda x : x==True if order=='asc' else  x==False
+
         filtered_stock = filter(lambda x : condition1(x) 
                                 and condition2(x) 
                                 and condition3(x) 
@@ -85,8 +88,9 @@ def get_all_info():
                                 , stocklist) # karna refer ke object yang sama, jadi harus nya di lambda lagi dengan satu parameter x yang mana parameter x ini dimasukkan lagi ke dua function di dalamnya.
         # karna kalau kita cuma pake condition1 and condition2 dia ga refer ke object yang sama, cuma flase atau true, kombinasi dari value itu
         filtered_stock_list = list(filtered_stock)
+        filtered_stock_list = sorted(filtered_stock_list, key=lambda x: x.get(key, 0.0) if x.get(key) is not None else 0.0, reverse=order=='desc')
 
-        print(f"stock_info.get_all_info2.stocks_info: {len(filtered_stock_list)}")
+        # print(f"stock_info.get_all_info2.stocks_info: {len(filtered_stock_list)}")
         return jsonify(list(filtered_stock_list))
 
     except Exception as e:
