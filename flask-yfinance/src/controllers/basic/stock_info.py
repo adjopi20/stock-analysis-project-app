@@ -76,7 +76,6 @@ def get_all_info():
         condition8 = lambda x: x.get('recommendationKey') == recommendation if recommendation is not None else True
         condition9 = lambda x: round(float(x.get('dividendRate',0.0)), 0) >= round(float(minDividendRate), 0) if minDividendRate is not None else True
         condition10 = lambda x: round(float(x.get('dividendRate',0.0)), 0) < round(float(maxDividendRate), 0) if maxDividendRate is not None else True 
-        # asc = lambda x : x==True if order=='asc' else  x==False
 
         filtered_stock = filter(lambda x : condition1(x) 
                                 and condition2(x) 

@@ -74,7 +74,7 @@ def combine_fetched_scraped_info():
                 stock_info = {**scraped_stock, **fetched_stock}
                 stocks_info.append(stock_info)
 
-        # print(f"kontollllll {len(stocks_info)}")
+        # print(f"p {len(stocks_info)}")
         return stocks_info
 
     except Exception as e:
