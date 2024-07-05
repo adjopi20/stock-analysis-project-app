@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/home/enigma/FOLDER LOKAL/free-project/get-stock/.venv"
+VIRTUAL_ENV="/home/enigma/FOLDER LOKAL/stock-analysis-project-app/flask-yfinance/.venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

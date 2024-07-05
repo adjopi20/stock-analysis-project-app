@@ -1,4 +1,4 @@
-#!/home/enigma/FOLDER LOKAL/free-project/get-stock/.venv/bin/python3
+#!/home/enigma/FOLDER LOKAL/stock-analysis-project-app/flask-yfinance/.venv/bin/python3
 
 import datetime
 import os

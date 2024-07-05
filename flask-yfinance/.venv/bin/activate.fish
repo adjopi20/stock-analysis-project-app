@@ -33,7 +33,7 @@ end
 # Unset irrelevant variables.
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/home/enigma/FOLDER LOKAL/free-project/get-stock/.venv"
+set -gx VIRTUAL_ENV "/home/enigma/FOLDER LOKAL/stock-analysis-project-app/flask-yfinance/.venv"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH

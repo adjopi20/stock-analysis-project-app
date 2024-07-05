@@ -1,7 +1,7 @@
 from flask import Flask
 from controllers import blueprints
 # from utils.histogram import *
-from utils.mean import mean
+from utils.mean import trimmed_mean
 import redis
 
     
@@ -15,5 +15,5 @@ for blueprint in blueprints:
 if __name__ == '__main__':
     app.run(host='localhost', port=5001, debug=False)
     # histogram_tool()
-    mean()
+    trimmed_mean()
 
