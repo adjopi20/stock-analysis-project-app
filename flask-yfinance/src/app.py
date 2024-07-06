@@ -1,11 +1,13 @@
 from flask import Flask
 from controllers import blueprints
+from flask_cors import CORS
 # from utils.histogram import *
 # from utils.mean import trimmed_mean
 import redis
 
     
 app=Flask(__name__)
+CORS(app)
 client=redis.Redis()
 
 
