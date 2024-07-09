@@ -8,10 +8,11 @@ import {
   withInterceptors,
   withJsonpSupport,
 } from '@angular/common/http';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
-    provideHttpClient(withFetch(), withInterceptors([]), withJsonpSupport()),
+    provideHttpClient(withFetch(), withInterceptors([]), withJsonpSupport()), provideAnimationsAsync(), provideAnimationsAsync(), provideAnimationsAsync(), provideAnimationsAsync(),
   ],
 };
