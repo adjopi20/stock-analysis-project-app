@@ -7,9 +7,10 @@ import pandas as pd
 from utils.add_jk import addJK
 import logging
 from services.scraping_stock_info_service import *
-from services.fetching_stock_info_service import combine_fetched_scraped_info
+from services.stock_info_service import combine_fetched_scraped_info, scrape_stock_with_cache
 from services.histogram_sector_service import *
 import numpy as np
+from configs.cache_config import client
 
 info_bp = Blueprint('info', __name__)
 
@@ -50,8 +51,10 @@ def get_all_info():
     stocks_info = []
     
     stocklist = combine_fetched_scraped_info()
-    energy_stock_list = list(filter(lambda x : x.get('sector') == 'Energy', stocklist))
-    print(f"stocklist: {len(energy_stock_list)}")
+    print(f"stocklist: {len(stocklist)}")
+
+    # energy_stock_list = list(filter(lambda x : x.get('sector') == 'Energy', stocklist))
+    # print(f"stocklist: {len(energy_stock_list)}")
 
     try:
         sector = request.args.get('sector')
@@ -94,13 +97,14 @@ def get_all_info():
         return jsonify(list(filtered_stock_list))
 
     except Exception as e:
-        logging.error(f"found error : {e}")
+        logging.error(f"stock_info.get_all_info error : {e}")
 
 @info_bp.route('/clear_cache', methods=['POST'])
 def clear_cache():
     try:
         client.delete('fetched_all_stock')
         client.delete('scrape_all_stock')
+        client.delete('all_stock')
         return jsonify({"message": "Cache cleared successfully"}), 200
     except Exception as e:
         logging.error(f"Error clearing cache: {e}")

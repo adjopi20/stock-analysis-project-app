@@ -1,13 +1,14 @@
 import logging
 from utils.convertTimestamp import convert_timestamp
 import yfinance as yf
-from utils.add_jk import addJK2
+from services.stock_info_service import scrape_stock
 from configs.cache_config import cache_ttl, client
 import pydantic
 import json
 import redis
 
-symbol_arr = addJK2()
+scraped_stocks = scrape_stock()
+symbol_arr = [item['symbol'] for item in scraped_stocks]
     
 def get_all_q_income_statement():
     financials_arr = []
