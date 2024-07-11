@@ -1,5 +1,5 @@
 # from utils.bell_curve import create_bell_curve
-from services.fetching_stock_info_service import combine_fetched_scraped_info
+from services.stock_info_service import combine_fetched_scraped_info
 from models.sector_enum import Sector
 import pandas as pd
 import numpy as np

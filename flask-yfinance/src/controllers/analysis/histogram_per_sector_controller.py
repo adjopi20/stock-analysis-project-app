@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request
 from utils.histogram import histogram_tool
 from utils.mean import trimmed_mean
-from services.fetching_stock_info_service import combine_fetched_scraped_info
+from services.stock_info_service import combine_fetched_scraped_info
 from services.histogram_sector_service import get_stock_info_for_histogram
 import json
 import numpy as np
