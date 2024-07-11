@@ -5,13 +5,15 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class AllStocksService {
+export class FlaskApiService {
 
   constructor(private http: HttpClient) {}
   
   getStockList(): Observable<any> {
     return this.http.get('http://127.0.0.1:5000/info/stocklist'); 
   }
+
+  
     
 }
 
