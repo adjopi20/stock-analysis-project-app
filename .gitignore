@@ -1,0 +1,22 @@
+# .gitignore in the root directory
+
+# General rules for Python (Flask)
+# *.py[cod]
+__pycache__/
+# *.so
+# .env
+.venv/
+# build/
+# dist/
+# *.egg-info/
+
+# Rules for Angular
+# node_modules/
+# dist/
+# out-tsc/
+# *.log
+# *.lock
+
+# Other general rules
+# .DS_Store
+# *.swp

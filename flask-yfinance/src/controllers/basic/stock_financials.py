@@ -1,14 +1,10 @@
 from flask import Blueprint, jsonify
 import yfinance as yf
-from utils.add_jk import addJK2
 from utils.convertTimestamp import convert_timestamp
 import logging
-from services.stock_financials_services import *
+from services.stock_financial_service import *
 
 financials_bp = Blueprint('financials', __name__)
-
-symbol_arr = addJK2()
-
 
 
 @financials_bp.route('/financials/q-income-statement/<symbol>', methods=['GET'])

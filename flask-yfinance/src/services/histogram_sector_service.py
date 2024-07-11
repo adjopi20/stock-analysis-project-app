@@ -1,5 +1,5 @@
 # from utils.bell_curve import create_bell_curve
-from services.fetching_stock_info_service import combine_fetched_scraped_info
+from services.stock_info_service import combine_fetched_scraped_info
 from models.sector_enum import Sector
 import pandas as pd
 import numpy as np
@@ -11,7 +11,7 @@ def get_stock_info_for_histogram(sector, category, listBoard=None, industry=None
         stocklist = combine_fetched_scraped_info()
         print(f"stocklist: {len(stocklist)}")
         for stock in stocklist:
-            if stock.get('sector') and category in sector:
+            if stock.get('sector') == sector and category in stock:
                 if listBoard and stock.get('listing_board') != listBoard:
                     continue
                 if industry and stock.get('industry') != industry:
