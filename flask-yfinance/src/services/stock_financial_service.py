@@ -7,11 +7,13 @@ import pydantic
 import json
 import redis
 
-scraped_stocks = scrape_stock()
-symbol_arr = [item['symbol'] for item in scraped_stocks]
+
     
 def get_all_q_income_statement():
     financials_arr = []
+    scraped_stocks = scrape_stock()
+    symbol_arr = [item['symbol'] for item in scraped_stocks]
+
     for symbol in symbol_arr:
         try:
             stock = yf.Ticker(symbol)
@@ -76,6 +78,9 @@ def get_q_inc_stmt_with_cache(symbol):
 #========================================================================
 def get_all_q_bal_sheet():
     financials_arr = []
+    scraped_stocks = scrape_stock()
+    symbol_arr = [item['symbol'] for item in scraped_stocks]
+
     for symbol in symbol_arr:
         try:
             stock = yf.Ticker(symbol)
@@ -140,6 +145,9 @@ def get_q_bal_sheet_with_cache(symbol):
 #========================================================================
 def get_all_q_cash_flow():
     financials_arr = []
+    scraped_stocks = scrape_stock()
+    symbol_arr = [item['symbol'] for item in scraped_stocks]
+
     for symbol in symbol_arr:
         try:
             stock = yf.Ticker(symbol)

@@ -309,4 +309,3 @@ def combine_fetched_scraped_info():
 
     except Exception as e:
         logging.error(f"found error 2 : {e}")
-combine_fetched_scraped_info()

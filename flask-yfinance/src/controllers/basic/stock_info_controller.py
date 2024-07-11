@@ -6,11 +6,11 @@ import yfinance as yf
 import pandas as pd
 from utils.add_jk import addJK
 import logging
-from services.scraping_stock_info_service import *
 from services.stock_info_service import combine_fetched_scraped_info, scrape_stock_with_cache
 from services.histogram_sector_service import *
 import numpy as np
 from configs.cache_config import client
+import math
 
 info_bp = Blueprint('info', __name__)
 
@@ -69,6 +69,8 @@ def get_all_info():
         maxDividendRate = request.args.get('maxDividendRate')
         key = request.args.get('sortBy')
         order = request.args.get('order')
+        page = request.args.get('page', 0, int)
+        perPage = request.args.get('perPage', 12, int)
 
         condition1 = lambda x: x.get('sector') == sector if sector is not None else True #anjing trnyata sebenarnya lambda x itu adalah def function(x)
         condition2 = lambda x: x.get('industry') == industry if industry is not None else True
@@ -91,10 +93,16 @@ def get_all_info():
                                 , stocklist) # karna refer ke object yang sama, jadi harus nya di lambda lagi dengan satu parameter x yang mana parameter x ini dimasukkan lagi ke dua function di dalamnya.
         # karna kalau kita cuma pake condition1 and condition2 dia ga refer ke object yang sama, cuma flase atau true, kombinasi dari value itu
         filtered_stock_list = list(filtered_stock)
-        filtered_stock_list = sorted(filtered_stock_list, key=lambda x: x.get(key, 0.0) if x.get(key) is not None else 0.0, reverse=order=='desc')
-
+        paged_filtered_stock_list = filtered_stock_list[page*perPage:page*perPage+perPage]#ini istilahnya kan menyaring dari awl ke akhir, tapi karena array akhir itu ga inclusive jadi kita buat aja dari arr[0] sampai arr[12]
+        sorted_paged_filtered_stock_list = sorted(paged_filtered_stock_list, key=lambda x: x.get(key, 0.0) if x.get(key) is not None else 0.0, reverse=order=='desc')
         # print(f"stock_info.get_all_info2.stocks_info: {len(filtered_stock_list)}")
-        return jsonify(list(filtered_stock_list))
+        return jsonify({
+            'currentPage': page,
+            'itemPerPage':perPage,
+            'totalPage' : math.ceil(len(filtered_stock_list)/perPage),
+            'total': len(stocklist),
+            'totalChosenItems': len(list(filtered_stock_list)),
+            'data': list(sorted_paged_filtered_stock_list)})
 
     except Exception as e:
         logging.error(f"stock_info.get_all_info error : {e}")
