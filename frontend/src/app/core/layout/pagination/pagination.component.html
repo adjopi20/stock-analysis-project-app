@@ -1,6 +1,10 @@
 <nav class="pagination is-centered" role="navigation" aria-label="pagination">
-  <a href="#" class="pagination-previous">Previous</a>
-  <a href="#" class="pagination-next">Next page</a>
+  @defer (on hover) {
+    <a class="pagination-previous hovered-class" (mouseleave)="!isHovered" [ngStyle]="isHovered ? {'background-color': 'lightblue', 'color': 'white'} : {}" (click)="previousPage()" >Previous</a>
+  } @placeholder {
+    <a class="pagination-previous" (click)="previousPage()" >Previous</a>
+  }
+  <a class="pagination-next" (click)="nextPage()" (mouseenter)="!isHovered"  [ngStyle]="isHovered ? {'background-color': 'lightblue', 'color': 'white'} : {}">Next page</a>
   <ul class="pagination-list">
     <li [hidden]="currentPage <= 2" >
       <a href="#" class="pagination-link" (click)="changePage(1)" aria-label="Goto page 1">1</a>
@@ -16,6 +20,7 @@
           'is-current': page === currentPage,
           'pagination-link': true
         }"
+        (click)="changePage(page)"
         aria-label="Goto page 45"
         >{{ page }}</a
       >
@@ -36,12 +41,12 @@
   </ul>
 
   <div class="select">
-    <select title="per-page">
-      <option>12</option>
-      <option>24</option>
-      <option>48</option>
-      <option>120</option>
-      <option>All</option>
+    <select title="per-page" (change)="changeLimit($event)">
+      <option value="12">12</option>
+      <option value="24">24</option>
+      <option value="72">72</option>
+      <option value="120">120</option>
+      <option value="{{total}}">All</option>
     </select>
   </div>
 </nav>

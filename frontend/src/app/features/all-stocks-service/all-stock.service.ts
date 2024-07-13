@@ -9,14 +9,16 @@ export class AllStockService {
   constructor() { }
 
   // first we create behaviour subject variable
-  private currentPageSubject: BehaviorSubject<number> = new BehaviorSubject<number>(0);
-  private totalPageSubject: BehaviorSubject<number> = new BehaviorSubject<number>(0);
-  private limitSubject: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+  private currentPageSubject: BehaviorSubject<number> = new BehaviorSubject<number>(1);
+  private totalPageSubject: BehaviorSubject<number> = new BehaviorSubject<number>(1);
+  private limitSubject: BehaviorSubject<number> = new BehaviorSubject<number>(12);
+  private totalSubject: BehaviorSubject<number> =  new BehaviorSubject<number>(1)
 
   // second we create observable variable because we need to interact with http request
   currentPage$: Observable<number> = this.currentPageSubject.asObservable();
   totalPage$: Observable<number>= this.totalPageSubject.asObservable();
   limit$: Observable<number> = this.limitSubject.asObservable();
+  total$: Observable<number> = this.totalSubject.asObservable();
 
   setCurrentPage(page: number): void{//auto emit data when we call this function
     this.currentPageSubject.next(page);
@@ -28,6 +30,9 @@ export class AllStockService {
 
   setLimit(limit: number): void{
     this.limitSubject.next(limit)
+  }
+  setTotal(total: number): void{
+    this.totalSubject.next(total)
   }
 
   getCurrentPage(): number{
@@ -41,6 +46,10 @@ export class AllStockService {
   getLimit(): number{
     return this.limitSubject.value
   }
+  getTotal(): number{
+    return this.totalSubject.value
+  }
+
 
 
 }

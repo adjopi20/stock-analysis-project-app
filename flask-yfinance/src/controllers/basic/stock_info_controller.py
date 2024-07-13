@@ -69,8 +69,8 @@ def get_all_info():
         maxDividendRate = request.args.get('maxDividendRate')
         key = request.args.get('sortBy')
         order = request.args.get('order')
-        page = request.args.get('page', 0, int)
-        perPage = request.args.get('perPage', 12, int)
+        page = request.args.get('page', 1, int)
+        limit = request.args.get('limit', 12, int)
 
         condition1 = lambda x: x.get('sector') == sector if sector is not None else True #anjing trnyata sebenarnya lambda x itu adalah def function(x)
         condition2 = lambda x: x.get('industry') == industry if industry is not None else True
@@ -93,13 +93,13 @@ def get_all_info():
                                 , stocklist) # karna refer ke object yang sama, jadi harus nya di lambda lagi dengan satu parameter x yang mana parameter x ini dimasukkan lagi ke dua function di dalamnya.
         # karna kalau kita cuma pake condition1 and condition2 dia ga refer ke object yang sama, cuma flase atau true, kombinasi dari value itu
         filtered_stock_list = list(filtered_stock)
-        paged_filtered_stock_list = filtered_stock_list[page*perPage:page*perPage+perPage]#ini istilahnya kan menyaring dari awl ke akhir, tapi karena array akhir itu ga inclusive jadi kita buat aja dari arr[0] sampai arr[12]
+        paged_filtered_stock_list = filtered_stock_list[(page*limit-limit):page*limit]#ini istilahnya kan menyaring dari awl ke akhir, tapi karena array akhir itu ga inclusive jadi kita buat aja dari arr[0] sampai arr[12]
         sorted_paged_filtered_stock_list = sorted(paged_filtered_stock_list, key=lambda x: x.get(key, 0.0) if x.get(key) is not None else 0.0, reverse=order=='desc')
         # print(f"stock_info.get_all_info2.stocks_info: {len(filtered_stock_list)}")
         return jsonify({
-            'currentPage': int(page+1),
-            'itemPerPage':perPage,
-            'totalPage' : math.ceil(len(filtered_stock_list)/perPage),
+            'currentPage': int(page),
+            'limit':limit,
+            'totalPage' : math.ceil(len(filtered_stock_list)/limit),
             'total': len(stocklist),
             'totalChosenItems': len(list(filtered_stock_list)),
             'data': list(sorted_paged_filtered_stock_list)})

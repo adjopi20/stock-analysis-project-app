@@ -76,3 +76,8 @@ $container-max-width: iv.$fullhd !default;
     width: flex;
 }
 
+.hovered-class{
+    background-color: hsl(276, 100%, 55%)	;
+    color: #000;
+}
+
