@@ -97,7 +97,7 @@ def get_all_info():
         sorted_paged_filtered_stock_list = sorted(paged_filtered_stock_list, key=lambda x: x.get(key, 0.0) if x.get(key) is not None else 0.0, reverse=order=='desc')
         # print(f"stock_info.get_all_info2.stocks_info: {len(filtered_stock_list)}")
         return jsonify({
-            'currentPage': page,
+            'currentPage': int(page+1),
             'itemPerPage':perPage,
             'totalPage' : math.ceil(len(filtered_stock_list)/perPage),
             'total': len(stocklist),

@@ -61,7 +61,11 @@
           class="column is-three-quarters-mobile is-two-thirds-tablet is-half-desktop is-one-third-widescreen is-one-quarter-fullhd"
           *ngFor="let item of data"
         >
-          @if (!isLoading) {
+      
+        <!-- <div *ngIf="isLoading" class="card">
+          <div class="card-content skeleton-block"></div>
+        </div> -->
+        
           <div class="card">
             <div class="card-content">
               <h1 class="title is-4">{{ item.symbol }}</h1>
@@ -136,15 +140,7 @@
             </footer>
           </div>
 
-          } @else {
-          <div class="card skeleton-lines">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-          </div>
-          }
+          
         </div>
       </div>
       

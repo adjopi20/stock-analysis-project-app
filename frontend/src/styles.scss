@@ -59,7 +59,7 @@ $container-max-width: iv.$fullhd !default;
 .pagination-link.is-current {
     background-color: hsl(171, 100%, 41%)	; /* Change this to your desired color */
     color: #000; /* Change this to your desired text color */
-    border-color: hsl(204, 86%, 53%)	; /* Change this to match the background color if you want */
+    // border-color: hsl(204, 86%, 53%)	; /* Change this to match the background color if you want */
   }
 
 .card{
