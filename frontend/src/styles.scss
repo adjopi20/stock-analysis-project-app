@@ -81,3 +81,10 @@ $container-max-width: iv.$fullhd !default;
     color: #000;
 }
 
+:root {
+  --bulma-primary-99: #08221e; /* Replace with your desired color */
+}
+
+.custom-hero {  
+  background-color: var(--bulma-primary-99);
+}
