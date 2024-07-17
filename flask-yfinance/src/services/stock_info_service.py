@@ -191,7 +191,7 @@ def scrape_stock_with_cache() :
 
 def fetch_stock():
     fetched_stocks = []
-    scraped_stock = scrape_stock()
+    scraped_stock = scrape_stock_with_cache()
     print(f"scraped stock without cache: {len(scraped_stock)}")
     # stock_info = {}
     try:
@@ -309,3 +309,5 @@ def combine_fetched_scraped_info():
 
     except Exception as e:
         logging.error(f"found error 2 : {e}")
+
+combine_fetched_scraped_info()

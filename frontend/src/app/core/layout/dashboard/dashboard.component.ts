@@ -25,6 +25,7 @@ import { PaginationComponent } from '../pagination/pagination.component';
 export class DashboardComponent {
   // data = new Perform<[]>(); //jangan lupa sertakan <> untuk menspesifikkan output/keluaran fungsi kek di java kan "public dtype namafungsi(dtype parameter)"
   data: any[] = [];
+  sector: any[] = [];
   total: number = 0;
   currentPage: number = 1;
   limit: number = 0;
@@ -32,6 +33,7 @@ export class DashboardComponent {
   chosenItems: number = 0;
 
   isLoading: boolean = false;
+  isActive: boolean = false;
   hasError: boolean = false;
   isLogin: boolean = false;
   isFilteredBySector: boolean = false;
@@ -43,6 +45,7 @@ export class DashboardComponent {
   ) {}
 
   ngOnInit() {
+
     this.allStockService.currentPage$.subscribe((currentPage) => {
       if (this.currentPage !== currentPage) {
         this.currentPage = currentPage;
@@ -70,7 +73,8 @@ export class DashboardComponent {
         this.limit = limit;
         this.getAllStock(this.currentPage, this.limit);
       }
-      console.log("Limit after subscription: " + this.limit);})
+      console.log("Limit after subscription: " + this.limit);
+    })
 
     
      // Initial fetch
@@ -115,6 +119,9 @@ export class DashboardComponent {
         this.hasError = false;
         this.isLogin = false;
 
+        this.sector = [...new Set(this.data.map(item => item.sector))];  
+
+
         console.log('Current Page Dashboard:', this.currentPage);
         console.log('Data Dashboard:',  this.data.length);
         console.log('Limit Dashboard:', this.limit);
@@ -123,5 +130,14 @@ export class DashboardComponent {
         console.log('Total Page Dashboard:', this.totalPage);
 
         });
+  }
+
+  showFiltered(){
+    this.sector = [...new Set(this.data.map(item => item.sector))];  
+
+  }
+
+  toggleNotif(){
+    this.isActive = !this.isActive;
   }
 }

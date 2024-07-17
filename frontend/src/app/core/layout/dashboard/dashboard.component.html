@@ -48,15 +48,22 @@
           </div>
         </div>
       </nav>
-      <section class="section">
-        <h1 class="title">Section</h1>
-        <h2 class="subtitle">
-          A simple container to divide your page into <strong>sections</strong>,
-          like the one you're currently reading.
-        </h2>
-      </section>
+      
+      <div class="container is-widescreen ">
+        <div class="notification monkey-01 fil-notif">
+          <div class="fixed-grid has-4-cols" >
+            <div class="grid" >
+            @for (item of sector; track $index) {
+                <a class="cell button filter-button "
+                [ngClass]="{'monkey-01-active': isActive}"
+                (click)="toggleNotif()">{{item}}</a>
+            }
+          </div>
+        </div>
+      </div>
 
       <div class="columns is-multiline">
+        
         <div
           class="column is-three-quarters-mobile is-two-thirds-tablet is-half-desktop is-one-third-widescreen is-one-quarter-fullhd"
           *ngFor="let item of data"
@@ -147,6 +154,7 @@
       <section class="section">
         <app-pagination></app-pagination>
       </section>
+    
     </div>
   </div>
 </div>

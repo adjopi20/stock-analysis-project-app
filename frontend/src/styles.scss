@@ -6,6 +6,8 @@ html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 @import "https://cdn.jsdelivr.net/npm/bulma@1.0.1/css/bulma.min.css";
 @import "../node_modules/bulma/bulma.scss";
+@import "../node_modules/@fortawesome/fontawesome-free/css/all.min.css";
+@import "../node_modules/bulma/sass/utilities/initial-variables.scss";
 
 $container-offset: 2 * iv.$gap !default;
 $container-max-width: iv.$fullhd !default;
@@ -82,9 +84,30 @@ $container-max-width: iv.$fullhd !default;
 }
 
 :root {
-  --bulma-primary-99: #08221e; /* Replace with your desired color */
+  --monkey-primary-00: #08221e; /* Replace with your desired color */
+  --monkey-primary-01: #0ac497;
+  --monkey-primary-02: #a5236e;
+  --monkey-primary-03: #0a92c4;
+  --monkey-secondary-01: #bbf1ff;
 }
 
 .custom-hero {  
-  background-color: var(--bulma-primary-99);
+  background-color: var(--monkey-primary-00);
+}
+
+.filter-button{
+  &.monkey-01{
+    background-color: black;
+    color: white;
+  }
+  &.monkey-01-active{
+    background-color: var(--monkey-primary-01);
+    color: #000;
+  }  
+}
+
+.fil-notif{
+  background-color: var(--monkey-primary-00)	;
+  color: #000;
+  
 }
