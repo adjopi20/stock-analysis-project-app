@@ -1,9 +1,9 @@
 <nav class="pagination is-centered" role="navigation" aria-label="pagination">
-  @defer (on hover) {
-    <a class="pagination-previous hovered-class" (mouseleave)="!isHovered" [ngStyle]="isHovered ? {'background-color': 'lightblue', 'color': 'white'} : {}" (click)="previousPage()" >Previous</a>
-  } @placeholder {
+  <!-- @defer (on hover) { -->
+    <!-- <a class="pagination-previous hovered-class" (mouseleave)="!isHovered" [ngStyle]="isHovered ? {'background-color': 'lightblue', 'color': 'white'} : {}" (click)="previousPage()" >Previous</a> -->
+  <!-- } @placeholder { -->
     <a class="pagination-previous" (click)="previousPage()" >Previous</a>
-  }
+  <!-- } -->
   <a class="pagination-next" (click)="nextPage()" (mouseenter)="!isHovered"  [ngStyle]="isHovered ? {'background-color': 'lightblue', 'color': 'white'} : {}">Next page</a>
   <ul class="pagination-list">
     <li [hidden]="currentPage <= 2" >

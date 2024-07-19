@@ -1,1 +1,7 @@
 <router-outlet />
+<div class='toggle-switch' (click)="themeToggleMode()" [(ngModel)]="isLight" ngDefaultControl >
+    <label>
+        <input placeholder="theme" type = 'checkbox' >
+        <span class = 'slider'></span>
+    </label>
+</div>
