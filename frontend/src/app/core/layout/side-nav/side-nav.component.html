@@ -1,1 +1,39 @@
-<h1>side-nav works</h1>
+<aside class="menu">
+  <div class="container">
+    <p class="menu-label">Navigation</p>
+    <ul class="menu-list">
+      <li><a>Dashboard</a></li>
+      <li><a>Stocks</a></li>
+      <li><a>Settings</a></li>
+    </ul>
+  </div>
+
+  <div class="container">
+    <div class="notification">
+      <label class="menu-label radio">Sector</label>
+      <div class="radio-group fixed-grid has-1-cols">
+        <ul class="radio is-size-7">
+          <li class="field" *ngFor="let item of sector">
+            <input title="radio" type="radio" name="answer" />
+            {{ item }}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="notification">
+      <label class="menu-label radio">Industry</label>
+      <div class="radio-group fixed-grid has-1-cols">
+        <ul class="radio is-size-7">
+          <li class="field" *ngFor="let item of industry">
+            <input title="radio" type="radio" name="answer" />
+            {{ item }}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</aside>

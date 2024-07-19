@@ -1,0 +1,13 @@
+<div class="container is-widescreen ">
+
+    <div class="notification monkey-01 fil-notif">
+      <div class="fixed-grid has-4-cols" >
+        <div class="grid" >
+        @for (item of listingBoard; track $index) {
+            <a class="cell button filter-button "
+            [ngClass]="{'monkey-01-active': isActive}"
+            (click)="toggleNotif()">{{item}}</a>
+        }
+      </div>
+    </div>
+  </div>

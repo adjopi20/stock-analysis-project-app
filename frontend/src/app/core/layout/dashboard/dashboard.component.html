@@ -8,16 +8,9 @@
       </h2>
     </section>
   </div>
-  <div class="columns">
+  <div class="columns ">
     <div class="column is-2">
-      <aside class="menu">
-        <p class="menu-label">Navigation</p>
-        <ul class="menu-list">
-          <li><a>Dashboard</a></li>
-          <li><a>Stocks</a></li>
-          <li><a>Settings</a></li>
-        </ul>
-      </aside>
+      <app-side-nav  [industry]="industry" [sector]="sector"></app-side-nav> 
     </div>
     <div class="column is-10">
       <nav class="level">
@@ -48,20 +41,10 @@
           </div>
         </div>
       </nav>
-      
-      <div class="container is-widescreen ">
-        <div class="notification monkey-01 fil-notif">
-          <div class="fixed-grid has-4-cols" >
-            <div class="grid" >
-            @for (item of sector; track $index) {
-                <a class="cell button filter-button "
-                [ngClass]="{'monkey-01-active': isActive}"
-                (click)="toggleNotif()">{{item}}</a>
-            }
-          </div>
-        </div>
-      </div>
 
+        <app-filter-container [listingBoard]="listingBoard"></app-filter-container>
+
+      
       <div class="columns is-multiline">
         
         <div

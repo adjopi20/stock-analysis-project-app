@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Self, SkipSelf } from '@angular/core';
 import { FlaskApiService } from '../../../features/flask-api-service/flask-api.service';
 import { AllStockService } from '../../../features/all-stocks-service/all-stock.service';
 import { CommonModule, NgFor } from '@angular/common';
@@ -8,6 +8,7 @@ import { JsonPipe } from '@angular/common';
 import { Perform } from '../../../shared/class/perform-class/perform';
 import { SideNavComponent } from '../side-nav/side-nav.component';
 import { PaginationComponent } from '../pagination/pagination.component';
+import { FilterContainerComponent } from "../filter-container/filter-container.component";
 
 @Component({
   selector: 'app-dashboard',
@@ -18,7 +19,9 @@ import { PaginationComponent } from '../pagination/pagination.component';
     SideNavComponent,
     CommonModule,
     PaginationComponent,
-  ],
+    FilterContainerComponent,
+    
+],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })
@@ -26,6 +29,8 @@ export class DashboardComponent {
   // data = new Perform<[]>(); //jangan lupa sertakan <> untuk menspesifikkan output/keluaran fungsi kek di java kan "public dtype namafungsi(dtype parameter)"
   data: any[] = [];
   sector: any[] = [];
+  industry: any[] = [];
+  listingBoard: any[] = [];
   total: number = 0;
   currentPage: number = 1;
   limit: number = 0;
@@ -33,14 +38,13 @@ export class DashboardComponent {
   chosenItems: number = 0;
 
   isLoading: boolean = false;
-  isActive: boolean = false;
   hasError: boolean = false;
   isLogin: boolean = false;
   isFilteredBySector: boolean = false;
   isFilteredByIndustry: boolean = false;
 
   constructor(
-    private apiService: FlaskApiService,
+    @SkipSelf() private apiService: FlaskApiService,
     private allStockService: AllStockService
   ) {}
 
@@ -120,6 +124,12 @@ export class DashboardComponent {
         this.isLogin = false;
 
         this.sector = [...new Set(this.data.map(item => item.sector))];  
+        this.listingBoard = [...new Set(this.data.map(item => item.listing_board))];  
+        this.industry = [...new Set(this.data.map(item => item.industry))];  
+        console.log(this.industry);
+        console.log(this.listingBoard);
+        
+        
 
 
         console.log('Current Page Dashboard:', this.currentPage);
@@ -132,12 +142,6 @@ export class DashboardComponent {
         });
   }
 
-  showFiltered(){
-    this.sector = [...new Set(this.data.map(item => item.sector))];  
-
-  }
-
-  toggleNotif(){
-    this.isActive = !this.isActive;
-  }
+  
+  
 }
