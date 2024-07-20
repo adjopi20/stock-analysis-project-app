@@ -11,7 +11,7 @@ export class AllStockService {
   // first we create behaviour subject variable
   private currentPageSubject: BehaviorSubject<number> = new BehaviorSubject<number>(1);
   private totalPageSubject: BehaviorSubject<number> = new BehaviorSubject<number>(1);
-  private limitSubject: BehaviorSubject<number> = new BehaviorSubject<number>(12);
+  private limitSubject: BehaviorSubject<number> = new BehaviorSubject<number>(934);
   private totalSubject: BehaviorSubject<number> =  new BehaviorSubject<number>(1)
 
   // second we create observable variable because we need to interact with http request

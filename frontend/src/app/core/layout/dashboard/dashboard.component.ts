@@ -28,6 +28,7 @@ import { FilterContainerComponent } from "../filter-container/filter-container.c
 export class DashboardComponent {
   // data = new Perform<[]>(); //jangan lupa sertakan <> untuk menspesifikkan output/keluaran fungsi kek di java kan "public dtype namafungsi(dtype parameter)"
   data: any[] = [];
+  limitedData : any[] = [];
   sector: any[] = [];
   industry: any[] = [];
   listingBoard: any[] = [];
@@ -83,6 +84,7 @@ export class DashboardComponent {
     
      // Initial fetch
      this.getAllStock(this.currentPage, this.limit);
+     this.limitDisplayedData();
 
   }
 
@@ -129,6 +131,7 @@ export class DashboardComponent {
         console.log(this.industry);
         console.log(this.listingBoard);
         
+        this.limitDisplayedData();
         
 
 
@@ -142,6 +145,10 @@ export class DashboardComponent {
         });
   }
 
+  limitDisplayedData(){
+    const limitedData = this.data.slice(0, 12);
+    this.limitedData = limitedData;
+  }
   
   
 }

@@ -257,10 +257,12 @@ def fetch_stock():
                 volume=stock_info.get('volume')
             )
             fetched_stocks.append(fetched_stock.model_dump(mode='json'))
-            # return fetched_stocks
-            # fetched_stocks.append(stock_info)
-  
-
+        
+        # for item in fetched_stocks:
+        #     for key in item:
+        #         fetched_stocks = map(lambda x : x == item[key] if item[key] == float('inf') else item[key], np.nan )
+                
+       
             
         print(f"fetched stock without cache: {len(fetched_stocks)}")    
         return fetched_stocks
@@ -283,9 +285,15 @@ def combine_fetched_scraped_info():
         if cached_raw_value is not None:
             try: 
                 cached_all_stock = json.loads(cached_raw_value)
-                cached_all_stock = [item for item in cached_all_stock]
                 print(f"fetching_stock_info_service.combine_fetched_scraped_info: {len(cached_all_stock)}")
+                
+                def replace_inf_with_nan(item):
+                    return {key: (None if value == float('inf') else value) for key, value in item.items()}
+
+                cached_all_stock = list(map(replace_inf_with_nan, cached_all_stock))
+                
                 return cached_all_stock
+               
             except (json.JSONDecodeError, ValidationError) as e:
                 logging.error(f"found error 1 : {e}")
 
@@ -300,13 +308,22 @@ def combine_fetched_scraped_info():
                 if scraped_stock["symbol"] == fetched_stock['symbol']:
                     stock_info = {**scraped_stock, **fetched_stock}
                     all_stocks.append(stock_info)
+
+               
+            
             raw_value = json.dumps([stock for stock in all_stocks])
             client.set(cache_key, raw_value, ex=cache_ttl)
 
+            def replace_inf_with_nan(item):
+                return {key: (None if value == float('inf') else value) for key, value in item.items()}
+
+            # Apply the function to each item in the list
+            all_stocks = list(map(replace_inf_with_nan, all_stocks))
+             
 
             # print(f"p {len(stocks_info)}")
             return all_stocks
-
+        
     except Exception as e:
         logging.error(f"found error 2 : {e}")
 
