@@ -11,13 +11,14 @@ export class FlaskApiService {
   constructor(private http: HttpClient) {}
 
   getStockList(
-    page: number = 1, limit: number = 12 
+    // page: number = 1, limit: number = 12 
   ): Observable<any> {
-    const params = new HttpParams().set('page', page.toString()).set('limit', limit.toString());
+    const params = new HttpParams();
+    // .set('page', page.toString()).set('limit', limit.toString());
 
     return this.http.get(this.url, {
       params: params,
-    }).pipe(delay(2000));
+    });
   }
 
   

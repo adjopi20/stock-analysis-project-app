@@ -93,4 +93,8 @@ export class PaginationComponent {
     this.pagesToShow.sort((a, b) => a - b);
     console.log('this.pagesToShow' + this.pagesToShow);
   }
+
+  trackByPage(index: number, page: number): number {
+  return page;
+}
 }

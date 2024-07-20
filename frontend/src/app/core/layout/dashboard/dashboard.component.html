@@ -53,7 +53,7 @@
         > -->
         <div class="fixed-grid has-auto-count">
           <div class="grid has-5-cols">
-            @for (item of data; track $index) {
+            @for (item of limitedData; track $index) {
               <div class="card">
                 <div class="card-content">
                   <h2 class="title is-7">{{ item.symbol }}</h2>

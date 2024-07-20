@@ -2,7 +2,7 @@ import { Component, Self, SkipSelf } from '@angular/core';
 import { FlaskApiService } from '../../../features/flask-api-service/flask-api.service';
 import { AllStockService } from '../../../features/all-stocks-service/all-stock.service';
 import { CommonModule, NgFor } from '@angular/common';
-import { catchError } from 'rxjs/operators';
+import { catchError, toArray } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { JsonPipe } from '@angular/common';
 import { Perform } from '../../../shared/class/perform-class/perform';
@@ -54,10 +54,24 @@ export class DashboardComponent {
     this.allStockService.currentPage$.subscribe((currentPage) => {
       if (this.currentPage !== currentPage) {
         this.currentPage = currentPage;
-        this.getAllStock(this.currentPage, this.limit);
+        this.getAllStock(
+          this.currentPage, this.limit
+        );
+        // this.limitDisplayedData(this.currentPage, this.limit);
       }
       console.log("Current page after subscription: " + this.currentPage);
     } )
+
+    this.allStockService.limit$.subscribe((limit) => {
+      if (this.limit !== limit) {
+        this.limit = limit;
+        this.getAllStock(
+          this.currentPage, this.limit
+        );
+        // this.limitDisplayedData(this.currentPage, limit);
+      }
+      console.log("Limit after subscription: " + this.limit);
+    })
 
     this.allStockService.totalPage$.subscribe((totalPage) => {
       // if (totalPage !== this.totalPage){
@@ -73,28 +87,25 @@ export class DashboardComponent {
     })
 
 
-    this.allStockService.limit$.subscribe((limit) => {
-      if (this.limit !== limit) {
-        this.limit = limit;
-        this.getAllStock(this.currentPage, this.limit);
-      }
-      console.log("Limit after subscription: " + this.limit);
-    })
+    
 
     
      // Initial fetch
-     this.getAllStock(this.currentPage, this.limit);
-     this.limitDisplayedData();
+     this.getAllStock(
+      this.currentPage, this.limit
+    );
+    // initial limit
+    // this.limitDisplayedData(this.currentPage, this.limit)
 
   }
 
   getAllStock(
-    page?: number, limit?: number
+    currentPage: number, limit: number
   ) {
     this.isLoading = true;
     this.apiService
       .getStockList(
-        page, limit
+        // page, limit
       )
       .pipe(
         catchError((error) => {
@@ -105,21 +116,21 @@ export class DashboardComponent {
         })
       )
       .subscribe((data: any) => {
-        this.currentPage = data.currentPage;
-        this.allStockService.setCurrentPage(this.currentPage)
+        // this.currentPage = data.currentPage;
+        // this.allStockService.setCurrentPage(this.currentPage)
         
         this.data = data.data;
         
-        this.limit = data.limit;
-        this.allStockService.setLimit(this.limit)
+        // this.limit = data.limit;
+        // this.allStockService.setLimit(this.limit)
         
         this.total = data.total;
         this.allStockService.setTotal(this.total)
 
         this.chosenItems = data.totalChosenItems;
         
-        this.totalPage = data.totalPage; //get total page dari api
-        this.allStockService.setTotalPage(this.totalPage) //set total page ke pagination component
+        // this.totalPage = data.totalPage; //get total page dari api
+        // this.allStockService.setTotalPage(this.totalPage) //set total page ke pagination component
         
         this.isLoading = false;
         this.hasError = false;
@@ -130,24 +141,48 @@ export class DashboardComponent {
         this.industry = [...new Set(this.data.map(item => item.industry))];  
         console.log(this.industry);
         console.log(this.listingBoard);
+
+        // this.getAllStock(currentPage, limit)
+        const beginningPage = currentPage*limit-limit ;
+        // data
+        const limitedData = this.data.slice(beginningPage, limit);
+        this.limitedData = limitedData;
         
-        this.limitDisplayedData();
+        this.limitDisplayedData(currentPage, limit);
         
 
 
-        console.log('Current Page Dashboard:', this.currentPage);
+        // console.log('Current Page Dashboard:', this.currentPage);
         console.log('Data Dashboard:',  this.data.length);
-        console.log('Limit Dashboard:', this.limit);
+        // console.log('Limit Dashboard:', this.limit);
         console.log('Total Dashboard:', this.total);
         console.log('Chosen Items Dashboard:', this.chosenItems);
-        console.log('Total Page Dashboard:', this.totalPage);
+        // console.log('Total Page Dashboard:', this.totalPage);
 
         });
   }
 
-  limitDisplayedData(){
-    const limitedData = this.data.slice(0, 12);
-    this.limitedData = limitedData;
+  limitDisplayedData(currentPage: number, limit: number){
+    // // this.getAllStock(currentPage, limit)
+    // const beginningPage = currentPage*limit-limit ;
+    // // data
+    // const limitedData = this.data.slice(beginningPage, limit);
+    // this.limitedData = limitedData;
+    //limit
+    this.limit = limit;
+    this.allStockService.setLimit(this.limit)
+    //current page
+    this.currentPage = currentPage;
+    this.allStockService.setCurrentPage(this.currentPage)
+    //total page
+    const totalPage = Math.ceil(this.total/limit)
+    this.totalPage = totalPage;
+    this.allStockService.setTotalPage(this.totalPage)
+
+    console.log('limit: ' + this.limit);
+    console.log('current page: ' + currentPage);
+    console.log('total page' + totalPage);
+    
   }
   
   
