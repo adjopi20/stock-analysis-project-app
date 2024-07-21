@@ -4,24 +4,22 @@
   <!-- } @placeholder { -->
     <a class="pagination-previous" (click)="previousPage()" >Previous</a>
   <!-- } -->
-  <a class="pagination-next" (click)="nextPage()" (mouseenter)="!isHovered"  [ngStyle]="isHovered ? {'background-color': 'lightblue', 'color': 'white'} : {}">Next page</a>
-  <ul class="pagination-list">
+  <a class="pagination-next" (click)="nextPage()"  [ngStyle]="isHovered ? {'background-color': 'lightblue', 'color': 'white'} : {}">Next page</a>
+  <ul class="pagination-list" >
     <li [hidden]="currentPage <= 2" >
-      <a href="#" class="pagination-link" (click)="changePage(1)" aria-label="Goto page 1">1</a>
+      <a class="pagination-link" aria-label="Goto page 1" (click)="changePage(1)">1</a>
     </li>
     <li [hidden]="currentPage <= 3">
       <span class="pagination-ellipsis">&hellip;</span>
     </li>
 
-    <li *ngFor="let page of pagesToShow; trackby: trackByPage">
+    <li  *ngFor="let page of pagesToShow">
       <a
-        href="#"
         [ngClass]="{
           'is-current': page === currentPage,
           'pagination-link': true
         }"
         (click)="changePage(page)"
-        aria-label="Goto page 45"
         >{{ page }}</a
       >
     </li>

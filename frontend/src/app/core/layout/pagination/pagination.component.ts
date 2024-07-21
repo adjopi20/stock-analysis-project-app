@@ -70,6 +70,7 @@ export class PaginationComponent {
     const value = (event?.target as HTMLSelectElement).value;
     const limit = parseInt(value, 10)
     this.allStockService.setLimit(limit)
+    this.changePage(1);
   }
 
   
@@ -94,7 +95,4 @@ export class PaginationComponent {
     console.log('this.pagesToShow' + this.pagesToShow);
   }
 
-  trackByPage(index: number, page: number): number {
-  return page;
-}
 }
