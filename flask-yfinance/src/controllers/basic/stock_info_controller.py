@@ -72,9 +72,9 @@ def get_all_info():
         # page = request.args.get('page', 1, int)
         # limit = request.args.get('limit', 12, int)
 
-        condition1 = lambda x: x.get('sector') == sector if sector is not None else True #anjing trnyata sebenarnya lambda x itu adalah def function(x)
-        condition2 = lambda x: x.get('industry') == industry if industry is not None else True
-        condition3 = lambda x: x.get('listing_board') == listingBoard if listingBoard is not None else True
+        condition1 = lambda x: x.get('sector') == sector if sector else True #anjing trnyata sebenarnya lambda x itu adalah def function(x)
+        condition2 = lambda x: x.get('industry') == industry if industry else True
+        condition3 = lambda x: x.get('listing_board') == listingBoard if listingBoard  else True
         condition4 = lambda x: int(x.get('marketCap'), 0)>= int(minMarketCap) if minMarketCap is not None else True
         condition5 = lambda x: int(x.get('marketCap'), 0)< int(maxMarketCap) if maxMarketCap is not None else True
         condition6 = lambda x: round(float(x.get('currentPrice',0.0)), 0) >= round(float(minPrice), 0) if minPrice is not None else True
@@ -106,6 +106,20 @@ def get_all_info():
 
     except Exception as e:
         logging.error(f"stock_info.get_all_info error : {e}")
+
+@info_bp.route('/filter-options', methods=['GET'])
+def filter_options():
+    stocklist = combine_fetched_scraped_info()
+
+    listingBoard = list(set(item['listing_board'] for item in stocklist))
+    sector = list(set(item['sector'] for item in stocklist))
+    industry = list(set(item['industry'] for item in stocklist))
+
+    return jsonify({
+        'listingBoard':listingBoard,
+        'sector': sector,
+        'industry': industry
+    })
 
 @info_bp.route('/clear_cache', methods=['POST'])
 def clear_cache():

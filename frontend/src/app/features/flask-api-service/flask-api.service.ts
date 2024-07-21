@@ -1,25 +1,41 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { NONE_TYPE } from '@angular/compiler';
 import { Injectable } from '@angular/core';
-import { delay, map, Observable } from 'rxjs';
+import { delay, map, multicast, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FlaskApiService {
-  private url: string = 'http://127.0.0.1:5000/info/stocklist';
+  private infoUrl: string = 'http://127.0.0.1:5000/info/stocklist';
+  private filterOptionsUrl = 'http://127.0.0.1:5000/filter-options';
   constructor(private http: HttpClient) {}
 
   getStockList(
-    // page: number = 1, limit: number = 12 
+    listingBoard?: string,  
+    sector?: string,
+    industry?: string
   ): Observable<any> {
-    const params = new HttpParams();
-    // .set('page', page.toString()).set('limit', limit.toString());
+    let params = new HttpParams();
 
-    return this.http.get(this.url, {
+    if (listingBoard) {
+      params = params.set('listingBoard', listingBoard);
+    }
+    if (sector) {
+      params = params.set('sector', sector);
+    }
+    if (industry) {
+      params = params.set('industry', industry);
+    }
+  
+    
+    return this.http.get(this.infoUrl, {
       params: params,
     });
   }
 
+  getFilterOptions(): Observable<any>{
+    return this.http.get(this.filterOptionsUrl)
+  }
   
 }

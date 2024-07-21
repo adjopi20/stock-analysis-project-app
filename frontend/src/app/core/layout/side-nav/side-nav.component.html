@@ -14,7 +14,7 @@
       <div class="radio-group fixed-grid has-1-cols">
         <ul class="radio is-size-7">
           <li class="" *ngFor="let item of sector">
-            <input title="radio" type="radio" name="answer" />
+            <input (click)="changeSector(item)" title="radio" type="radio" name="answer" />
             {{ item }}
           </li>
         </ul>
@@ -28,7 +28,7 @@
       <div class="radio-group fixed-grid has-1-cols">
         <ul class="radio is-size-7">
           <li class="" *ngFor="let item of industry">
-            <input title="radio" type="radio" name="answer" />
+            <input (click)="changeIndustry(item)" title="radio" type="radio" name="answer" />
             {{ item }}
           </li>
         </ul>

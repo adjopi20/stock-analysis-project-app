@@ -29,9 +29,11 @@ export class DashboardComponent {
   // data = new Perform<[]>(); //jangan lupa sertakan <> untuk menspesifikkan output/keluaran fungsi kek di java kan "public dtype namafungsi(dtype parameter)"
   data: any[] = [];
   limitedData : any[] = [];
+  
   sector: any[] = [];
   industry: any[] = [];
   listingBoard: any[] = [];
+  
   total: number = 0;
   currentPage: number = 1;
   limit: number = 0;
@@ -41,8 +43,11 @@ export class DashboardComponent {
   isLoading: boolean = false;
   hasError: boolean = false;
   isLogin: boolean = false;
-  isFilteredBySector: boolean = false;
-  isFilteredByIndustry: boolean = false;
+  
+  // Maintain the state of the current filters
+  currentListingBoard?: string;
+  currentSector? : string;
+  currentIndustry?:string;
 
   constructor(
     @SkipSelf() private apiService: FlaskApiService,
@@ -86,21 +91,20 @@ export class DashboardComponent {
       console.log("totalPage d aft subs " + this.totalPage);
     })
 
-     // Initial fetch
-     this.getAllStock(
-      // this.currentPage, this.limit
-    );
-    // initial limit
-    // this.limitDisplayedData(this.currentPage, this.limit)
-
+    // Initial fetch
+    this.getAllStock();
+    this.getFilterOptions();
   }
 
   getAllStock(
-    // currentPage: number, limit: number
+    
   ) {
     this.isLoading = true;
     this.apiService
       .getStockList(
+        this.currentListingBoard,
+        this.currentSector,
+        this.currentIndustry
       )
       .pipe(
         catchError((error) => {
@@ -111,36 +115,22 @@ export class DashboardComponent {
         })
       )
       .subscribe((data: any) => {
-        // this.currentPage = data.currentPage;
-        // this.allStockService.setCurrentPage(this.currentPage)
-        
         this.data = data.data;
-        
-        // this.limit = data.limit;
-        // this.allStockService.setLimit(this.limit)
-        
         this.total = data.total;
         this.allStockService.setTotal(this.total)
-
         this.chosenItems = data.totalChosenItems;
-        
-        // this.totalPage = data.totalPage; //get total page dari api
-        // this.allStockService.setTotalPage(this.totalPage) //set total page ke pagination component
-        
         this.isLoading = false;
         this.hasError = false;
         this.isLogin = false;
 
-        this.sector = [...new Set(this.data.map(item => item.sector))];  
-        this.listingBoard = [...new Set(this.data.map(item => item.listing_board))];  
+        // this.sector = [...new Set(this.data.map(item => item.sector))];  
+        // this.listingBoard = [...new Set(this.data.map(item => item.listing_board))];  
         this.industry = [...new Set(this.data.map(item => item.industry))];  
-        console.log(this.industry);
-        console.log(this.listingBoard);
-
-        // this.getAllStock(currentPage, limit)
+        // console.log(this.industry);
+        // console.log(this.listingBoard);
         
         this.limitDisplayedData();
-        
+
         console.log('Data Dashboard:',  this.data.length);
         console.log('Total Dashboard:', this.total);
         console.log('Chosen Items Dashboard:', this.chosenItems);
@@ -148,16 +138,37 @@ export class DashboardComponent {
         });
   }
 
+  getFilterOptions(){
+    this.apiService.getFilterOptions().pipe(
+      catchError((error) => {
+        this.isLoading = false;
+        this.hasError =true;
+        console.error(error);
+        return []
+      })).
+      subscribe({
+        next: (data: any) => {
+          // for (let item in data.listingBoard){
+          //   this.listingBoard.push(item)
+          // }
+          this.listingBoard = data.listingBoard;
+          this.sector = data.sector;
+          // this.industry = data.industry;
+          console.log(this.listingBoard);
+          console.log(this.sector);
+          // console.log(this.industry);
+          
+        },
+        error: (error) => console.error(error),
+        complete: () => console.log('complete')
+      })
+  }
+
   limitDisplayedData(){
-    // this.getAllStock(currentPage, limit)
     const beginningPage = (this.currentPage-1)*this.limit ;
-    // data
     this.limitedData = this.data.slice(beginningPage, (beginningPage+this.limit));
-    //limit
     this.allStockService.setLimit(this.limit)
-    //current page
     this.allStockService.setCurrentPage(this.currentPage)
-    //total page
     this.totalPage = Math.ceil(this.total/this.limit);
     this.allStockService.setTotalPage(this.totalPage)
 
@@ -165,8 +176,24 @@ export class DashboardComponent {
     console.log('limited data: ', JSON.stringify(this.limitedData, null, 2));
     console.log('current page: ' + this.currentPage);
     console.log('total page' + this.totalPage);
-    
   }
+
+  receiveChangeListingBoard(event: any){
+    this.currentListingBoard = this.currentListingBoard === event? undefined : event;
+    this.getAllStock();
+  }
+
+  receiveChangeSector(event: any){
+    this.currentSector = this.currentSector === event  ? undefined : event;
+    this.getAllStock()
+  }
+
+  receiveChangeIndustry(event: any){
+    this.currentIndustry = this.currentIndustry === event ? undefined : event;
+    this.getAllStock()
+  }
+
+
   
   
 }

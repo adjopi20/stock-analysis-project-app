@@ -46,6 +46,7 @@ export class PaginationComponent {
     });
 
     this.showPages()
+
   }
 
   previousPage(): void {

@@ -1,13 +1,24 @@
-<div class="container is-widescreen ">
-
-    <div class="notification monkey-01 fil-notif">
-      <div class="fixed-grid has-5-cols" >
-        <div class="grid" >
+<div class="container is-widescreen">
+  <div class="notification monkey-01 fil-notif">
+    <ul class="fixed-grid has-5-cols">
+      <!-- <li class="grid">
+        <a
+          class="cell button filter-button is-size-7"
+          [ngClass]="{ 'monkey-01-active': item == currentListingBoard }"
+          (click)="changeListingBoard(item)"
+          >All</a
+        >
+      </li> -->
+      <li class="grid">
         @for (item of listingBoard; track $index) {
-            <a class="cell button filter-button is-size-7"
-            [ngClass]="{'monkey-01-active': isActive}"
-            (click)="toggleNotif()">{{item}}</a>
+        <a
+          class="cell button filter-button is-size-7"
+          [ngClass]="{ 'monkey-01-active': item == currentListingBoard }"
+          (click)="changeListingBoard(item)"
+          >{{ item }}</a
+        >
         }
-      </div>
-    </div>
+      </li>
+    </ul> 
   </div>
+</div>

@@ -10,7 +10,12 @@
   </div>
   <div class="columns ">
     <div class="column is-one-fifth">
-      <app-side-nav  [industry]="industry" [sector]="sector"></app-side-nav> 
+      <app-side-nav  
+      [industry]="industry"
+      (industryEvent)="receiveChangeIndustry($event)" 
+      [sector]="sector"
+      (sectorEvent)="receiveChangeSector($event)" 
+      ></app-side-nav> 
     </div>
     <div class="column">
       <nav class="level">
@@ -29,20 +34,18 @@
         <div class="level-item has-text-centered">
           <div>
             <p class="heading">Sector</p>
-            <p class="title" *ngIf="!isFilteredBySector">Placeholder</p>
-            <p class="title" *ngIf="isFilteredBySector">All</p>
+            <p class="title" >Placeholder</p>
           </div>
         </div>
         <div class="level-item has-text-centered">
           <div>
             <p class="heading" >Listing Board</p>
-            <p class="title" *ngIf="!isFilteredByIndustry">Placeholder</p> 
-            <p class="title" *ngIf="isFilteredByIndustry">All</p>
+            <p class="title">Placeholder</p> 
           </div>
         </div>
       </nav>
 
-        <app-filter-container [listingBoard]="listingBoard"></app-filter-container>
+        <app-filter-container [listingBoard]="listingBoard" (listingBoardEvent)="receiveChangeListingBoard($event)"></app-filter-container>
 
       
       <!-- <div class="columns is-multiline ">
