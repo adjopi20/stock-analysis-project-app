@@ -14,7 +14,8 @@ export class FlaskApiService {
   getStockList(
     listingBoard?: string,  
     sector?: string,
-    industry?: string
+    industry?: string,
+    recommendation?: string
   ): Observable<any> {
     let params = new HttpParams();
 
@@ -27,6 +28,10 @@ export class FlaskApiService {
     if (industry) {
       params = params.set('industry', industry);
     }
+    if(recommendation){
+      params = params.set('recommendation', recommendation)
+    }
+
   
     
     return this.http.get(this.infoUrl, {

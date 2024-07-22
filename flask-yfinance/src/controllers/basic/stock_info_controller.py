@@ -14,7 +14,7 @@ import math
 
 info_bp = Blueprint('info', __name__)
 
-
+# stocklist=combine_fetched_scraped_info()
 
 @info_bp.route('/info/<symbol>', methods=['GET'])
 def get_info(symbol):
@@ -79,7 +79,7 @@ def get_all_info():
         condition5 = lambda x: int(x.get('marketCap'), 0)< int(maxMarketCap) if maxMarketCap is not None else True
         condition6 = lambda x: round(float(x.get('currentPrice',0.0)), 0) >= round(float(minPrice), 0) if minPrice is not None else True
         condition7 = lambda x: round(float(x.get('currentPrice', 0.0)), 0) < round(float(maxPrice), 0) if maxPrice is not None else True 
-        condition8 = lambda x: x.get('recommendationKey') == recommendation if recommendation is not None else True
+        condition8 = lambda x: x.get('recommendationKey') == recommendation if recommendation else True
         condition9 = lambda x: round(float(x.get('dividendRate',0.0)), 0) >= round(float(minDividendRate), 0) if minDividendRate is not None else True
         condition10 = lambda x: round(float(x.get('dividendRate',0.0)), 0) < round(float(maxDividendRate), 0) if maxDividendRate is not None else True 
 
@@ -114,11 +114,13 @@ def filter_options():
     listingBoard = list(set(item['listing_board'] for item in stocklist))
     sector = list(set(item['sector'] for item in stocklist))
     industry = list(set(item['industry'] for item in stocklist))
+    recommendationKey = list(set(item['recommendationKey'] for item in stocklist))
 
     return jsonify({
         'listingBoard':listingBoard,
         'sector': sector,
-        'industry': industry
+        'industry': industry,
+        'recommendationKey': recommendationKey
     })
 
 @info_bp.route('/clear_cache', methods=['POST'])

@@ -9,31 +9,113 @@
   </div>
 
   <div class="container">
+     
     <div class="notification">
-      <label class="menu-label radio">Sector</label>
-      <div class="radio-group fixed-grid has-1-cols">
+      <label class="menu-label ">Sector</label>
+      <div class="select is-small is-fullwidth">
+        <select title="dropdown is-fullwidth"  (change)="changeSector($event)">
+          <option value="">All</option>
+          <option *ngFor="let item of sector" [value]="item">{{item}}</option>
+        </select>
+      </div>
+      <!--<div class="radio-group fixed-grid has-1-cols">
         <ul class="radio is-size-7">
           <li class="" *ngFor="let item of sector">
-            <input (click)="changeSector(item)" title="radio" type="radio" name="answer" />
+            <input
+              (click)="changeSector(item)"
+              title="radio"
+              type="radio"
+              name="answer"
+            />
             {{ item }}
           </li>
         </ul>
+      </div> -->
+    </div>
+
+    <div class="notification">
+      <label class="menu-label ">Industry</label>
+      <div class="select is-small is-fullwidth">
+        <select title="dropdown is-fullwidth"  (change)="changeIndustry($event)">
+          <option value="">All</option>
+          <option *ngFor="let item of industry" [value]="item">{{item}}</option>
+        </select>
       </div>
+      <!-- <div class="radio-group fixed-grid has-1-cols">
+        <ul class="radio is-size-7">
+          <li class="" *ngFor="let item of industry">
+            <input
+              (click)="changeIndustry(item)"
+              title="radio"
+              type="radio"
+              name="answer"
+            />
+            {{ item }}
+          </li>
+        </ul>
+      </div> -->
     </div>
   </div>
 
   <div class="container">
     <div class="notification">
-      <label class="menu-label radio">Industry</label>
-      <div class="radio-group fixed-grid has-1-cols">
-        <ul class="radio is-size-7">
-          <li class="" *ngFor="let item of industry">
-            <input (click)="changeIndustry(item)" title="radio" type="radio" name="answer" />
-            {{ item }}
-          </li>
-        </ul>
+
+      <div class="count-filter control is-small ">
+        <label class="menu-label radio">Market Cap</label>
+        <div class="input-group is-fullwidth ">
+          <input
+          class="input num-input is-small"
+          type="number"
+          placeholder="MIN"
+        /> - 
+        <input
+          class="input num-input is-small"
+          type="number"
+          placeholder="MAX"
+        />
       </div>
+      <button class=" button apply-button is-info is-small is-fullwidth">Apply</button>
+      </div>
+      
+      
+
+      <div class="count-filter control is-small ">
+        <label class="menu-label radio">PRICE</label>
+        <div class="input-group is-fullwidth ">
+          <input
+          class="input num-input is-small"
+          type="number"
+          placeholder="MIN"
+        /> - 
+        <input
+          class="input num-input is-small"
+          type="number"
+          placeholder="MAX"
+        />
+      </div>
+      <button class=" button apply-button is-info is-small is-fullwidth">Apply</button>
+      </div>
+      
+      
+
+      <div class="count-filter control is-small ">
+        <label class="menu-label radio">Dividend rate</label>
+        <div class="input-group is-fullwidth ">
+          <input
+          class="input num-input is-small"
+          type="number"
+          placeholder="MIN"
+        /> - 
+        <input
+          class="input num-input is-small"
+          type="number"
+          placeholder="MAX"
+        />
+      </div>
+      <button class=" button apply-button is-info is-small is-fullwidth">Apply</button>
+      </div>
+      
+      
     </div>
   </div>
-
 </aside>

@@ -33,6 +33,7 @@ export class DashboardComponent {
   sector: any[] = [];
   industry: any[] = [];
   listingBoard: any[] = [];
+  recommendation: any[] = [];
   
   total: number = 0;
   currentPage: number = 1;
@@ -48,6 +49,7 @@ export class DashboardComponent {
   currentListingBoard?: string;
   currentSector? : string;
   currentIndustry?:string;
+  currentRecommendation?:string;
 
   constructor(
     @SkipSelf() private apiService: FlaskApiService,
@@ -104,7 +106,8 @@ export class DashboardComponent {
       .getStockList(
         this.currentListingBoard,
         this.currentSector,
-        this.currentIndustry
+        this.currentIndustry,
+        this.currentRecommendation
       )
       .pipe(
         catchError((error) => {
@@ -123,11 +126,7 @@ export class DashboardComponent {
         this.hasError = false;
         this.isLogin = false;
 
-        // this.sector = [...new Set(this.data.map(item => item.sector))];  
-        // this.listingBoard = [...new Set(this.data.map(item => item.listing_board))];  
         this.industry = [...new Set(this.data.map(item => item.industry))];  
-        // console.log(this.industry);
-        // console.log(this.listingBoard);
         
         this.limitDisplayedData();
 
@@ -148,15 +147,13 @@ export class DashboardComponent {
       })).
       subscribe({
         next: (data: any) => {
-          // for (let item in data.listingBoard){
-          //   this.listingBoard.push(item)
-          // }
           this.listingBoard = data.listingBoard;
           this.sector = data.sector;
-          // this.industry = data.industry;
+          this.recommendation = data.recommendationKey;
+
           console.log(this.listingBoard);
           console.log(this.sector);
-          // console.log(this.industry);
+          console.log(this.recommendation);
           
         },
         error: (error) => console.error(error),
@@ -178,18 +175,23 @@ export class DashboardComponent {
     console.log('total page' + this.totalPage);
   }
 
-  receiveChangeListingBoard(event: any){
+  receiveChangeListingBoard(event: string){
     this.currentListingBoard = this.currentListingBoard === event? undefined : event;
     this.getAllStock();
   }
 
-  receiveChangeSector(event: any){
+  receiveChangeSector(event: string){
     this.currentSector = this.currentSector === event  ? undefined : event;
     this.getAllStock()
   }
 
-  receiveChangeIndustry(event: any){
+  receiveChangeIndustry(event: string){
     this.currentIndustry = this.currentIndustry === event ? undefined : event;
+    this.getAllStock()
+  }
+
+  receiveChangeRecommendation(event: string){
+    this.currentRecommendation = this.currentRecommendation === event ? undefined : event
     this.getAllStock()
   }
 

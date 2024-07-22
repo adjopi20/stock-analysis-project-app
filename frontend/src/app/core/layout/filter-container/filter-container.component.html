@@ -1,5 +1,8 @@
 <div class="container is-widescreen">
+
   <div class="notification monkey-01 fil-notif">
+    <!-- <label class="menu-label">Listing Board</label> -->
+
     <ul class="fixed-grid has-5-cols">
       <!-- <li class="grid">
         <a
@@ -21,4 +24,31 @@
       </li>
     </ul> 
   </div>
+
+  <div class="notification monkey-01 fil-notif">
+    <!-- <label class="menu-label">Listing Board</label> -->
+
+    <ul class="fixed-grid has-5-cols">
+      <!-- <li class="grid">
+        <a
+          class="cell button filter-button is-size-7"
+          [ngClass]="{ 'monkey-01-active': item == currentListingBoard }"
+          (click)="changeListingBoard(item)"
+          >All</a
+        >
+      </li> -->
+      <li class="grid">
+        @for (item of recommendation; track $index) {
+        <a
+          class="cell button filter-button is-size-7"
+          [ngClass]="{ 'monkey-01-active': item == currentRecommendation }"
+          (click)="changeRecommendation(item)"
+          >{{ item }}</a
+        >
+        }
+      </li>
+    </ul> 
+  </div>
+
+
 </div>

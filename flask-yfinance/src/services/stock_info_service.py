@@ -78,6 +78,8 @@ class ScrapedStock(BaseModel):
     stock_shares: int
     listing_board: str
 
+combined = []
+
 def scrape_stock() :
     url = "https://www.idx.co.id/id/data-pasar/data-saham/daftar-saham"
 
@@ -206,8 +208,8 @@ def fetch_stock():
             print(f"fetched stock without cache: {stock_info.get('underlyingSymbol')}")  
             fetched_stock = FetchedStock(
                 symbol=stock_info.get('underlyingSymbol'),
-                sector=stock_info.get('sector'),
-                industry=stock_info.get('industry'),
+                sector=stock_info.get('sector') or 'Unknown',
+                industry=stock_info.get('industry') or 'Unknown',
                 bookValue=stock_info.get('bookValue'),
                 companyOfficers=stock_info.get('companyOfficers'),
                 currentPrice=stock_info.get('currentPrice'),
@@ -242,7 +244,7 @@ def fetch_stock():
                 priceToBook=stock_info.get('priceToBook'),
                 profitMargins=stock_info.get('profitMargins'),
                 quickRatio=stock_info.get('quickRatio'),
-                recommendationKey=stock_info.get('recommendationKey'),
+                recommendationKey=stock_info.get('recommendationKey') or 'none',
                 recommendationMean=stock_info.get('recommendationMean'),
                 returnOnAssets=stock_info.get('returnOnAssets'),
                 returnOnEquity=stock_info.get('returnOnEquity'),
@@ -319,6 +321,7 @@ def combine_fetched_scraped_info():
 
             # Apply the function to each item in the list
             all_stocks = list(map(replace_inf_with_nan, all_stocks))
+
              
 
             # print(f"p {len(stocks_info)}")

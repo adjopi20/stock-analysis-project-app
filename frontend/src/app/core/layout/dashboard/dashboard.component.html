@@ -45,7 +45,13 @@
         </div>
       </nav>
 
-        <app-filter-container [listingBoard]="listingBoard" (listingBoardEvent)="receiveChangeListingBoard($event)"></app-filter-container>
+        <app-filter-container 
+        [listingBoard]="listingBoard" 
+        (listingBoardEvent)="receiveChangeListingBoard($event)"
+        [recommendation]="recommendation"
+        (recommendationEvent)="receiveChangeRecommendation($event)"
+        
+        ></app-filter-container>
 
       
       <!-- <div class="columns is-multiline ">
@@ -54,8 +60,8 @@
           class="column  is-three-quarters-mobile is-two-thirds-tablet is-half-desktop is-one-third-widescreen is-one-quarter-fullhd"
           *ngFor="let item of limitedData;"
         > -->
-        <div class="fixed-grid has-auto-count">
-          <div class="grid has-5-cols">
+        <div class="fixed-grid has-5-cols-fullhd has-5-cols-widescreen has-5-cols-widescreen has-5-cols-tablet has-3-cols-mobile">
+          <div class="grid ">
             @for (item of limitedData; track $index) {
               <div class="card">
                 <div class="card-content">

@@ -16,7 +16,9 @@ export class SideNavComponent {
   currentIndustry? : string;
   currentSector? : string;
 
-  changeIndustry(industry: string){
+  changeIndustry(event: Event){
+    const value = (event?.target as HTMLSelectElement).value;
+    const industry = value.toString()
     if (industry=== this.currentIndustry){
       this.currentIndustry='';
       this.industryEvent.emit('');
@@ -26,13 +28,19 @@ export class SideNavComponent {
     }
   }
 
-  changeSector(sector:string){
+  changeSector(event: Event){ //ini event ke html nya ke dom, eventemitter itu event ke parent
+    const value = (event?.target as HTMLSelectElement).value;
+    const sector = value.toString();
     if(sector===this.currentSector){
       this.currentSector='';
       this.sectorEvent.emit('');
+      this.currentIndustry='';
+      this.industryEvent.emit('');
     }else{
       this.currentSector=sector
       this.sectorEvent.emit(sector)
+      this.currentIndustry='';
+      this.industryEvent.emit('');
     }
   }
 
