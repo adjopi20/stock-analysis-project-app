@@ -1,11 +1,9 @@
 import { Component, Self, SkipSelf } from '@angular/core';
 import { FlaskApiService } from '../../../features/flask-api-service/flask-api.service';
 import { AllStockService } from '../../../features/all-stocks-service/all-stock.service';
-import { CommonModule, NgFor } from '@angular/common';
+import { CommonModule, CurrencyPipe, NgFor } from '@angular/common';
 import { catchError, toArray } from 'rxjs/operators';
-import { Observable } from 'rxjs';
 import { JsonPipe } from '@angular/common';
-import { Perform } from '../../../shared/class/perform-class/perform';
 import { SideNavComponent } from '../side-nav/side-nav.component';
 import { PaginationComponent } from '../pagination/pagination.component';
 import { FilterContainerComponent } from "../filter-container/filter-container.component";
@@ -20,6 +18,7 @@ import { FilterContainerComponent } from "../filter-container/filter-container.c
     CommonModule,
     PaginationComponent,
     FilterContainerComponent,
+    CurrencyPipe
     
 ],
   templateUrl: './dashboard.component.html',

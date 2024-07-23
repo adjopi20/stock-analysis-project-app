@@ -8,6 +8,7 @@
     </ul>
   </div>
 
+  <hr class="new1"/>
   <div class="container">
      
     <div class="notification">
@@ -18,19 +19,6 @@
           <option *ngFor="let item of sector" [value]="item">{{item}}</option>
         </select>
       </div>
-      <!--<div class="radio-group fixed-grid has-1-cols">
-        <ul class="radio is-size-7">
-          <li class="" *ngFor="let item of sector">
-            <input
-              (click)="changeSector(item)"
-              title="radio"
-              type="radio"
-              name="answer"
-            />
-            {{ item }}
-          </li>
-        </ul>
-      </div> -->
     </div>
 
     <div class="notification">
@@ -41,36 +29,27 @@
           <option *ngFor="let item of industry" [value]="item">{{item}}</option>
         </select>
       </div>
-      <!-- <div class="radio-group fixed-grid has-1-cols">
-        <ul class="radio is-size-7">
-          <li class="" *ngFor="let item of industry">
-            <input
-              (click)="changeIndustry(item)"
-              title="radio"
-              type="radio"
-              name="answer"
-            />
-            {{ item }}
-          </li>
-        </ul>
-      </div> -->
     </div>
+
   </div>
+
 
   <div class="container">
     <div class="notification">
-
+    
       <div class="count-filter control is-small ">
         <label class="menu-label radio">Market Cap</label>
         <div class="input-group is-fullwidth ">
           <input
           class="input num-input is-small"
           type="number"
+          min="0"
           placeholder="MIN"
         /> - 
         <input
           class="input num-input is-small"
           type="number"
+          min="0"
           placeholder="MAX"
         />
       </div>

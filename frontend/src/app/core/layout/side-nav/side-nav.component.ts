@@ -13,8 +13,13 @@ export class SideNavComponent {
   @Input() sector: any[] = [];
   @Output() industryEvent = new EventEmitter<string>();
   @Output() sectorEvent = new EventEmitter<string>();
+  @Output() minMarketCap = new EventEmitter<number>();
+  @Output() maxMarketCap = new EventEmitter<number>();
+
   currentIndustry? : string;
   currentSector? : string;
+  currentMinMarketCap? : number;
+  currentMaxMarketCap? : number;
 
   changeIndustry(event: Event){
     const value = (event?.target as HTMLSelectElement).value;
@@ -43,5 +48,14 @@ export class SideNavComponent {
       this.industryEvent.emit('');
     }
   }
+
+  setMinMarketCap(){
+    
+  }
+
+  setMaxmarketCap(){
+
+  }
+
 
 }

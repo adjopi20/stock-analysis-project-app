@@ -31,6 +31,19 @@ def get_info(symbol):
         print(f"stock_info.get_info.error: {e}")
         return jsonify({"error": str(e)}), 500
 
+@info_bp.route('/info2/<symbol>', methods=['GET'])
+def get_info2(symbol):
+    try:
+        ticker = yf.Ticker(symbol)
+        ticker_info = ticker.info
+        return jsonify(ticker_info)
+        # If symbol not found, return a 404 response
+        # return jsonify({"error": "Symbol not found"}), 404
+    except Exception as e:
+        print(f"stock_info.get_info.error: {e}")
+        return jsonify({"error": str(e)}), 500
+
+
 #alternative way, manual
 @info_bp.route('/info/stocklist2', methods=['GET']) #cadangan seandainya sumber data yang dr cache tidak tersedia
 def get_all_info2():
@@ -75,13 +88,13 @@ def get_all_info():
         condition1 = lambda x: x.get('sector') == sector if sector else True #anjing trnyata sebenarnya lambda x itu adalah def function(x)
         condition2 = lambda x: x.get('industry') == industry if industry else True
         condition3 = lambda x: x.get('listing_board') == listingBoard if listingBoard  else True
-        condition4 = lambda x: int(x.get('marketCap'), 0)>= int(minMarketCap) if minMarketCap is not None else True
-        condition5 = lambda x: int(x.get('marketCap'), 0)< int(maxMarketCap) if maxMarketCap is not None else True
-        condition6 = lambda x: round(float(x.get('currentPrice',0.0)), 0) >= round(float(minPrice), 0) if minPrice is not None else True
-        condition7 = lambda x: round(float(x.get('currentPrice', 0.0)), 0) < round(float(maxPrice), 0) if maxPrice is not None else True 
+        condition4 = lambda x: int(x.get('marketCap'))>= int(minMarketCap) if minMarketCap else True
+        condition5 = lambda x: int(x.get('marketCap'))< int(maxMarketCap) if maxMarketCap else True
+        condition6 = lambda x: int(x.get('currentPrice')) >= int(minPrice) if minPrice else True
+        condition7 = lambda x: int(x.get('currentPrice')) < int(maxPrice) if maxPrice else True 
         condition8 = lambda x: x.get('recommendationKey') == recommendation if recommendation else True
-        condition9 = lambda x: round(float(x.get('dividendRate',0.0)), 0) >= round(float(minDividendRate), 0) if minDividendRate is not None else True
-        condition10 = lambda x: round(float(x.get('dividendRate',0.0)), 0) < round(float(maxDividendRate), 0) if maxDividendRate is not None else True 
+        condition9 = lambda x: round(float(x.get('dividendRate',0.0)), 0) >= round(float(minDividendRate), 0) if minDividendRate else True
+        condition10 = lambda x: round(float(x.get('dividendRate',0.0)), 0) < round(float(maxDividendRate), 0) if maxDividendRate else True 
 
         filtered_stock = filter(lambda x : condition1(x) 
                                 and condition2(x) 

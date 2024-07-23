@@ -16,6 +16,7 @@ export class FlaskApiService {
     sector?: string,
     industry?: string,
     recommendation?: string
+    
   ): Observable<any> {
     let params = new HttpParams();
 
