@@ -15,6 +15,20 @@
       (industryEvent)="receiveChangeIndustry($event)" 
       [sector]="sector"
       (sectorEvent)="receiveChangeSector($event)" 
+      [currentMinMarketCap]="currentMinMarketCap"
+      [currentMaxMarketCap]="currentMaxMarketCap"
+      (minMarketCapEvent)="receiveChangeMinMarketCap($event)"
+      (maxMarketCapEvent)="receiveChangeMaxMarketCap($event)"
+      [currentMinPrice]="currentMinPrice"
+      [currentMaxPrice]="currentMaxPrice"
+      (minPriceEvent)="receiveChangeMinPrice($event)"
+      (maxPriceEvent)="receiveChangeMaxPrice($event)"
+      [currentMinDividendRate]="currentMinDividendRate"
+      [currentMaxDividendRate]="currentMaxDividendRate"
+      (minDividendRateEvent)="receiveChangeMinDividendRate($event)"
+      (maxDividendRateEvent)="receiveChangeMaxDividendRate($event)"
+
+
       ></app-side-nav> 
     </div>
     <div class="column">

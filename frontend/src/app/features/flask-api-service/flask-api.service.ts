@@ -15,8 +15,13 @@ export class FlaskApiService {
     listingBoard?: string,  
     sector?: string,
     industry?: string,
-    recommendation?: string
-    
+    recommendation?: string,
+    minMarketCap?: number,
+    maxMarketCap?: number,
+    minPrice?: number,
+    maxPrice?:number,
+    minDividendRate?:number,
+    maxDividendRate?:number
   ): Observable<any> {
     let params = new HttpParams();
 
@@ -32,8 +37,25 @@ export class FlaskApiService {
     if(recommendation){
       params = params.set('recommendation', recommendation)
     }
-
-  
+    if (minMarketCap){
+      params = params.set('minMarketCap', minMarketCap)
+    }
+    if (maxMarketCap){
+      params = params.set('maxMarketCap', maxMarketCap)
+    }
+    if (minPrice){
+      params = params.set('minPrice', minPrice)
+    }
+    if (maxPrice){
+      params = params.set('maxPrice', maxPrice)
+    }
+    if (minDividendRate){
+      params = params.set('minDividendRate', minDividendRate)
+    }
+    if (maxDividendRate){
+      params = params.set('maxDividendRate', maxDividendRate)
+    }
+    
     
     return this.http.get(this.infoUrl, {
       params: params,

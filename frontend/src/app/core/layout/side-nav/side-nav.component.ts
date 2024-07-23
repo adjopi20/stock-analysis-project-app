@@ -1,10 +1,11 @@
 import { NgFor } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-side-nav',
   standalone: true,
-  imports: [NgFor],
+  imports: [NgFor, FormsModule],
   templateUrl: './side-nav.component.html',
   styleUrl: './side-nav.component.scss'
 })
@@ -13,13 +14,22 @@ export class SideNavComponent {
   @Input() sector: any[] = [];
   @Output() industryEvent = new EventEmitter<string>();
   @Output() sectorEvent = new EventEmitter<string>();
-  @Output() minMarketCap = new EventEmitter<number>();
-  @Output() maxMarketCap = new EventEmitter<number>();
+  @Output() minMarketCapEvent = new EventEmitter<number | undefined>();
+  @Output() maxMarketCapEvent = new EventEmitter<number | undefined>();
+  @Output() minPriceEvent = new EventEmitter<number | undefined>();
+  @Output() maxPriceEvent = new EventEmitter<number | undefined>();
+  @Output() minDividendRateEvent = new EventEmitter<number | undefined>();
+  @Output() maxDividendRateEvent = new EventEmitter<number | undefined>();
 
   currentIndustry? : string;
   currentSector? : string;
-  currentMinMarketCap? : number;
-  currentMaxMarketCap? : number;
+  @Input() currentMinMarketCap? : number | undefined;
+  @Input() currentMaxMarketCap? : number | undefined;
+  @Input() currentMinPrice? : number | undefined;
+  @Input() currentMaxPrice? : number | undefined;
+  @Input() currentMinDividendRate? : number | undefined;
+  @Input() currentMaxDividendRate? : number | undefined;
+
 
   changeIndustry(event: Event){
     const value = (event?.target as HTMLSelectElement).value;
@@ -49,13 +59,35 @@ export class SideNavComponent {
     }
   }
 
-  setMinMarketCap(){
-    
+  setNumberFilter(
+    minMC:number|undefined, maxMC:number|undefined,
+    minP:number|undefined, maxP:number|undefined,
+    minDR:number|undefined, maxDR:number|undefined
+  ){
+    this.currentMinMarketCap=minMC;
+    this.currentMaxMarketCap=maxMC;
+    this.minMarketCapEvent.emit(minMC);
+    this.maxMarketCapEvent.emit(maxMC);
+
+    this.currentMinPrice=minP;
+    this.currentMaxPrice=maxP;
+    this.minPriceEvent.emit(minP);
+    this.maxPriceEvent.emit(maxP);
+
+    this.currentMinDividendRate=minDR;
+    this.currentMaxDividendRate=maxDR;
+    this.minDividendRateEvent.emit(minDR);
+    this.maxDividendRateEvent.emit(maxDR);
+
   }
 
-  setMaxmarketCap(){
+  // setPrice(
+  //   min:number|undefined, max:number|undefined
+  // ){}
 
-  }
+  // setDividendRate(
+  //   min:number|undefined, max:number|undefined
+  // ){}
 
 
 }

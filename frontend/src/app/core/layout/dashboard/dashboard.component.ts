@@ -49,6 +49,13 @@ export class DashboardComponent {
   currentSector? : string;
   currentIndustry?:string;
   currentRecommendation?:string;
+  currentMinMarketCap?:number;
+  currentMaxMarketCap?:number;
+  currentMinPrice?:number;
+  currentMaxPrice?:number;
+  currentMinDividendRate?:number;
+  currentMaxDividendRate?:number;
+
 
   constructor(
     @SkipSelf() private apiService: FlaskApiService,
@@ -106,7 +113,13 @@ export class DashboardComponent {
         this.currentListingBoard,
         this.currentSector,
         this.currentIndustry,
-        this.currentRecommendation
+        this.currentRecommendation,
+        this.currentMinMarketCap,
+        this.currentMaxMarketCap,
+        this.currentMinPrice,
+        this.currentMaxPrice,
+        this.currentMinDividendRate,
+        this.currentMaxDividendRate
       )
       .pipe(
         catchError((error) => {
@@ -129,9 +142,9 @@ export class DashboardComponent {
         
         this.limitDisplayedData();
 
-        console.log('Data Dashboard:',  this.data.length);
-        console.log('Total Dashboard:', this.total);
-        console.log('Chosen Items Dashboard:', this.chosenItems);
+        // console.log('Data Dashboard:',  this.data.length);
+        // console.log('Total Dashboard:', this.total);
+        // console.log('Chosen Items Dashboard:', this.chosenItems);
 
         });
   }
@@ -150,9 +163,9 @@ export class DashboardComponent {
           this.sector = data.sector;
           this.recommendation = data.recommendationKey;
 
-          console.log(this.listingBoard);
-          console.log(this.sector);
-          console.log(this.recommendation);
+          // console.log(this.listingBoard);
+          // console.log(this.sector);
+          // console.log(this.recommendation);
           
         },
         error: (error) => console.error(error),
@@ -168,10 +181,10 @@ export class DashboardComponent {
     this.totalPage = Math.ceil(this.total/this.limit);
     this.allStockService.setTotalPage(this.totalPage)
 
-    console.log('limit: ' + this.limit);
-    console.log('limited data: ', JSON.stringify(this.limitedData, null, 2));
-    console.log('current page: ' + this.currentPage);
-    console.log('total page' + this.totalPage);
+    // console.log('limit: ' + this.limit);
+    // console.log('limited data: ', JSON.stringify(this.limitedData, null, 2));
+    // console.log('current page: ' + this.currentPage);
+    // console.log('total page' + this.totalPage);
   }
 
   receiveChangeListingBoard(event: string){
@@ -194,7 +207,34 @@ export class DashboardComponent {
     this.getAllStock()
   }
 
+  receiveChangeMinMarketCap(min: number | undefined){
+    this.currentMinMarketCap = min;
+    this.getAllStock()
+  }
 
-  
-  
+  receiveChangeMaxMarketCap(max: number | undefined ){
+    this.currentMaxMarketCap = max;
+    this.getAllStock()
+  }
+
+  receiveChangeMinPrice(min: number | undefined){
+    this.currentMinPrice = min;
+    this.getAllStock()
+  }
+
+  receiveChangeMaxPrice(max: number | undefined ){
+    this.currentMaxPrice = max;
+    this.getAllStock()
+  }
+
+  receiveChangeMinDividendRate(min: number | undefined){
+    this.currentMinDividendRate = min;
+    this.getAllStock()
+  }
+
+  receiveChangeMaxDividendRate(max: number | undefined ){
+    this.currentMaxDividendRate = max;
+    this.getAllStock()
+  }
+
 }
