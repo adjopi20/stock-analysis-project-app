@@ -6,7 +6,7 @@ import yfinance as yf
 import pandas as pd
 from utils.add_jk import addJK
 import logging
-from services.stock_info_service import combine_fetched_scraped_info, scrape_stock_with_cache
+from services.stock_info_service import stocklist, combine_fetched_scraped_info, scrape_stock_with_cache
 from services.histogram_sector_service import *
 import numpy as np
 from configs.cache_config import client
@@ -63,7 +63,7 @@ def get_all_info():
     stock_info = {}
     stocks_info = []
     
-    stocklist = combine_fetched_scraped_info()
+    # stocklist = combine_fetched_scraped_info()
     print(f"stocklist: {len(stocklist)}")
 
     # energy_stock_list = list(filter(lambda x : x.get('sector') == 'Energy', stocklist))
@@ -122,7 +122,7 @@ def get_all_info():
 
 @info_bp.route('/filter-options', methods=['GET'])
 def filter_options():
-    stocklist = combine_fetched_scraped_info()
+    # stocklist = combine_fetched_scraped_info()
 
     listingBoard = list(set(item['listing_board'] for item in stocklist))
     sector = list(set(item['sector'] for item in stocklist))

@@ -1,54 +1,71 @@
 <div class="container is-widescreen">
-
-  <div class="notification monkey-01 fil-notif">
-    <!-- <label class="menu-label">Listing Board</label> -->
+<!-- <section class="hero"> -->
+  <!-- <div class="hero-body has-background-info-dark	"> -->
+    <!-- <div class="notification monkey-01 fil-notif"> -->
+    <!-- <label class="menu-label has-text-grey-light	is-size-6">Listing Board:</label> -->
 
     <ul class="fixed-grid has-5-cols">
-      <!-- <li class="grid">
-        <a
-          class="cell button filter-button is-size-7"
-          [ngClass]="{ 'monkey-01-active': item == currentListingBoard }"
-          (click)="changeListingBoard(item)"
-          >All</a
-        >
-      </li> -->
       <li class="grid">
         @for (item of listingBoard; track $index) {
         <a
-          class="cell button filter-button is-size-7"
+          class="cell button is-primary is-light  filter-button is-size-7"
           [ngClass]="{ 'monkey-01-active': item == currentListingBoard }"
           (click)="changeListingBoard(item)"
           >{{ item }}</a
         >
         }
       </li>
-    </ul> 
-  </div>
+    </ul>
+    <hr class="new1" />
 
-  <div class="notification monkey-01 fil-notif">
-    <!-- <label class="menu-label">Listing Board</label> -->
+    <!-- </div> -->
+
+    <!-- <div class="notification monkey-01 fil-notif"> -->
+      <!-- <label class="menu-label has-text-grey-light	is-size-6">Recommendation:</label> -->
 
     <ul class="fixed-grid has-5-cols">
-      <!-- <li class="grid">
-        <a
-          class="cell button filter-button is-size-7"
-          [ngClass]="{ 'monkey-01-active': item == currentListingBoard }"
-          (click)="changeListingBoard(item)"
-          >All</a
-        >
-      </li> -->
       <li class="grid">
         @for (item of recommendation; track $index) {
         <a
-          class="cell button filter-button is-size-7"
+          class="cell button is-primary is-light filter-button is-size-7"
           [ngClass]="{ 'monkey-01-active': item == currentRecommendation }"
           (click)="changeRecommendation(item)"
           >{{ item }}</a
         >
         }
       </li>
-    </ul> 
-  </div>
+    </ul>
 
+    <!-- <hr class="new1" /> -->
 
+    <!-- </div> -->
+
+    <!-- <div class="notification monkey-01 fil-notif"> -->
+    
+      <!-- <label class="menu-label has-text-grey-light	is-size-6">Sort by:</label> -->
+
+    <!-- <ul class="fixed-grid has-4-cols"> -->
+      <!-- <li class="grid buttons are-small"> -->
+        <!-- <div class="cell is-col-span-4">
+          
+        </div> -->
+        <!-- <a class="cell button  is-primary is-light  filter-button is-size-7">Market Cap</a>
+        <a class="cell button  is-primary is-light  filter-button is-size-7">Price</a>
+        <a class="cell button  is-primary is-light  filter-button is-size-7 ">Dividend Rate</a> -->
+        <!-- <a class="cell  is-col-span-2  is-size-7 select-wrapper"> -->
+          <!-- <a class=" cell is-small select select-wrapper ">
+          <select class=" is-small " title="dropdown" >
+            <option value="asc" >Ascending</option>
+            <option value="desc">Descending</option>
+          </select>
+        </a> -->
+      <!-- </a> -->
+
+      <!-- </li>
+    </ul> -->
+    <hr class="new1" />
+
+    <!-- </div> -->
+  <!-- </div> -->
+<!-- </section> -->
 </div>

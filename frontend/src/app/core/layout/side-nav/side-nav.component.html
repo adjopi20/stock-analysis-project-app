@@ -8,8 +8,26 @@
     </ul>
   </div>
 
+
+  
   <hr class="new1" />
   <div class="container">
+
+    <div class="notification">
+      <label class="menu-label">Sort</label>
+      <div class="select is-small is-fullwidth">
+        <select title="dropdown is-fullwidth" (change)="changeSortBy($event)">
+          <option value="">Default: Ascending</option>
+          <option value="marketCap,asc">Market Cap: Ascending</option>
+          <option value="marketCap,desc">Market Cap: Descending</option>
+          <option value="currentPrice,asc">Price: Ascending</option>
+          <option value="currentPrice,desc">Price: Descending</option>
+          <option value="dividendRate,asc">Dividend Rate: Ascending</option>
+          <option value="dividendRate,desc">Dividend Rate: Descending</option>
+        </select>
+      </div>
+    </div>
+
     <div class="notification">
       <label class="menu-label">Sector</label>
       <div class="select is-small is-fullwidth">

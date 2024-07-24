@@ -144,3 +144,6 @@ $container-max-width: iv.$fullhd !default;
   @include dark.dark-theme;
 }
 
+hr.new1 {
+  border-top: 1px solid var(--monkey-primary-01);
+}

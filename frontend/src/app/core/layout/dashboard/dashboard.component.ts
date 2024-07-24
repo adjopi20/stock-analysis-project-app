@@ -55,6 +55,8 @@ export class DashboardComponent {
   currentMaxPrice?:number;
   currentMinDividendRate?:number;
   currentMaxDividendRate?:number;
+  currentSortBy?: string;
+  currentOrder?: string;
 
 
   constructor(
@@ -119,7 +121,9 @@ export class DashboardComponent {
         this.currentMinPrice,
         this.currentMaxPrice,
         this.currentMinDividendRate,
-        this.currentMaxDividendRate
+        this.currentMaxDividendRate,
+        this.currentSortBy,
+        this.currentOrder
       )
       .pipe(
         catchError((error) => {
@@ -141,6 +145,7 @@ export class DashboardComponent {
         this.industry = [...new Set(this.data.map(item => item.industry))];  
         
         this.limitDisplayedData();
+       
 
         // console.log('Data Dashboard:',  this.data.length);
         // console.log('Total Dashboard:', this.total);
@@ -178,7 +183,7 @@ export class DashboardComponent {
     this.limitedData = this.data.slice(beginningPage, (beginningPage+this.limit));
     this.allStockService.setLimit(this.limit)
     this.allStockService.setCurrentPage(this.currentPage)
-    this.totalPage = Math.ceil(this.total/this.limit);
+    this.totalPage = Math.ceil(this.chosenItems/this.limit);
     this.allStockService.setTotalPage(this.totalPage)
 
     // console.log('limit: ' + this.limit);
@@ -236,5 +241,22 @@ export class DashboardComponent {
     this.currentMaxDividendRate = max;
     this.getAllStock()
   }
+
+  receiveChangeSortBy(sortBy: string | undefined){
+    this.currentSortBy = sortBy;
+    this.getAllStock()
+  }
+
+  receiveChangeOrder(order: string | undefined){
+    this.currentOrder = order;
+    this.getAllStock()
+  }
+
+  // setColorListingBoard(){
+  //   this.limitedData{
+  //     is-info:
+  //   }
+  // }
+
 
 }

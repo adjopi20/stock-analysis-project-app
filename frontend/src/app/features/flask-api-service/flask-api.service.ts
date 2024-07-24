@@ -21,7 +21,9 @@ export class FlaskApiService {
     minPrice?: number,
     maxPrice?:number,
     minDividendRate?:number,
-    maxDividendRate?:number
+    maxDividendRate?:number,
+    sortBy?: string,
+    order?: string
   ): Observable<any> {
     let params = new HttpParams();
 
@@ -54,6 +56,12 @@ export class FlaskApiService {
     }
     if (maxDividendRate){
       params = params.set('maxDividendRate', maxDividendRate)
+    }
+    if (sortBy){
+      params = params.set('sortBy', sortBy)
+    }
+    if (order){
+      params = params.set('order', order)
     }
     
     

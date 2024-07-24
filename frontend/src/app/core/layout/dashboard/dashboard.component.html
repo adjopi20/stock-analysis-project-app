@@ -27,7 +27,10 @@
       [currentMaxDividendRate]="currentMaxDividendRate"
       (minDividendRateEvent)="receiveChangeMinDividendRate($event)"
       (maxDividendRateEvent)="receiveChangeMaxDividendRate($event)"
-
+      [sortBy]="currentSortBy"
+      (sortByEvent)="receiveChangeSortBy($event)"
+      [order]="currentOrder"
+      (orderEvent)="receiveChangeOrder($event)"
 
       ></app-side-nav> 
     </div>

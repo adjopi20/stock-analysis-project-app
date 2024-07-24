@@ -20,6 +20,8 @@ export class SideNavComponent {
   @Output() maxPriceEvent = new EventEmitter<number | undefined>();
   @Output() minDividendRateEvent = new EventEmitter<number | undefined>();
   @Output() maxDividendRateEvent = new EventEmitter<number | undefined>();
+  @Output() sortByEvent = new EventEmitter<string | undefined>();
+  @Output() orderEvent = new EventEmitter<string | undefined>();
 
   currentIndustry? : string;
   currentSector? : string;
@@ -29,6 +31,8 @@ export class SideNavComponent {
   @Input() currentMaxPrice? : number | undefined;
   @Input() currentMinDividendRate? : number | undefined;
   @Input() currentMaxDividendRate? : number | undefined;
+  @Input() sortBy? : string | undefined;
+  @Input() order? : string | undefined;
 
 
   changeIndustry(event: Event){
@@ -81,13 +85,14 @@ export class SideNavComponent {
 
   }
 
-  // setPrice(
-  //   min:number|undefined, max:number|undefined
-  // ){}
-
-  // setDividendRate(
-  //   min:number|undefined, max:number|undefined
-  // ){}
+  changeSortBy(event?: Event){
+    const value = (event?.target as HTMLSelectElement).value;
+    const [sortBy,order] = value.split(',');
+    this.sortBy=sortBy;
+    this.sortByEvent.emit(sortBy);
+    this.order=order;
+    this.orderEvent.emit(order)
+  }
 
 
 }
