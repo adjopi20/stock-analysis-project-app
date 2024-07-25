@@ -82,10 +82,16 @@
             @for (item of limitedData; track $index) {
               <div class="card">
                 <div class="card-content">
-                  <h2 class="title is-7">{{ item.symbol }}</h2>
-                  <h3 class="subtitle is-7">{{ item.company_name }}</h3>
-                  <p class="is-size-7">Listing Board: {{ item.listing_board }}</p>
-                  <p class="is-size-7">Price: {{ item.currentPrice | currency: 'Rp ' }}</p>
+                  <h2 class="title is-6">{{ item.symbol }}</h2>
+                  <h3 class="subtitle is-7">{{ item.company_name }}
+                    <br>
+                    <span class="tag is-normal is-7" [ngClass]="setColorListingBoard(item.listing_board)">{{item.listing_board}}</span>
+                    <br>
+                    <span class="tag is-normal is-primary">{{ item.currentPrice | currency: 'Rp ' }}</span>
+                  </h3>
+
+                  <!-- <p class="is-size-7">Listing Board: {{ item.listing_board }}</p> -->
+                  <!-- <p class="is-size-7">Price: {{ item.currentPrice | currency: 'Rp ' }}</p> -->
                   <p class="is-size-7">Sector : {{ item.sector }}</p>
                   <p class="is-size-7">Industry : {{ item.industry }}</p>
                   <p class="is-size-7">

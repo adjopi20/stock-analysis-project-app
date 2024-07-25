@@ -15,7 +15,7 @@ def trimmed_mean(dataset, category: str):
         
         numbers = item.get(category, np.nan)
         
-        if np.isnan(numbers) or numbers is None:
+        if numbers==0 or numbers is None:
             continue 
 
         baskom.append(numbers)

@@ -8,6 +8,14 @@ export const routes: Routes = [
         (m) => m.HomepageComponent
       ),
   },
+  {
+    path: 'histogram-analysis',
+    loadComponent: () =>
+      import('./features/components/histogram-analysis/histogram-analysis.component').then(
+        (m) => m.HistogramAnalysisComponent
+      ),
+  },
+  
 
   // {
   //   path: '',

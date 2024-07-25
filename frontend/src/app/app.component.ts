@@ -3,6 +3,7 @@ import { Component, NgModule } from '@angular/core';
 import { FormsModule, NgModel } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterOutlet } from '@angular/router';
+import { HistogramComponent } from './shared/component/histogram/histogram.component';
 
 @Component({
   selector: 'app-root',

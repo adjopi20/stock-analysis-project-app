@@ -161,23 +161,25 @@ def get_scrape():
     return jsonify(stocks)
 
 @info_bp.route('/hist.png')
-def create_bell_curve ():   
-    df = get_stock_info_for_histogram()
+def create_bell_curve ():
+    sector = 'Energy'
+    metric='revenueGrowth'   
+    df = pd.DataFrame(get_stock_info_for_histogram(sector, metric))
+
     print(f"create_bell_curve.df: {df}")
 
     if df is None:
         return "No data to display", 400
     
-    if 'revenueGrowth' in df:
+    if metric in df:
         # Filter out None or NaN values
-        valid_data = df['revenueGrowth'].dropna()
+        valid_data = df[metric].dropna()
 
         
         if not valid_data.empty:
-            valid_data.plot.hist(bins=100, color='blue', edgecolor='black')
-            plt.xlabel('revenueGrowth')
+            valid_data.plot.hist(bins=50, color='blue', edgecolor='black')
+            plt.xlabel(metric)
             plt.ylabel('Frequency')
-            
             img = io.BytesIO()
             plt.savefig(img, format='png')
             img.seek(0)
@@ -186,7 +188,7 @@ def create_bell_curve ():
         else:
             return "No valid returnOnEquity data to display"
     else: 
-        return "returnOnEquity column not found"
+        return f"{metric} column not found"
     
     
 @info_bp.route("/hist", methods=['GET'])
