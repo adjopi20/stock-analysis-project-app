@@ -53,7 +53,7 @@ def histogram_for_sector(sector: str, category: str):
             table.append(items)
                 # count +=1
         table.sort(key= lambda x: x[category], reverse=False)
-        print(f"table: {table}")
+        # print(f"table: {table}")
         #==========================================================================================================      
         
         #trimmed mean==============================================================================================   
@@ -72,6 +72,63 @@ def histogram_for_sector(sector: str, category: str):
         
     # except Exception as e:
     #     return jsonify({"error": f"Exception occurred: {str(e)}"}), 500
+
+@hist_bp.route('/histogram-analysis-for-sector-2/<sector>/<category>', methods=['GET'])
+def histogram_for_sector_2(sector: str, category: str):
+        
+    # try:
+        #request param=========================================================================
+        listingBoard = request.args.get('listingBoard')
+        industry = request.args.get('industry')
+        marketCap = request.args.get('marketCap')
+        recKey = request.args.get('recommendationKey')  
+        #===============================================================================
+
+        #dataset===============================================================================
+        dataset = get_stock_info_for_histogram(sector, category, listingBoard, industry, marketCap, recKey) #dataset disini dtype list()
+        #===============================================================================
+
+        #table stocklist ==========================================================================================
+        table = []
+
+        for stock in dataset:
+            
+
+            items = ({ #disini aku tau bahwa ternyata dictionary itu disebut juga dengan set
+                'symbol': stock.get('symbol', 'none'),
+                'listingBoard': stock.get('listingBoard', 'none'),
+                category : stock.get(category) or 0,
+                'sector': stock.get('sector', 'none'),
+                'industry': stock.get('industry', 'none'),
+                'recommendationKey': stock.get('recommendationKey', 'none'),
+                'recommendationMean': stock.get('recommendationMean', 0),
+            })
+
+            if items[category] == 0:
+                continue
+
+            table.append(items)
+                    # count +=1
+        table.sort(key= lambda x: x[category], reverse=False)
+        # print(f"table: {table}")
+        #==========================================================================================================      
+        
+        #trimmed mean==============================================================================================   
+        tes = trimmed_mean(dataset, category)
+        #==========================================================================================================
+
+        #output================================================================================================
+        print(f"dataset: {len(dataset)}, table: {len(table)}")
+        return jsonify({ 
+            "identifier": sector + " - " + category,
+            "stocklist": table,        
+            "trimmedMean": tes
+        })
+        #==========================================================================================================
+        
+    # except Exception as e:
+    #     return jsonify({"error": f"Exception occurred: {str(e)}"}), 500
+
 
 # @hist_bp.route('/table-for-sector/<sector>/<category>', methods=['GET'])
 # def table_for_sector(sector: str, category: str):

@@ -20,8 +20,11 @@ def trimmed_mean(dataset, category: str):
 
         baskom.append(numbers)
 
+
     if baskom:
         zscore = stats.zscore(baskom)
+    
+    print(f"baskom: {len(baskom)}")
     
     filtered = filter(lambda x: x<=3 and x>=-3, zscore)
     filtered = list(filtered)

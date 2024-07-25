@@ -9,6 +9,8 @@ import { delay, map, multicast, Observable } from 'rxjs';
 export class FlaskApiService {
   private infoUrl: string = 'http://127.0.0.1:5000/info/stocklist';
   private filterOptionsUrl = 'http://127.0.0.1:5000/filter-options';
+  // private histItemUrl = 'http://127.0.0.1:5000/histogram-analysis-for-sector-2/<sector>/<metric>';
+
   constructor(private http: HttpClient) {}
 
   getStockList(
@@ -72,6 +74,20 @@ export class FlaskApiService {
 
   getFilterOptions(): Observable<any>{
     return this.http.get(this.filterOptionsUrl)
+  }
+
+  getHistogramItems(
+    sector: string,
+    metric: string, 
+    listingBoard?: string,  
+    industry?: string,
+    minMarketCap?: number,
+    maxMarketCap?: number,
+    recommendation?: string,
+  ): Observable<any>{
+
+    return this.http.get('http://127.0.0.1:5000/histogram-analysis-for-sector-2/'+sector+'/'+metric);
+    
   }
   
 }

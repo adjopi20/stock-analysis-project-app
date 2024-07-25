@@ -5,7 +5,7 @@ import pandas as pd
 import numpy as np
 
 
-def get_stock_info_for_histogram(sector, category, listBoard=None, industry=None, marketCap=None, recKey=None, recMean=None):
+def get_stock_info_for_histogram(sector, category, listBoard=None, industry=None, marketCap=None, recKey=None):
     try: 
         stock_quantitative_data = []
         print(f"stocklist: {len(stocklist)}")
@@ -19,9 +19,7 @@ def get_stock_info_for_histogram(sector, category, listBoard=None, industry=None
                     continue
                 if recKey and stock.get('recommendationKey') != recKey:
                     continue
-                if recMean and stock.get('recommendationMean') != recMean:
-                    continue
-        
+                
                 # apabila key nya tidak ada, maka nilai dari key akan diubah menjadi nan, tapi key tetap ada
                 stock_quantitative_data.append({
                     "symbol" : stock.get("symbol"),
@@ -47,7 +45,7 @@ def get_stock_info_for_histogram(sector, category, listBoard=None, industry=None
                     "trailingPE" : stock.get("trailingPE"),
                     })
         
-        print(f"sector quantitative: {stock_quantitative_data}")
+        # print(f"sector quantitative: {stock_quantitative_data}")
         print(f"sector quantitative: {len(stock_quantitative_data)}")
         return stock_quantitative_data
     except Exception as e:
