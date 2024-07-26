@@ -1,0 +1,180 @@
+<div class="container is-fluid">
+  <div class="fixed-grid has-5-cols has-1-cols-mobile">
+    <div class="grid">
+      <div class="notification has-text-centered	cell is-col-span-5  ">
+            <h1 class="title is-align-self-center ">Dashboard Stock Info</h1>
+        </div>
+      <div class="cell is-row-span-4 ">
+          <nav class="level">
+            <div class="level-item has-text-centered">
+              <div>
+                <p class="heading is-size-5">Total:</p>
+                <p class="title is-size-5">{{ total }}</p>
+              </div>
+            </div>
+            <div class="level-item has-text-centered">
+              <div>
+                <p class="heading is-size-5">Filtered:</p>
+                <p class="title is-size-5">{{ chosenItems }}</p>
+              </div>
+            </div>
+          </nav>
+    
+        <app-side-nav
+          [industry]="industry"
+          (industryEvent)="receiveChangeIndustry($event)"
+          [sector]="sector"
+          (sectorEvent)="receiveChangeSector($event)"
+          [currentMinMarketCap]="currentMinMarketCap"
+          [currentMaxMarketCap]="currentMaxMarketCap"
+          (minMarketCapEvent)="receiveChangeMinMarketCap($event)"
+          (maxMarketCapEvent)="receiveChangeMaxMarketCap($event)"
+          [currentMinPrice]="currentMinPrice"
+          [currentMaxPrice]="currentMaxPrice"
+          (minPriceEvent)="receiveChangeMinPrice($event)"
+          (maxPriceEvent)="receiveChangeMaxPrice($event)"
+          [currentMinDividendRate]="currentMinDividendRate"
+          [currentMaxDividendRate]="currentMaxDividendRate"
+          (minDividendRateEvent)="receiveChangeMinDividendRate($event)"
+          (maxDividendRateEvent)="receiveChangeMaxDividendRate($event)"
+          [sortBy]="currentSortBy"
+          (sortByEvent)="receiveChangeSortBy($event)"
+          [order]="currentOrder"
+          (orderEvent)="receiveChangeOrder($event)"
+        ></app-side-nav>
+      </div>
+      
+
+      <div class="cell is-col-span-4">
+        <app-filter-container
+          [listingBoard]="listingBoard"
+          (listingBoardEvent)="receiveChangeListingBoard($event)"
+          [recommendation]="recommendation"
+          (recommendationEvent)="receiveChangeRecommendation($event)"
+        ></app-filter-container>
+      </div>
+  
+      
+      <div class="cell is-col-span-4">
+        <div
+          class="fixed-grid has-5-cols-fullhd has-5-cols-widescreen has-5-cols-widescreen has-5-cols-tablet has-3-cols-mobile"
+        >
+          <div class="grid">
+            @for (item of limitedData; track $index) {
+            <div class="card">
+              <div class="card-content">
+                <h2 class="title is-6">{{ item.symbol }}</h2>
+                <h3 class="subtitle is-7">
+                  {{ item.company_name }}
+                  <br />
+                  <span
+                    class="tag is-normal is-7"
+                    [ngClass]="setColorListingBoard(item.listing_board)"
+                    >{{ item.listing_board }}</span
+                  >
+                  <br />
+                  <span class="tag is-normal is-primary">{{
+                    item.currentPrice | currency : "Rp "
+                  }}</span>
+                </h3>
+  
+                <!-- <p class="is-size-7">Listing Board: {{ item.listing_board }}</p> -->
+                <!-- <p class="is-size-7">Price: {{ item.currentPrice | currency: 'Rp ' }}</p> -->
+                <p class="is-size-7">Sector : {{ item.sector }}</p>
+                <p class="is-size-7">Industry : {{ item.industry }}</p>
+                <p class="is-size-7">
+                  Recommendation : {{ item.recommendationKey }}
+                </p>
+                <p class="is-size-7">Listing date: {{ item.listing_date }}</p>
+              </div>
+              <footer class="card-footer" *ngIf="isLogin">
+                <div class="card-footer-item control">
+                  <div class="columns is-vcentered is-multiline is-gapless">
+                    <div class="column is-half is-vcentered">
+                      <input
+                        class="input num-input is-small"
+                        type="number"
+                        placeholder="Lot"
+                      />
+                    </div>
+                    <div class="column is-half">
+                      <input
+                        title="num-readonly"
+                        class="input num-readonly is-small"
+                        type="text"
+                        value="Total Price"
+                        readonly
+                      />
+                    </div>
+                    <div class="column is-full">
+                      <button
+                        class="button is-success is-active is-small is-fullwidth"
+                        href="https://twitter.com/codinghorror/status/506010907021828096"
+                      >
+                        Add
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-footer-item control">
+                  <div class="columns is-vcentered is-multiline is-gapless">
+                    <div class="column is-half is-vcentered">
+                      <input
+                        class="input num-input is-small"
+                        type="number"
+                        placeholder="Lot"
+                        min="0"
+                      />
+                    </div>
+                    <div class="column is-half">
+                      <input
+                        title="num-readonly"
+                        class="input num-readonly is-small"
+                        type="text"
+                        value="Total Price"
+                        readonly
+                      />
+                    </div>
+                    <div class="column is-full">
+                      <button
+                        class="button is-danger is-active is-small is-fullwidth"
+                        href="https://twitter.com/codinghorror/status/506010907021828096"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </footer>
+            </div>
+            }
+            <!-- <div *ngIf="isLoading" class="card">
+            <div class="card-content skeleton-block"></div>
+          </div> -->
+          </div>
+        </div>
+      </div>
+      <div class="cell is-col-span-4">
+        <app-pagination></app-pagination>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="container is-fluid">
+  
+  <div class="columns">
+    <div class="column is-one-fifth"></div>
+    <div class="column">
+      <!-- <div class="columns is-multiline ">
+        
+        <div
+          class="column  is-three-quarters-mobile is-two-thirds-tablet is-half-desktop is-one-third-widescreen is-one-quarter-fullhd"
+          *ngFor="let item of limitedData;"
+        > -->
+
+      <section class="section"></section>
+    </div>
+  </div>
+</div>

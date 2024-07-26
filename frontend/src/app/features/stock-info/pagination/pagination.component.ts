@@ -1,6 +1,6 @@
 import { Component, Input, input } from '@angular/core';
 import { DashboardComponent } from '../dashboard/dashboard.component';
-import { AllStockService } from '../../../features/all-stocks-service/all-stock.service';
+import { AllStockService } from '../../all-stocks-service/all-stock.service';
 import { NgClass, NgFor, NgIf, NgStyle } from '@angular/common';
 import { combineLatest } from 'rxjs';
 
@@ -16,28 +16,30 @@ export class PaginationComponent {
   currentPage: number = 0;
   limit: number = 0;
   total: number = 0;
-  isHovered : boolean = false;
+  isHovered: boolean = false;
   pagesToShow: number[] = [];
 
   constructor(private allStockService: AllStockService) {}
 
   ngOnInit(): void {
-    combineLatest([ //apabila terjadi perubahan
+    combineLatest([
+      //apabila terjadi perubahan
       this.allStockService.totalPage$,
       this.allStockService.currentPage$,
       this.allStockService.limit$,
-      this.allStockService.total$
-    ]).subscribe(([
-      totalPage, 
-      currentPage, 
-      limit,
-      total ]) => {
-        if (this.totalPage !== totalPage || this.currentPage !== currentPage || this.limit !== limit || this.total !== total) {
-          this.totalPage = totalPage;
-          this.currentPage = currentPage;
-          this.limit = limit;
-          this.total = total
-          this.showPages();
+      this.allStockService.total$,
+    ]).subscribe(([totalPage, currentPage, limit, total]) => {
+      if (
+        this.totalPage !== totalPage ||
+        this.currentPage !== currentPage ||
+        this.limit !== limit ||
+        this.total !== total
+      ) {
+        this.totalPage = totalPage;
+        this.currentPage = currentPage;
+        this.limit = limit;
+        this.total = total;
+        this.showPages();
       }
 
       console.log('currentpage pagination ' + this.currentPage);
@@ -45,8 +47,7 @@ export class PaginationComponent {
       console.log('limit pagination ' + this.limit);
     });
 
-    this.showPages()
-
+    this.showPages();
   }
 
   previousPage(): void {
@@ -67,14 +68,13 @@ export class PaginationComponent {
     this.allStockService.setCurrentPage(page);
   }
 
-  changeLimit(event: Event): void{
+  changeLimit(event: Event): void {
     const value = (event?.target as HTMLSelectElement).value;
-    const limit = parseInt(value, 10)
-    this.allStockService.setLimit(limit)
+    const limit = parseInt(value, 10);
+    this.allStockService.setLimit(limit);
     this.changePage(1);
   }
 
-  
   showPages(): void {
     this.pagesToShow = [];
 
@@ -95,5 +95,4 @@ export class PaginationComponent {
     this.pagesToShow.sort((a, b) => a - b);
     console.log('this.pagesToShow' + this.pagesToShow);
   }
-
 }

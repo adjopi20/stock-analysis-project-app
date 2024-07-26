@@ -43,17 +43,12 @@ export class HistogramComponent {
   ) {}
 
   ngOnInit() {
-    // this.getHistogramItems();
-    // setTimeout(() => this.getHistogramItems2(), 4000);
-    // this.getHistogramImg();
-    this.getHistogramItems2();
-
     this.updateHistogramTitle();
   }
 
-  ngAfterViewInit(): void {
+  ngAfterViewInit() {
+    this.getHistogramItems2();
 
-    // this.addPassiveEventListener();
   }
 
   // getHistogramItems() {
@@ -75,8 +70,8 @@ export class HistogramComponent {
       this.stocklist = data.stocklist;
       this.trimmedMean = data.trimmedMean;
       this.convertToChartData(this.stocklist);
-      console.log('chart data:', this.chartData);
-      this.cdr.markForCheck(); // Mark for check after data is updated
+      // console.log('chart data:', this.chartData);
+      this.cdr.detectChanges(); // Mark for check after data is updated
 
     } catch (error) {
       console.log(error);
@@ -103,18 +98,9 @@ export class HistogramComponent {
       this.chartData.push([item.symbol, item.returnOnEquity]);
     });
     this.histogram.dataTable = this.chartData;
+    this.cdr.detectChanges(); // Ensure view updates after setting chart data
   }
 
-  addPassiveEventListener() {
-    const scrollElement = this.el.nativeElement.querySelector('.scroll-container'); // Adjust the selector to target your specific element
-    if (scrollElement) {
-      scrollElement.addEventListener('mousewheel', this.onScroll, { passive: true });
-    }
-  }
-
-  onScroll(event: Event) {
-    console.log('Scroll event', event);
-  }
 
   updateHistogramTitle(){
     this.histogram.options.title = "Sector: " + this.sector + " on Metric: " + this.metric;
