@@ -160,13 +160,13 @@ def get_scrape():
         return jsonify({"error": "No stock data found or an error occurred during scraping."}), 404
     return jsonify(stocks)
 
-@info_bp.route('/hist.png')
-def create_bell_curve ():
-    sector = 'Energy'
-    metric='revenueGrowth'   
+@info_bp.route('/hist/<sector>/<metric>/hist.png')
+def create_bell_curve (sector: str, metric: str):
+    
+    
     df = pd.DataFrame(get_stock_info_for_histogram(sector, metric))
 
-    print(f"create_bell_curve.df: {df}")
+    # print(f"create_bell_curve.df: {df}")
 
     if df is None:
         return "No data to display", 400
@@ -193,7 +193,7 @@ def create_bell_curve ():
     
 @info_bp.route("/hist", methods=['GET'])
 def get_hist():
-    return render_template_string('''<img src="{{url_for('info.create_bell_curve')}}" alt="histogram" />''')
+    return render_template_string('''<img src="{{url_for('info.create_bell_curve', sector='Industrials', metric='returnOnEquity')}}" alt="histogram" />''')
 
 
 

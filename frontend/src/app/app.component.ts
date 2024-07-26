@@ -17,11 +17,14 @@ export class AppComponent {
   
   isLight: boolean = false;
 
+  ngOnInit(): void{
+    this.themeToggleMode();
+  }
+
   themeToggleMode(){
     this.isLight=!this.isLight;
     const theme = this.isLight ? "dark" : "light";
     document.documentElement.setAttribute("data-theme", theme)
     console.log("theme-class: "+ theme);
-    
   }
 }

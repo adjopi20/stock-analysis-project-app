@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, Input, Sanitizer } from '@angular/core';
 import {
   GoogleChartInterface,
   GoogleChartType,
@@ -6,17 +6,20 @@ import {
 } from 'ng2-google-charts';
 import { FlaskApiService } from '../../../features/flask-api-service/flask-api.service';
 import { firstValueFrom } from 'rxjs';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { CommonModule, NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-histogram',
   standalone: true,
-  imports: [Ng2GoogleChartsModule],
+  imports: [Ng2GoogleChartsModule, NgIf, CommonModule],
   templateUrl: './histogram.component.html',
   styleUrl: './histogram.component.scss',
 })
 export class HistogramComponent {
   @Input() sector: string = '';
   @Input() metric: string = '';
+  histogramImageUrl: SafeUrl | null = null;
   stocklist: any[] = [];
   trimmedMean: number = 0;
   chartData: any[] = [];
@@ -34,17 +37,23 @@ export class HistogramComponent {
 
   constructor(
     private apiService: FlaskApiService,
-    private el: ElementRef
+    private el: ElementRef,
+    private santizer: DomSanitizer,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
     // this.getHistogramItems();
+    // setTimeout(() => this.getHistogramItems2(), 4000);
+    // this.getHistogramImg();
     this.getHistogramItems2();
+
     this.updateHistogramTitle();
   }
 
   ngAfterViewInit(): void {
-    this.addPassiveEventListener();
+
+    // this.addPassiveEventListener();
   }
 
   // getHistogramItems() {
@@ -67,11 +76,25 @@ export class HistogramComponent {
       this.trimmedMean = data.trimmedMean;
       this.convertToChartData(this.stocklist);
       console.log('chart data:', this.chartData);
+      this.cdr.markForCheck(); // Mark for check after data is updated
+
     } catch (error) {
       console.log(error);
     } finally {
       console.log('complete');
+
     }
+  }
+
+  getHistogramImg(){
+    this.apiService.getHistogramPic(this.sector, this.metric).subscribe({
+      next: (blob: Blob) => {
+        const objectUrl = URL.createObjectURL(blob);
+        this.histogramImageUrl = this.santizer.bypassSecurityTrustHtml(objectUrl);
+      },
+      error: (error) => console.error(error),
+      complete: () => console.log('complete')
+    })
   }
 
   convertToChartData(data: any[]): void {
