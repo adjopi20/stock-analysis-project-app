@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FlaskApiService } from '../../../features/flask-api-service/flask-api.service';
 import { JsonPipe, NgClass } from '@angular/common';
 
@@ -12,8 +12,11 @@ import { JsonPipe, NgClass } from '@angular/common';
 export class FilterComponentComponent {
   @Input() keyword: string= ''
   @Input() vessel: any[] = []
-  tes: any[] = []
   @Input() currentOption: string=''
+
+  @Output() keywordEvent= new EventEmitter<string>()
+
+  currentFilter: string = ''
 
   constructor(private apiService: FlaskApiService){}
   
@@ -25,18 +28,20 @@ export class FilterComponentComponent {
     this.apiService.getFilterOptions().subscribe({
       next: (data) => {
         this.vessel=data[this.keyword]
-        this.tes=data
-
-        console.log('ada ga ya: ' + this.keyword);
-        console.log('ada ga ya2: ' + this.vessel);
-        console.log('ada ga ya2: ' + this.tes);
-
-        
-        
       },
       error: (error) => console.log(error),
       complete: () => console.log('complete')
     })
   }
+
+  changeOption(option: string){
+    this.currentOption=option
+    this.keywordEvent.emit(option)
+    console.log(this.currentOption);
+    
+    
+  }
+
+
 
 }

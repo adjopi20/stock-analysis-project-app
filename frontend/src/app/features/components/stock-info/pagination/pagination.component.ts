@@ -1,6 +1,6 @@
 import { Component, Input, input } from '@angular/core';
 import { DashboardComponent } from '../dashboard/dashboard.component';
-import { AllStockService } from '../../all-stocks-service/all-stock.service';
+import { AllStockService } from '../../../all-stocks-service/all-stock.service';
 import { NgClass, NgFor, NgIf, NgStyle } from '@angular/common';
 import { combineLatest } from 'rxjs';
 

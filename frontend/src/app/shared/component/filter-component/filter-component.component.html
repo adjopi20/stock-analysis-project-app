@@ -3,6 +3,7 @@
       @for (item of vessel; track $index) {
       <a
         class="cell button is-primary is-light  filter-button is-size-7"
+        (click)="changeOption(item)"
         [ngClass]="{ 'monkey-01-active': item == currentOption }"
         >{{ item }}</a
       >
@@ -10,4 +11,3 @@
     </li>
   </ul>
 
-  <p>{{tes | json}}</p>

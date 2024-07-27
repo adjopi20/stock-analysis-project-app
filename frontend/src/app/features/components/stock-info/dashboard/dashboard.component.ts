@@ -1,10 +1,10 @@
 import { Component, Self, SkipSelf } from '@angular/core';
-import { FlaskApiService } from '../../flask-api-service/flask-api.service';
-import { AllStockService } from '../../all-stocks-service/all-stock.service';
+import { FlaskApiService } from '../../../flask-api-service/flask-api.service';
+import { AllStockService } from '../../../all-stocks-service/all-stock.service';
 import { CommonModule, CurrencyPipe, NgFor } from '@angular/common';
 import { catchError, toArray } from 'rxjs/operators';
 import { JsonPipe } from '@angular/common';
-import { SideNavComponent } from '../../../features/stock-info/side-nav/side-nav.component';
+import { SideNavComponent } from '../side-nav/side-nav.component';
 import { PaginationComponent } from '../pagination/pagination.component';
 import { FilterContainerComponent } from '../filter-container/filter-container.component';
 

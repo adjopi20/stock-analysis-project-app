@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavbarComponent } from '../navbar/navbar.component';
-import { DashboardComponent } from '../../../features/stock-info/dashboard/dashboard.component';
+import { DashboardComponent } from '../../../features/components/stock-info/dashboard/dashboard.component';
 import { FooterComponent } from '../footer/footer.component';
 import { DashboardCanvasComponent } from '../dashboard-canvas/dashboard-canvas.component';
 

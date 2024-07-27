@@ -123,6 +123,11 @@ def get_all_info():
 @info_bp.route('/filter-options', methods=['GET'])
 def filter_options():
     # stocklist = combine_fetched_scraped_info()
+    metric=["bookValue", "currentPrice", "currentRatio", "debtToEquity", "dividendRate", "dividendYield", "earningsGrowth", "earningsQuarterlyGrowth",
+            "ebitda","ebitdaMargins", "enterpriseToEbitda","enterpriseToRevenue","enterpriseValue","floatShares", "forwardEps","forwardPE",
+            "freeCashflow","grossMargins","heldPercentInsiders","heldPercentInstitutions","marketCap", "netIncomeToCommon", "operatingCashflow",
+            "operatingMargins","payoutRatio","pegRatio","priceToBook","profitMargins","quickRatio","returnOnAssets","returnOnEquity","revenueGrowth",
+            "revenuePerShare", "sharesOutstanding","stock_shares","totalCash","totalCashPerShare","totalRevenue","trailingEps","trailingPE","volume"]
 
     listingBoard = list(set(item['listing_board'] for item in stocklist))
     sector = list(set(item['sector'] for item in stocklist))
@@ -133,7 +138,8 @@ def filter_options():
         'listingBoard':listingBoard,
         'sector': sector,
         'industry': industry,
-        'recommendationKey': recommendationKey
+        'recommendationKey': recommendationKey,
+        'metrics': metric
     })
 
 @info_bp.route('/clear_cache', methods=['POST'])

@@ -97,7 +97,7 @@ def histogram_for_sector_2(sector: str, category: str):
             items = ({ #disini aku tau bahwa ternyata dictionary itu disebut juga dengan set
                 'symbol': stock.get('symbol', 'none'),
                 'listingBoard': stock.get('listingBoard', 'none'),
-                category : stock.get(category) or 0,
+                category : stock.get(category, 0) or 0,
                 'sector': stock.get('sector', 'none'),
                 'industry': stock.get('industry', 'none'),
                 'recommendationKey': stock.get('recommendationKey', 'none'),
