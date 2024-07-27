@@ -1,0 +1,54 @@
+
+.toggle-switch {
+    position: fixed;
+    bottom: 56px; /* Adjust as needed */
+    right: 16px; 
+    width: 80px; /* Reduced to 40% of the original 200px */
+    z-index: 1000;
+  }
+  
+  label {
+    position: absolute;
+    width: 100%;
+    height: 40px; /* Reduced to 40% of the original 100px */
+    background-color: var(--dark);
+    border-radius: 20px; /* Adjusted for smaller height */
+    cursor: pointer;
+  }
+  
+  input {
+    position: absolute;
+    display: none;
+  }
+  
+  .slider {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 20px; /* Adjusted for smaller height */
+    transition: 0.3s;
+  }
+  
+  input:checked ~ .slider {
+    background-color: var(--light);
+  }
+  
+  .slider::before {
+    content: "";
+    position: absolute;
+    top: 5.2px; /* Reduced to 40% of the original 13px */
+    left: 6.4px; /* Reduced to 40% of the original 16px */
+    width: 30px; /* Reduced to 40% of the original 75px */
+    height: 30px; /* Reduced to 40% of the original 75px */
+    border-radius: 50%;
+    box-shadow: inset 11.2px -1.6px 0px 0px var(--light); /* Adjust shadow size as needed */
+    background-color: var(--dark);
+    transition: 0.3s;
+  }
+  
+  input:checked ~ .slider::before {
+    transform: translateX(38px); /* Reduced to 40% of the original 95px */
+    background-color: var(--dark);
+    box-shadow: none;
+  }
+  

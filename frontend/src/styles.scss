@@ -1,15 +1,21 @@
 /* You can add global styles to this file, and also import other style files */
 @use "../node_modules/bulma/sass/utilities/initial-variables.scss" as iv;
 @use "../node_modules/bulma/sass/utilities/mixins.scss" as mx;
+@use "../node_modules/bulma/sass/themes/light.scss" as light;
+@use "../node_modules/bulma/sass/themes/dark.scss" as dark;
+@use "../node_modules/bulma/sass/utilities/css-variables.scss" as cv;
+
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 @import "https://cdn.jsdelivr.net/npm/bulma@1.0.1/css/bulma.min.css";
 @import "../node_modules/bulma/bulma.scss";
+@import "../node_modules/@fortawesome/fontawesome-free/css/all.min.css";
 
 $container-offset: 2 * iv.$gap !default;
 $container-max-width: iv.$fullhd !default;
 
+// container responsiveness
 .#{iv.$class-prefix}container {
   flex-grow: 1;
   margin: 0 auto;
@@ -59,7 +65,7 @@ $container-max-width: iv.$fullhd !default;
 .pagination-link.is-current {
     background-color: hsl(171, 100%, 41%)	; /* Change this to your desired color */
     color: #000; /* Change this to your desired text color */
-    border-color: hsl(204, 86%, 53%)	; /* Change this to match the background color if you want */
+    border-color: black	; /* Change this to match the background color if you want */
   }
 
 .card{
@@ -76,3 +82,68 @@ $container-max-width: iv.$fullhd !default;
     width: flex;
 }
 
+.hovered-class{
+    background-color: hsl(276, 100%, 55%)	;
+    color: #000;
+}
+
+:root {
+  --monkey-primary-00: #08221e; /* Replace with your desired color */
+  --monkey-primary-01: #0ac497;
+  --monkey-primary-02: #a5236e;
+  --monkey-primary-03: #0a92c4;
+  --monkey-secondary-01: #bbf1ff;
+
+  --light: #d8dbe0;
+  --dark: #28292c;
+  --link: rgb(27, 129, 112);
+  --link-hover: rgb(24, 94, 82);
+
+  
+}
+
+.custom-hero {  
+  background-color: var(--monkey-primary-00);
+}
+
+.filter-button{
+  &.monkey-01{
+    background-color: black;
+    color: white;
+  }
+  &.monkey-01-active{
+    background-color: var(--monkey-primary-01);
+    color: #000;
+  }  
+}
+
+.fil-notif{
+  background-color: var(--monkey-primary-00)	;
+  color: #000;
+}
+
+@media (prefers-color-scheme: light) {
+  :root{
+      @include light.light-theme;
+    
+  }
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    @include dark.dark-theme;
+  }
+}
+
+[data-theme=light],
+.theme-light {
+  @include light.light-theme;
+}
+
+[data-theme=dark],
+.theme-dark {
+  @include dark.dark-theme;
+}
+
+hr.new1 {
+  border-top: 1px solid var(--monkey-primary-01);
+}

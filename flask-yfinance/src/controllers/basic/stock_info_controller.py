@@ -6,7 +6,7 @@ import yfinance as yf
 import pandas as pd
 from utils.add_jk import addJK
 import logging
-from services.stock_info_service import combine_fetched_scraped_info, scrape_stock_with_cache
+from services.stock_info_service import stocklist, combine_fetched_scraped_info, scrape_stock_with_cache
 from services.histogram_sector_service import *
 import numpy as np
 from configs.cache_config import client
@@ -14,7 +14,7 @@ import math
 
 info_bp = Blueprint('info', __name__)
 
-
+# stocklist=combine_fetched_scraped_info()
 
 @info_bp.route('/info/<symbol>', methods=['GET'])
 def get_info(symbol):
@@ -30,6 +30,19 @@ def get_info(symbol):
     except Exception as e:
         print(f"stock_info.get_info.error: {e}")
         return jsonify({"error": str(e)}), 500
+
+@info_bp.route('/info2/<symbol>', methods=['GET'])
+def get_info2(symbol):
+    try:
+        ticker = yf.Ticker(symbol)
+        ticker_info = ticker.info
+        return jsonify(ticker_info)
+        # If symbol not found, return a 404 response
+        # return jsonify({"error": "Symbol not found"}), 404
+    except Exception as e:
+        print(f"stock_info.get_info.error: {e}")
+        return jsonify({"error": str(e)}), 500
+
 
 #alternative way, manual
 @info_bp.route('/info/stocklist2', methods=['GET']) #cadangan seandainya sumber data yang dr cache tidak tersedia
@@ -50,7 +63,7 @@ def get_all_info():
     stock_info = {}
     stocks_info = []
     
-    stocklist = combine_fetched_scraped_info()
+    # stocklist = combine_fetched_scraped_info()
     print(f"stocklist: {len(stocklist)}")
 
     # energy_stock_list = list(filter(lambda x : x.get('sector') == 'Energy', stocklist))
@@ -69,19 +82,19 @@ def get_all_info():
         maxDividendRate = request.args.get('maxDividendRate')
         key = request.args.get('sortBy')
         order = request.args.get('order')
-        page = request.args.get('page', 0, int)
-        perPage = request.args.get('perPage', 12, int)
+        # page = request.args.get('page', 1, int)
+        # limit = request.args.get('limit', 12, int)
 
-        condition1 = lambda x: x.get('sector') == sector if sector is not None else True #anjing trnyata sebenarnya lambda x itu adalah def function(x)
-        condition2 = lambda x: x.get('industry') == industry if industry is not None else True
-        condition3 = lambda x: x.get('listing_board') == listingBoard if listingBoard is not None else True
-        condition4 = lambda x: int(x.get('marketCap'), 0)>= int(minMarketCap) if minMarketCap is not None else True
-        condition5 = lambda x: int(x.get('marketCap'), 0)< int(maxMarketCap) if maxMarketCap is not None else True
-        condition6 = lambda x: round(float(x.get('currentPrice',0.0)), 0) >= round(float(minPrice), 0) if minPrice is not None else True
-        condition7 = lambda x: round(float(x.get('currentPrice', 0.0)), 0) < round(float(maxPrice), 0) if maxPrice is not None else True 
-        condition8 = lambda x: x.get('recommendationKey') == recommendation if recommendation is not None else True
-        condition9 = lambda x: round(float(x.get('dividendRate',0.0)), 0) >= round(float(minDividendRate), 0) if minDividendRate is not None else True
-        condition10 = lambda x: round(float(x.get('dividendRate',0.0)), 0) < round(float(maxDividendRate), 0) if maxDividendRate is not None else True 
+        condition1 = lambda x: x.get('sector') == sector if sector else True #anjing trnyata sebenarnya lambda x itu adalah def function(x)
+        condition2 = lambda x: x.get('industry') == industry if industry else True
+        condition3 = lambda x: x.get('listing_board') == listingBoard if listingBoard  else True
+        condition4 = lambda x: int(x.get('marketCap'))>= int(minMarketCap) if minMarketCap else True
+        condition5 = lambda x: int(x.get('marketCap'))< int(maxMarketCap) if maxMarketCap else True
+        condition6 = lambda x: int(x.get('currentPrice')) >= int(minPrice) if minPrice else True
+        condition7 = lambda x: int(x.get('currentPrice')) < int(maxPrice) if maxPrice else True 
+        condition8 = lambda x: x.get('recommendationKey') == recommendation if recommendation else True
+        condition9 = lambda x: round(float(x.get('dividendRate',0.0)), 0) >= round(float(minDividendRate), 0) if minDividendRate else True
+        condition10 = lambda x: round(float(x.get('dividendRate',0.0)), 0) < round(float(maxDividendRate), 0) if maxDividendRate else True 
 
         filtered_stock = filter(lambda x : condition1(x) 
                                 and condition2(x) 
@@ -93,19 +106,41 @@ def get_all_info():
                                 , stocklist) # karna refer ke object yang sama, jadi harus nya di lambda lagi dengan satu parameter x yang mana parameter x ini dimasukkan lagi ke dua function di dalamnya.
         # karna kalau kita cuma pake condition1 and condition2 dia ga refer ke object yang sama, cuma flase atau true, kombinasi dari value itu
         filtered_stock_list = list(filtered_stock)
-        paged_filtered_stock_list = filtered_stock_list[page*perPage:page*perPage+perPage]#ini istilahnya kan menyaring dari awl ke akhir, tapi karena array akhir itu ga inclusive jadi kita buat aja dari arr[0] sampai arr[12]
-        sorted_paged_filtered_stock_list = sorted(paged_filtered_stock_list, key=lambda x: x.get(key, 0.0) if x.get(key) is not None else 0.0, reverse=order=='desc')
+        # paged_filtered_stock_list = filtered_stock_list[(page*limit-limit):page*limit]#ini istilahnya kan menyaring dari awl ke akhir, tapi karena array akhir itu ga inclusive jadi kita buat aja dari arr[0] sampai arr[12]
+        sorted_paged_filtered_stock_list = sorted(filtered_stock_list, key=lambda x: x.get(key, 0.0) if x.get(key) is not None else 0.0, reverse=order=='desc')
         # print(f"stock_info.get_all_info2.stocks_info: {len(filtered_stock_list)}")
         return jsonify({
-            'currentPage': page,
-            'itemPerPage':perPage,
-            'totalPage' : math.ceil(len(filtered_stock_list)/perPage),
+            # 'currentPage': int(page),
+            # 'limit':limit,
+            # 'totalPage' : math.ceil(len(filtered_stock_list)/limit),
             'total': len(stocklist),
             'totalChosenItems': len(list(filtered_stock_list)),
             'data': list(sorted_paged_filtered_stock_list)})
 
     except Exception as e:
         logging.error(f"stock_info.get_all_info error : {e}")
+
+@info_bp.route('/filter-options', methods=['GET'])
+def filter_options():
+    # stocklist = combine_fetched_scraped_info()
+    metric=["bookValue", "currentPrice", "currentRatio", "debtToEquity", "dividendRate", "dividendYield", "earningsGrowth", "earningsQuarterlyGrowth",
+            "ebitda","ebitdaMargins", "enterpriseToEbitda","enterpriseToRevenue","enterpriseValue","floatShares", "forwardEps","forwardPE",
+            "freeCashflow","grossMargins","heldPercentInsiders","heldPercentInstitutions","marketCap", "netIncomeToCommon", "operatingCashflow",
+            "operatingMargins","payoutRatio","pegRatio","priceToBook","profitMargins","quickRatio","returnOnAssets","returnOnEquity","revenueGrowth",
+            "revenuePerShare", "sharesOutstanding","stock_shares","totalCash","totalCashPerShare","totalRevenue","trailingEps","trailingPE","volume"]
+
+    listingBoard = list(set(item['listing_board'] for item in stocklist))
+    sector = list(set(item['sector'] for item in stocklist))
+    industry = list(set(item['industry'] for item in stocklist))
+    recommendationKey = list(set(item['recommendationKey'] for item in stocklist))
+
+    return jsonify({
+        'listingBoard':listingBoard,
+        'sector': sector,
+        'industry': industry,
+        'recommendationKey': recommendationKey,
+        'metrics': metric
+    })
 
 @info_bp.route('/clear_cache', methods=['POST'])
 def clear_cache():
@@ -131,24 +166,26 @@ def get_scrape():
         return jsonify({"error": "No stock data found or an error occurred during scraping."}), 404
     return jsonify(stocks)
 
-@info_bp.route('/hist.png')
-def create_bell_curve ():
-    df = get_stock_info_for_histogram()
-    print(f"create_bell_curve.df: {df}")
+@info_bp.route('/hist/<sector>/<metric>/hist.png')
+def create_bell_curve (sector: str, metric: str):
+    
+    
+    df = pd.DataFrame(get_stock_info_for_histogram(sector, metric))
+
+    # print(f"create_bell_curve.df: {df}")
 
     if df is None:
         return "No data to display", 400
     
-    if 'revenueGrowth' in df:
+    if metric in df:
         # Filter out None or NaN values
-        valid_data = df['revenueGrowth'].dropna()
+        valid_data = df[metric].dropna()
 
         
         if not valid_data.empty:
-            valid_data.plot.hist(bins=100, color='blue', edgecolor='black')
-            plt.xlabel('revenueGrowth')
+            valid_data.plot.hist(bins=50, color='blue', edgecolor='black')
+            plt.xlabel(metric)
             plt.ylabel('Frequency')
-            
             img = io.BytesIO()
             plt.savefig(img, format='png')
             img.seek(0)
@@ -157,12 +194,12 @@ def create_bell_curve ():
         else:
             return "No valid returnOnEquity data to display"
     else: 
-        return "returnOnEquity column not found"
+        return f"{metric} column not found"
     
     
 @info_bp.route("/hist", methods=['GET'])
 def get_hist():
-    return render_template_string('''<img src="{{url_for('info.create_bell_curve')}}" alt="histogram" />''')
+    return render_template_string('''<img src="{{url_for('info.create_bell_curve', sector='Industrials', metric='returnOnEquity')}}" alt="histogram" />''')
 
 
 

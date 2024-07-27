@@ -1,0 +1,33 @@
+.container {
+  margin-bottom: 1rem;
+}
+
+.menu-label{
+  margin-bottom: 1rem;
+}
+
+.sort{
+  align-items: right;
+  justify-content: right;
+}
+
+.select{
+  width: 10rem;
+}
+
+.select-wrapper{
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+
+// .fixed-grid {
+//   display: grid;
+//   grid-template-columns: repeat(5, 1fr);
+// }
+// .grid{
+//   display: flex;
+//   align-items: center;
+//   justify-content: space-between;
+// }

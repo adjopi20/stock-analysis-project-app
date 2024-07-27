@@ -2,8 +2,8 @@ from flask import Blueprint, jsonify
 import yfinance as yf
 import pandas as pd
 from utils.add_jk import addJK
-from utils.convertTimestamp import convert_timestamp
 import logging
+from services.stock_info_service import scrape_stock_with_cache
 
 news_bp = Blueprint('news', __name__)
 
@@ -17,8 +17,12 @@ def get_test(symbol):
 
 @news_bp.route('/news', methods=['GET'])
 def get_all_news():
+    scraped_stock = scrape_stock_with_cache()
+            
+    symbolJK = [item['symbol'] for item in scraped_stock]
+
     news_arr = []
-    for symbol in symbol_arr:
+    for symbol in symbolJK:
         try:
             stock = yf.Ticker(symbol)
             news = stock.news

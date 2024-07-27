@@ -1,0 +1,128 @@
+<aside class="menu">
+ 
+
+  
+  <!-- <hr class="new1" /> -->
+  <div class="container">
+
+    <div class="notification">
+      <label class="menu-label">Sort</label>
+      <div class="select is-small is-fullwidth">
+        <select title="dropdown is-fullwidth" (change)="changeSortBy($event)">
+          <option value="">Default: Ascending</option>
+          <option value="marketCap,asc">Market Cap: Ascending</option>
+          <option value="marketCap,desc">Market Cap: Descending</option>
+          <option value="currentPrice,asc">Price: Ascending</option>
+          <option value="currentPrice,desc">Price: Descending</option>
+          <option value="dividendRate,asc">Dividend Rate: Ascending</option>
+          <option value="dividendRate,desc">Dividend Rate: Descending</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="notification">
+      <label class="menu-label">Sector</label>
+      <div class="select is-small is-fullwidth">
+        <select title="dropdown is-fullwidth" (change)="changeSector($event)">
+          <option value="">All</option>
+          <option *ngFor="let item of sector" [value]="item">{{ item }}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="notification">
+      <label class="menu-label">Industry</label>
+      <div class="select is-small is-fullwidth">
+        <select title="dropdown is-fullwidth" (change)="changeIndustry($event)">
+          <option value="">All</option>
+          <option *ngFor="let item of industry" [value]="item">
+            {{ item }}
+          </option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="notification">
+      <div class="count-filter control is-small">
+        <label class="menu-label radio">Market Cap</label>
+        <div class="input-group is-fullwidth">
+          <input
+            [(ngModel)]="currentMinMarketCap"
+            class="input num-input is-small"
+            type="number"
+            min="0"
+            placeholder="MIN"
+          />
+          -
+          <input
+            [(ngModel)]="currentMaxMarketCap"
+            class="input num-input is-small"
+            type="number"
+            min="0"
+            placeholder="MAX"
+          />
+        </div>
+        <!-- <button
+          (click)="setMarketCap(currentMinMarketCap, currentMaxMarketCap)"
+          class="button apply-button is-info is-small is-fullwidth"
+        >
+          Apply
+        </button> -->
+      </div>
+
+      <div class="count-filter control is-small">
+        <label class="menu-label radio">PRICE</label>
+        <div class="input-group is-fullwidth">
+          <input
+            [(ngModel)]="currentMinPrice"
+            min="0"
+            class="input num-input is-small"
+            type="number"
+            placeholder="MIN"
+          />
+          -
+          <input
+            [(ngModel)]="currentMaxPrice"
+            min="0"
+            class="input num-input is-small"
+            type="number"
+            placeholder="MAX"
+          />
+        </div>
+        <!-- <button
+        (click)="setPrice(currentMinPrice, currentMaxPrice)" 
+        class="button apply-button is-info is-small is-fullwidth">
+          Apply
+        </button> -->
+      </div>
+
+      <div class="count-filter control is-small">
+        <label class="menu-label radio">Dividend rate</label>
+        <div class="input-group is-fullwidth">
+          <input
+            min="0"
+            [(ngModel)]="currentMinDividendRate"
+            class="input num-input is-small"
+            type="number"
+            placeholder="MIN"
+          />
+          -
+          <input
+            [(ngModel)]="currentMaxDividendRate"
+            min="0"
+            class="input num-input is-small"
+            type="number"
+            placeholder="MAX"
+          />
+        </div>
+        <button 
+          (click)="setNumberFilter(currentMinMarketCap, currentMaxMarketCap, currentMinPrice, currentMaxPrice, currentMinDividendRate, currentMaxDividendRate)"
+          class="button apply-button is-info is-small is-fullwidth">
+          Apply
+        </button>
+      </div>
+    </div>
+  </div>
+</aside>

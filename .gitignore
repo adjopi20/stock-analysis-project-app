@@ -6,6 +6,7 @@ __pycache__/
 # *.so
 # .env
 .venv/
+yfinance.cache
 # build/
 # dist/
 # *.egg-info/

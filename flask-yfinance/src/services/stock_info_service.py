@@ -19,57 +19,56 @@ from typing import Optional
 import numpy as np
 
 class FetchedStock(BaseModel) :
-    symbol: Optional[str] = None
-    sector: Optional[str] = None
-    industry: Optional[str] = None
-    bookValue: Optional[float] = None
-    companyOfficers: Optional[list] =   None
-    currentPrice: Optional[float] = None
-    currentRatio: Optional[float]= None
-    debtToEquity: Optional[float]= None
-    dividentRate: Optional[float]= None
-    dividentYield: Optional[float]= None
-    earningsGrowth: Optional[float]= None
-    earningsQuarterlyGrowth: Optional[float]= None
-    ebitda: Optional[float]= None
-    ebitdaMargins: Optional[float]= None
-    enterpriseValue: Optional[float]= None
-    enterpriseToEbitda: Optional[float]= None
-    enterpriseToRevenue: Optional[float]= None
-    enterpriseValueToRevenue: Optional[float]= None
-    freeCashflow: Optional[float]= None
-    floatShares: Optional[float]= None
-    forwardEps: Optional[float]= None
-    forwardPE: Optional[float]= None
-    grossMargins: Optional[float]= None
-    grossProfits: Optional[float]= None
-    heldPercentInsiders: Optional[float]= None
-    heldPercentInstitutions: Optional[float]= None
-    longBusinessSummary: Optional[str]= None
-    marketCap: Optional[float]= None
-    netIncomeToCommon: Optional[float]= None
-    numberOfAnalystOpinions: Optional[float]= None
-    operatingCashflow: Optional[float]= None
-    operatingCashflow: Optional[float]= None
-    operatingMargins: Optional[float]= None
-    payoutRatio: Optional[float]= None
-    pegRatio: Optional[float]= None
-    priceToBook: Optional[float]= None
-    profitMargins: Optional[float]= None
-    quickRatio: Optional[float]= None
-    recommendationKey: Optional[str]= None
-    recommendationMean: Optional[float]= None
-    returnOnAssets: Optional[float]= None
-    returnOnEquity: Optional[float]= None
-    revenueGrowth: Optional[float]= None
-    revenuePerShare: Optional[float]= None
-    sharesOutstanding: Optional[float]= None
-    totalCash: Optional[float]= None
-    totalCashPerShare: Optional[float]= None
-    totalRevenue: Optional[float]= None
-    trailingEps: Optional[float]= None
-    trailingPE: Optional[float]= None
-    volume: Optional[float]= None
+    symbol: Optional[str] = 'Unknown'
+    sector: Optional[str] = 'Unknown'
+    industry: Optional[str] = 'Unknown'
+    bookValue: Optional[float] = 0.0
+    companyOfficers: Optional[list] = []
+    currentPrice: Optional[int] = 0
+    currentRatio: Optional[float]= 0.0
+    debtToEquity: Optional[float]= 0.0
+    dividendRate: Optional[float]= 0.0
+    dividendYield: Optional[float]= 0.0
+    earningsGrowth: Optional[float]= 0.0
+    earningsQuarterlyGrowth: Optional[float]= 0.0
+    ebitda: Optional[int]= 0
+    ebitdaMargins: Optional[float]= 0.0
+    enterpriseValue: Optional[int]= 0
+    enterpriseToEbitda: Optional[float]= 0.0
+    enterpriseToRevenue: Optional[float]= 0.0
+    # enterpriseToRevenue: Optional[float]= 0.0
+    freeCashflow: Optional[int]= 0
+    floatShares: Optional[int]= 0
+    forwardEps: Optional[float]= 0.0
+    forwardPE: Optional[float]= 0.0
+    grossMargins: Optional[float]= 0.0
+    # grossProfits: Optional[float]= 0.0
+    heldPercentInsiders: Optional[float]= 0.0
+    heldPercentInstitutions: Optional[float]= 0.0
+    longBusinessSummary: Optional[str]= 'None'
+    marketCap: Optional[int]= 0
+    netIncomeToCommon: Optional[int]= 0
+    numberOfAnalystOpinions: Optional[int]= 0
+    operatingCashflow: Optional[int]= 0
+    operatingMargins: Optional[float]= 0.0
+    payoutRatio: Optional[float]= 0.0
+    pegRatio: Optional[float]= 0.0
+    priceToBook: Optional[float]= 0.0
+    profitMargins: Optional[float]= 0.0
+    quickRatio: Optional[float]= 0.0
+    recommendationKey: Optional[str]= 'none'
+    recommendationMean: Optional[float]= 0.0
+    returnOnAssets: Optional[float]= 0.0
+    returnOnEquity: Optional[float]= 0.0
+    revenueGrowth: Optional[float]= 0.0
+    revenuePerShare: Optional[float]= 0.0
+    sharesOutstanding: Optional[int]= 0
+    totalCash: Optional[int]= 0
+    totalCashPerShare: Optional[float]= 0.0
+    totalRevenue: Optional[int]= 0
+    trailingEps: Optional[float]= 0.0
+    trailingPE: Optional[float]= 0.0
+    volume: Optional[int]= 0
 
 class ScrapedStock(BaseModel):
     symbol: str
@@ -77,6 +76,8 @@ class ScrapedStock(BaseModel):
     listing_date: str
     stock_shares: int
     listing_board: str
+
+combined = []
 
 def scrape_stock() :
     url = "https://www.idx.co.id/id/data-pasar/data-saham/daftar-saham"
@@ -191,7 +192,7 @@ def scrape_stock_with_cache() :
 
 def fetch_stock():
     fetched_stocks = []
-    scraped_stock = scrape_stock()
+    scraped_stock = scrape_stock_with_cache()
     print(f"scraped stock without cache: {len(scraped_stock)}")
     # stock_info = {}
     try:
@@ -205,62 +206,64 @@ def fetch_stock():
 
             print(f"fetched stock without cache: {stock_info.get('underlyingSymbol')}")  
             fetched_stock = FetchedStock(
-                symbol=stock_info.get('underlyingSymbol'),
-                sector=stock_info.get('sector'),
-                industry=stock_info.get('industry'),
-                bookValue=stock_info.get('bookValue'),
-                companyOfficers=stock_info.get('companyOfficers'),
-                currentPrice=stock_info.get('currentPrice'),
-                currentRatio=stock_info.get('currentRatio'),
-                debtToEquity=stock_info.get('debtToEquity'),
-                dividendRate=stock_info.get('dividendRate'),
-                dividendYield=stock_info.get('dividendYield'),
-                earningsGrowth=stock_info.get('earningsGrowth'),
-                earningsQuarterlyGrowth=stock_info.get('earningsQuarterlyGrowth'),
-                ebitda=stock_info.get('ebitda'),
-                ebitdaMargins=stock_info.get('ebitdaMargins'),
-                enterpriseValue=stock_info.get('enterpriseValue'),
-                enterpriseToEbitda=stock_info.get('enterpriseToEbitda'),
-                enterpriseToRevenue=stock_info.get('enterpriseToRevenue'),
-                enterpriseValueToRevenue=stock_info.get('enterpriseValueToRevenue'),
-                freeCashflow=stock_info.get('freeCashflow'),
-                floatShares=stock_info.get('floatShares'),
-                forwardEps=stock_info.get('forwardEps'),
-                forwardPE=stock_info.get('forwardPE'),
-                grossMargins=stock_info.get('grossMargins'),
-                grossProfits=stock_info.get('grossProfits'),
-                heldPercentInsiders=stock_info.get('heldPercentInsiders'),
-                heldPercentInstitutions=stock_info.get('heldPercentInstitutions'),
-                longBusinessSummary=stock_info.get('longBusinessSummary'),
-                marketCap=stock_info.get('marketCap'),
-                netIncomeToCommon=stock_info.get('netIncomeToCommon'),
-                numberOfAnalystOpinions=stock_info.get('numberOfAnalystOpinions'),
-                operatingCashflow=stock_info.get('operatingCashflow'),
-                operatingMargins=stock_info.get('operatingMargins'),
-                payoutRatio=stock_info.get('payoutRatio'),
-                pegRatio=stock_info.get('pegRatio'),
-                priceToBook=stock_info.get('priceToBook'),
-                profitMargins=stock_info.get('profitMargins'),
-                quickRatio=stock_info.get('quickRatio'),
-                recommendationKey=stock_info.get('recommendationKey'),
-                recommendationMean=stock_info.get('recommendationMean'),
-                returnOnAssets=stock_info.get('returnOnAssets'),
-                returnOnEquity=stock_info.get('returnOnEquity'),
-                revenueGrowth=stock_info.get('revenueGrowth'),
-                revenuePerShare=stock_info.get('revenuePerShare'),
-                sharesOutstanding=stock_info.get('sharesOutstanding'),
-                totalCash=stock_info.get('totalCash'),
-                totalCashPerShare=stock_info.get('totalCashPerShare'),
-                totalRevenue=stock_info.get('totalRevenue'),
-                trailingEps=stock_info.get('trailingEps'),
-                trailingPE=stock_info.get('trailingPE'),
-                volume=stock_info.get('volume')
+                symbol=stock_info.get('underlyingSymbol') or 'Unknown',
+                sector=stock_info.get('sector') or 'Unknown',
+                industry=stock_info.get('industry') or 'Unknown',
+                bookValue=stock_info.get('bookValue') or 0.0,
+                companyOfficers=stock_info.get('companyOfficers') or [],
+                currentPrice=stock_info.get('currentPrice') or 0,
+                currentRatio=stock_info.get('currentRatio') or 0.0,
+                debtToEquity=stock_info.get('debtToEquity') or 0.0,
+                dividendRate=stock_info.get('dividendRate') or 0.0,
+                dividendYield=stock_info.get('dividendYield') or 0.0,
+                earningsGrowth=stock_info.get('earningsGrowth') or 0.0,
+                earningsQuarterlyGrowth=stock_info.get('earningsQuarterlyGrowth') or 0.0,
+                ebitda=stock_info.get('ebitda') or 0,
+                ebitdaMargins=stock_info.get('ebitdaMargins') or 0.0,
+                enterpriseValue=stock_info.get('enterpriseValue') or 0,
+                enterpriseToEbitda=stock_info.get('enterpriseToEbitda') or 0.0,
+                enterpriseToRevenue=stock_info.get('enterpriseToRevenue') or 0.0,
+                # enterpriseValueToRevenue=stock_info.get('enterpriseValueToRevenue'),
+                freeCashflow=stock_info.get('freeCashflow') or 0,
+                floatShares=stock_info.get('floatShares') or 0,
+                forwardEps=stock_info.get('forwardEps') or 0.0,
+                forwardPE=stock_info.get('forwardPE') or 0.0,
+                grossMargins=stock_info.get('grossMargins') or 0.0,
+                # grossProfits=stock_info.get('grossProfits'),
+                heldPercentInsiders=stock_info.get('heldPercentInsiders') or 0.0,
+                heldPercentInstitutions=stock_info.get('heldPercentInstitutions') or 0.0,
+                longBusinessSummary=stock_info.get('longBusinessSummary') or 'None',
+                marketCap=stock_info.get('marketCap') or 0,
+                netIncomeToCommon=stock_info.get('netIncomeToCommon') or 0,
+                numberOfAnalystOpinions=stock_info.get('numberOfAnalystOpinions') or 0,
+                operatingCashflow=stock_info.get('operatingCashflow') or 0,
+                operatingMargins=stock_info.get('operatingMargins') or 0.0,
+                payoutRatio=stock_info.get('payoutRatio') or 0.0,
+                pegRatio=stock_info.get('pegRatio') or 0.0,
+                priceToBook=stock_info.get('priceToBook') or 0.0,
+                profitMargins=stock_info.get('profitMargins') or 0.0,
+                quickRatio=stock_info.get('quickRatio') or 0.0,
+                recommendationKey=stock_info.get('recommendationKey') or 'none',
+                recommendationMean=stock_info.get('recommendationMean') or 0.0,
+                returnOnAssets=stock_info.get('returnOnAssets') or 0.0,
+                returnOnEquity=stock_info.get('returnOnEquity') or 0.0,
+                revenueGrowth=stock_info.get('revenueGrowth') or 0.0,
+                revenuePerShare=stock_info.get('revenuePerShare') or 0.0,
+                sharesOutstanding=stock_info.get('sharesOutstanding') or 0,
+                totalCash=stock_info.get('totalCash') or 0,
+                totalCashPerShare=stock_info.get('totalCashPerShare') or 0.0,
+                totalRevenue=stock_info.get('totalRevenue') or 0,
+                trailingEps=stock_info.get('trailingEps') or 0.0,
+                trailingPE=stock_info.get('trailingPE') or 0.0,
+                volume=stock_info.get('volume') or 0
             )
             fetched_stocks.append(fetched_stock.model_dump(mode='json'))
-            # return fetched_stocks
-            # fetched_stocks.append(stock_info)
-  
-
+        
+        # for item in fetched_stocks:
+        #     for key in item:
+        #         fetched_stocks = map(lambda x : x == item[key] if item[key] == float('inf') else item[key], np.nan )
+                
+       
             
         print(f"fetched stock without cache: {len(fetched_stocks)}")    
         return fetched_stocks
@@ -283,9 +286,15 @@ def combine_fetched_scraped_info():
         if cached_raw_value is not None:
             try: 
                 cached_all_stock = json.loads(cached_raw_value)
-                cached_all_stock = [item for item in cached_all_stock]
                 print(f"fetching_stock_info_service.combine_fetched_scraped_info: {len(cached_all_stock)}")
+                
+                def replace_inf_with_nan(item):
+                    return {key: (None if value == float('inf') else value) for key, value in item.items()}
+
+                cached_all_stock = list(map(replace_inf_with_nan, cached_all_stock))
+                
                 return cached_all_stock
+               
             except (json.JSONDecodeError, ValidationError) as e:
                 logging.error(f"found error 1 : {e}")
 
@@ -300,12 +309,24 @@ def combine_fetched_scraped_info():
                 if scraped_stock["symbol"] == fetched_stock['symbol']:
                     stock_info = {**scraped_stock, **fetched_stock}
                     all_stocks.append(stock_info)
+
+               
+            
             raw_value = json.dumps([stock for stock in all_stocks])
             client.set(cache_key, raw_value, ex=cache_ttl)
 
+            def replace_inf_with_nan(item):
+                return {key: (None if value == float('inf') else value) for key, value in item.items()}
+
+            # Apply the function to each item in the list
+            all_stocks = list(map(replace_inf_with_nan, all_stocks))
+
+             
 
             # print(f"p {len(stocks_info)}")
             return all_stocks
-
+        
     except Exception as e:
         logging.error(f"found error 2 : {e}")
+
+stocklist = combine_fetched_scraped_info()

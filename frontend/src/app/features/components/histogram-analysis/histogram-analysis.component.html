@@ -1,0 +1,18 @@
+<app-filter-component keyword="sector"></app-filter-component>
+<hr class="new1" />
+<app-filter-component
+  (keywordEvent)="receiveChangeMetric($event)"
+  [currentOption]="currentMetric"
+  keyword="metrics"
+></app-filter-component>
+<hr class="new1" />
+<div class="fixed-grid">
+  <div
+    class="grid notification is-white has-3-cols-fullhd has-3-cols-widescreen has-2-cols-desktop has-2-cols-tablet has-1-cols-mobile"
+  >
+    <div class="cell" *ngFor="let item of histogramData">
+        <app-histogram [sector]="item.sector" [dataTable]="item.chartData" [title]="item.title"  [metric]="currentMetric"> </app-histogram>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,52 @@
+<nav class="pagination is-centered" role="navigation" aria-label="pagination">
+  <!-- @defer (on hover) { -->
+    <!-- <a class="pagination-previous hovered-class" (mouseleave)="!isHovered" [ngStyle]="isHovered ? {'background-color': 'lightblue', 'color': 'white'} : {}" (click)="previousPage()" >Previous</a> -->
+  <!-- } @placeholder { -->
+    <a class="pagination-previous" (click)="previousPage()">Previous</a>
+  <!-- } -->
+  <a class="pagination-next" (click)="nextPage()">Next page</a>
+  <ul class="pagination-list" >
+    <li [hidden]="currentPage <= 2" >
+      <a class="pagination-link" aria-label="Goto page 1" (click)="changePage(1)">1</a>
+    </li>
+    <li [hidden]="currentPage <= 3">
+      <span class="pagination-ellipsis">&hellip;</span>
+    </li>
+
+    <li  *ngFor="let page of pagesToShow">
+      <a
+        [ngClass]="{
+          'is-current': page === currentPage,
+          'pagination-link': true
+        }"
+        (click)="changePage(page)"
+        >{{ page }}</a
+      >
+    </li>
+    <li
+      [hidden]="!(currentPage < totalPage - 1) || currentPage == totalPage - 2"
+    >
+      <span class="pagination-ellipsis">&hellip;</span>
+    </li>
+    <li [hidden]="!(currentPage < totalPage - 1)">
+      <a
+        (click)="changePage(totalPage)"
+        class="pagination-link"
+        aria-label="Last Page"
+        >{{ totalPage }}</a
+      >
+    </li>
+  </ul>
+
+  <div class="select">
+    <select title="per-page" (change)="changeLimit($event)">
+      <option value="20">20</option>
+      <option value="40">40</option>
+      <option value="80">80</option>
+      <option value="160">160</option>
+      <option value="320">320</option>
+      <option value="640">640</option>
+      <option value="{{total}}">All</option>
+    </select>
+  </div>
+</nav>

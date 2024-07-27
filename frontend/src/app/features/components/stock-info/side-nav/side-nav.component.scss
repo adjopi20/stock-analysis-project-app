@@ -1,0 +1,68 @@
+// .fixed-grid {
+//     display: flex;
+//     flex-direction: column;
+//   }
+
+//   .field {
+//     display: flex;
+//     flex-direction: column;
+//   }
+  
+ 
+//   .radio-group {
+//     display: grid;
+//     grid-template-columns: 1fr;
+//     gap: 0.5em; /* Adjust the gap between radio buttons as needed */
+//   }
+  
+//   .field {
+//     display: flex;
+//     align-items: center;
+//   }
+
+.notification{
+    border-color: var(--monkey-primary-01);
+}
+
+.container{
+    border-color: var(--monkey-primary-01);
+    margin-bottom: 1rem;
+    // margin-top: 1rem;
+}
+
+.input{
+    // border-color: var(--monkey-primary-01);
+    width: 60%;
+    height: 70%;
+    
+}
+
+.count-filter{
+  margin-bottom: 20px;
+  
+}
+
+.input-group{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  // flex-wrap: wrap;
+}
+
+.input-group .num-input {
+  flex: 1; /* Make input fields take equal space */
+}
+
+.input-group .num-input:first-child {
+  margin-right: 5px; /* Add some space between the inputs */
+}
+
+.input-group .num-input:last-child {
+  margin-left: 5px; /* Add some space between the inputs */
+}
+
+.apply-button{
+  margin-top: 2rem;
+}
+
