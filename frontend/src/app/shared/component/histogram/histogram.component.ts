@@ -40,14 +40,14 @@ export class HistogramComponent {
   ) {}
 
   ngOnInit(){
-    this.updateHistogram();
+    // this.updateHistogram();
   }
 
-  // ngOnChanges(change : SimpleChanges){
-  //   if (change['dataTable'] || change['title']){
-  //     this.updateHistogram();
-  //   }
-  // }
+  ngOnChanges(change : SimpleChanges){
+    if (change['dataTable'] || change['title']){
+      this.updateHistogram();
+    }
+  }
 
 
 

@@ -4,6 +4,7 @@ import { SideNavComponent } from '../../../features/components/stock-info/side-n
 import { FilterContainerComponent } from '../../../features/components/stock-info/filter-container/filter-container.component';
 import { PaginationComponent } from '../../../features/components/stock-info/pagination/pagination.component';
 import { FilterComponentComponent } from '../../../shared/component/filter-component/filter-component.component';
+import { RadioComponent } from '../../../shared/component/radio/radio.component';
 
 @Component({
   selector: 'app-dashboard-canvas',
@@ -13,6 +14,7 @@ import { FilterComponentComponent } from '../../../shared/component/filter-compo
     SideNavComponent,
     FilterComponentComponent,
     PaginationComponent,
+    RadioComponent
   ],
   templateUrl: './dashboard-canvas.component.html',
   styleUrl: './dashboard-canvas.component.scss',

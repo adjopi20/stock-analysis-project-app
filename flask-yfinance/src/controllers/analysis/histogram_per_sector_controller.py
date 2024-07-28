@@ -73,8 +73,8 @@ def histogram_for_sector(sector: str, category: str):
     # except Exception as e:
     #     return jsonify({"error": f"Exception occurred: {str(e)}"}), 500
 
-@hist_bp.route('/histogram-analysis-for-sector-2/<sector>/<category>', methods=['GET'])
-def histogram_for_sector_2(sector: str, category: str):
+@hist_bp.route('/histogram-analysis-for-sector-2/<sector>/<metric>', methods=['GET'])
+def histogram_for_sector_2(sector: str, metric: str):
         
     # try:
         #request param=========================================================================
@@ -85,7 +85,7 @@ def histogram_for_sector_2(sector: str, category: str):
         #===============================================================================
 
         #dataset===============================================================================
-        dataset = get_stock_info_for_histogram(sector, category, listingBoard, industry, marketCap, recKey) #dataset disini dtype list()
+        dataset = get_stock_info_for_histogram(sector, metric, listingBoard, industry, marketCap, recKey) #dataset disini dtype list()
         #===============================================================================
 
         #table stocklist ==========================================================================================
@@ -97,30 +97,29 @@ def histogram_for_sector_2(sector: str, category: str):
             items = ({ #disini aku tau bahwa ternyata dictionary itu disebut juga dengan set
                 'symbol': stock.get('symbol', 'none'),
                 'listingBoard': stock.get('listingBoard', 'none'),
-                category : stock.get(category, 0) or 0,
+                metric : stock.get(metric, 0) or 0,
                 'sector': stock.get('sector', 'none'),
                 'industry': stock.get('industry', 'none'),
                 'recommendationKey': stock.get('recommendationKey', 'none'),
-                'recommendationMean': stock.get('recommendationMean', 0),
             })
 
-            if items[category] == 0:
+            if items[metric] == 0:
                 continue
 
             table.append(items)
                     # count +=1
-        table.sort(key= lambda x: x[category], reverse=False)
+        table.sort(key= lambda x: x[metric], reverse=False)
         # print(f"table: {table}")
         #==========================================================================================================      
         
         #trimmed mean==============================================================================================   
-        tes = trimmed_mean(dataset, category)
+        tes = trimmed_mean(dataset, metric)
         #==========================================================================================================
 
         #output================================================================================================
         print(f"dataset: {len(dataset)}, table: {len(table)}")
         return jsonify({ 
-            "identifier": sector + " - " + category,
+            "identifier": sector + " - " + metric,
             "stocklist": table,        
             "trimmedMean": tes
         })
