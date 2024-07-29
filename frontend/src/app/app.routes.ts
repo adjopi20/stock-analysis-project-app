@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { DashboardCanvasComponent } from './core/layout/dashboard-canvas/dashboard-canvas.component';
 
 export const routes: Routes = [
   {
@@ -11,8 +12,8 @@ export const routes: Routes = [
   {
     path: 'histogram-analysis',
     loadComponent: () =>
-      import('./features/components/histogram-analysis/histogram-analysis.component').then(
-        (m) => m.HistogramAnalysisComponent
+      import('./core/layout/dashboard-canvas/dashboard-canvas.component').then(
+        (m) => m.DashboardCanvasComponent
       ),
   },
   

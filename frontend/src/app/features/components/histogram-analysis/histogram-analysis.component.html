@@ -1,55 +1,83 @@
-<div class="fixed-grid has-5-cols">
-  <div class="grid">
-    <div class="notification has-text-centered cell is-col-span-5">
-      <h1 class="title is-align-self-center">Dashboard Histogram</h1>
-    </div>
-    <div class="cell is-row-span-3">
-      <app-radio
-        (groupByEvent)="receiveChangeGroupBy($event)"
-        [currentGroupBy]="currentGroupBy"
-      ></app-radio>
-    </div>
-    <div class="cell is-col-span-4">
-      <app-filter-component keyword="sector"></app-filter-component>
-      <hr class="new1" />
-      <app-filter-component
-        (keywordEvent)="receiveChangeMetric($event)"
-        [currentOption]="currentMetric"
-        keyword="metrics"
-      ></app-filter-component>
-      <hr class="new1" />
+  <div class="fixed-grid has-5-cols">
+    <div class="grid">
+      <div class="notification has-text-centered cell is-col-span-5">
+        <h1 class="title is-align-self-center">Dashboard Histogram</h1>
+      </div>
+      <div class="cell is-row-span-3">
+        <ng-container>
+          <app-radio 
+            [model]="_model1"
+            (itemEvent)="receiveChangeGroupBy($event)"
+            [currentItem]="currentGroupBy"
+            [items]="groups"
+          ></app-radio>
+        </ng-container>
+      </div>
+      <div class="cell is-col-span-4">
+        <ng-container *ngIf="currentGroupBy === 'sector'">
+          <app-checkboxes
+            [items]="sectorList"
+            (itemEvent)="receiveSetSector($event)"
+            [currentItem]="currentSector"
+          ></app-checkboxes>
+          <app-radio
+            [model]="_model2"
+            [items]="sectorList"
+            (itemEvent)="receiveSetSector($event)"
+            [currentItem]="currentSector"
+          ></app-radio>
+        </ng-container>
 
-      <!-- </div> -->
-      <!-- <div class="cell is-col-span-4"> -->
-      <div class="fixed-grid is-fluid">
-        <div
-          class="grid notification is-white has-3-cols-fullhd has-3-cols-widescreen has-2-cols-desktop has-2-cols-tablet has-1-cols-mobile"
-        >
-          <ng-container *ngIf="currentGroupBy == 'sector'">
-            <div class="cell" *ngFor="let item of histogramData">
-              <app-histogram
-                [metric]="item.metric"
-                [dataTable]="item.chartData"
-                [title]="item.title"
-                [sector]="currentSector"
-              >
-              </app-histogram>
-            </div>
-          </ng-container>
+        <ng-container *ngIf="currentGroupBy === 'Metric'">
+          <app-radio
+            [model]="_model2"
+            [items]="sectorList"
+            (itemEvent)="receiveSetSector($event)"
+            [currentItem]="currentSector"
+          ></app-radio>
+          <app-checkboxes
+            [items]="metricList"
+            (itemEvent)="receiveSetSector($event)"
+            [currentItem]="currentMetric"
+          ></app-checkboxes>
+        </ng-container>
 
-          <ng-container *ngIf="currentGroupBy == 'metric'">
-            <div class="cell" *ngFor="let item of histogramData">
-              <app-histogram
-                [sector]="item.sector"
-                [dataTable]="item.chartData"
-                [title]="item.title"
-                [metric]="currentMetric"
-              >
-              </app-histogram>
-            </div>
-          </ng-container>
+        <hr class="new1" />
+        <!-- <app-checkboxes
+          [items]="listingBoard"
+          (itemEvent)="receiveSetMetric($event)"
+        ></app-checkboxes> -->
+
+        <div class="fixed-grid is-fluid">
+          <div
+            class="grid notification is-white has-3-cols-fullhd has-3-cols-widescreen has-2-cols-desktop has-2-cols-tablet has-1-cols-mobile"
+          >
+            <ng-container *ngIf="currentGroupBy == 'sector'">
+              <div class="cell" *ngFor="let item of histogramData">
+                <app-histogram
+                  [metric]="item.metric"
+                  [dataTable]="item.chartData"
+                  [title]="item.title"
+                  [sector]="currentSector"
+                >
+                </app-histogram>
+              </div>
+            </ng-container>
+
+            <ng-container *ngIf="currentGroupBy==='Metric'">
+              <div class="cell" *ngFor="let item of histogramData">
+                <app-histogram
+                  [sector]="item.sector"
+                  [dataTable]="item.chartData"
+                  [title]="item.title"
+                  [metric]="currentMetric"
+                >
+                </app-histogram>
+              </div>
+            </ng-container>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+

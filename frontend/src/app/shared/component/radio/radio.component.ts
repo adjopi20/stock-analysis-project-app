@@ -1,23 +1,36 @@
+import { NgFor } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-radio',
   standalone: true,
-  imports: [],
+  imports: [NgFor],
   templateUrl: './radio.component.html',
   styleUrl: './radio.component.scss'
 })
 export class RadioComponent {
-  @Output() groupByEvent = new EventEmitter<string>();
-  @Input() currentGroupBy: string = '';
+  @Input() model : any;
+  @Input() items: any[]=[];
+  @Output() itemEvent = new EventEmitter<string>();
+  @Input() currentItem: string = '';
 
-  ngOnInit(){
-    // this.change(this.currentGroupBy)
+  ngOnInit(){ 
   }
 
-  change(group: string){
-    this.currentGroupBy=group;
-    this.groupByEvent.emit(this.currentGroupBy);
-    console.log('currentGroupBy',this.currentGroupBy);
+  onItemChange(item: string) {
+    this.model.current = item;
+    this.itemEvent.emit(item);
   }
+
+  // change(item: string){
+  //   this.model.current=item;
+  //   this.itemEvent.emit(this.currentItem);
+  //   console.log('currentGroupBy',this.currentItem);
+
+  // }
 }
+
+// export interface ModelRadio{
+//   list: any[];
+//   current: string;
+// }

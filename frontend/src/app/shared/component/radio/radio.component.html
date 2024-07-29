@@ -1,18 +1,8 @@
-<aside class="menu">
-  <div class="container">
-    <div class="notification">
-      <label class="menu-label">Group By</label>
-
-      <div class="control">
-        <label class="radio">
-          <input type="radio" (click)="change('sector')" name="foobar" />
-          Sector
-        </label>
-        <label class="radio">
-          <input type="radio" (click)="change('metric')" name="foobar" checked />
-          Metric
-        </label>
-      </div>
-    </div>
+<div class="notification flex-container ">
+  <div class="control" *ngFor="let item of model.list">
+    <label class="radio">
+      <input type="radio" [value]="item"  name="foobar" (change)="onItemChange(item)" [checked]="item === model.current"/>
+      {{ item }}
+    </label>
   </div>
-</aside>
+</div>

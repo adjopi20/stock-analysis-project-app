@@ -1,6 +1,8 @@
-<div class="checkboxes">
-    <label class="checkbox">
-      <input type="checkbox" />
-      Monday
-    </label>
-</div>  
+<div class="notification flex-container ">
+        <div class="checkboxes  " *ngFor="let item of items" >
+            <label class="checkbox">
+              <input type="checkbox" [checked]="currentItem" (click)="changeItem(currentItem)" />
+               {{ item}}
+            </label>
+        </div>  
+</div>

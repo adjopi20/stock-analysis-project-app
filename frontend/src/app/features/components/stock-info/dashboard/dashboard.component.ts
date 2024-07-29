@@ -150,14 +150,6 @@ export class DashboardComponent {
   getFilterOptions() {
     this.apiService
       .getFilterOptions()
-      .pipe(
-        catchError((error) => {
-          this.isLoading = false;
-          this.hasError = true;
-          console.error(error);
-          return [];
-        })
-      )
       .subscribe({
         next: (data: any) => {
           this.listingBoard = data.listingBoard;

@@ -1,0 +1,8 @@
+<div class="container">
+    <div class="notification">
+        <label class="menu-label">Sector</label>
+        <ng-container *ngIf="template">
+            <ng-container *ngTemplateOutlet="template"; context:{$implicit: data?.value}></ng-container>
+        </ng-container>
+    </div>
+</div>
