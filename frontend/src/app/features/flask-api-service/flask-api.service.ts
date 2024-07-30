@@ -82,13 +82,17 @@ export class FlaskApiService {
     metric: string, 
     listingBoard?: string,  
     industry?: string,
-    minMarketCap?: number,
-    maxMarketCap?: number,
-    recommendation?: string,
   ): Observable<any>{
+    let params = new HttpParams();
 
-    return this.http.get('http://127.0.0.1:5000/histogram-analysis-for-sector-2/'+sector+'/'+metric);
-    
+    if (listingBoard) {
+      params = params.set('listingBoard', listingBoard);
+    }
+    if (industry) {
+      params = params.set('industry', industry);
+    }
+    return this.http.get('http://127.0.0.1:5000/histogram-analysis-for-sector-2/'+sector+'/'+metric, {params: params});
+
   }
 
   getHistogramPic(sector: string, metric: string): Observable<any>{

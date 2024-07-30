@@ -4,7 +4,7 @@
         <div class="flex-container">
             <div class="checkboxes  cell" *ngFor="let item of items" >
                 <label class="checkbox">
-                  <input type="checkbox" [checked]="isChecked(item)" [name]="groupName" (click)="changeItem(item)" />
+                  <input type="checkbox" [value]="item" [checked]="currentItem.includes(item)" [name]="groupName" (change)="changeItem(item)" />
                    {{ item}}
                 </label>
             </div>

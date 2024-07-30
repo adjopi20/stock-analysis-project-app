@@ -19,9 +19,10 @@ import { CommonModule, NgIf } from '@angular/common';
 export class HistogramComponent {
   @Input() sector: string = '';
   @Input() metric: string = '';
+  @Input() industry: string | undefined;
+  @Input() listingBoard: string | undefined;
   @Input() dataTable: any[] = [['Symbol', 'Metric']];
   @Input() title: string = '';
-
 
   histogram: GoogleChartInterface = {
     chartType: GoogleChartType.Histogram,

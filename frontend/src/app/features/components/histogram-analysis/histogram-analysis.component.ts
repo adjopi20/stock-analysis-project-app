@@ -14,6 +14,7 @@ import { firstValueFrom, groupBy } from 'rxjs';
 import { RadioComponent } from '../../../shared/component/radio/radio.component';
 import { CheckboxesComponent } from '../../../shared/component/checkboxes/checkboxes.component';
 import { HistogramFilterComponent } from '../../../shared/component/histogram-filter/histogram-filter.component';
+import { DropdownComponent } from '../../../shared/component/dropdown/dropdown.component';
 
 @Component({
   selector: 'app-histogram-analysis',
@@ -27,19 +28,29 @@ import { HistogramFilterComponent } from '../../../shared/component/histogram-fi
     NgFor,
     HistogramFilterComponent,
     NgSwitch,
+    DropdownComponent,
   ],
   templateUrl: './histogram-analysis.component.html',
   styleUrl: './histogram-analysis.component.scss',
 })
 export class HistogramAnalysisComponent {
   metricList: any[] = [];
-  @Input() currentMetric: string = 'bookValue';
+  currentMetric: string = 'bookValue';
   selectedMetric: any[] = [];
+
   sectorList: any[] = [];
-  @Input() currentSector: string = '';
+  currentSector: string = '';
   selectedSector: any[] = [];
-  @Input() groups: any[] = ['Sector', 'Metric'];
+
+  groups: any[] = ['Sector', 'Metric'];
   currentGroupBy: string = 'Metric';
+
+  listingBoardList: any[] = [];
+  currentListingBoard?: string | undefined;
+
+  industryList: any[] = [];
+  currentIndustry?: string | undefined;
+
 
   // histogram =
   // chartData: any[] = [];
@@ -47,8 +58,6 @@ export class HistogramAnalysisComponent {
   stocklist: any[] = [];
   trimmedMean: number = 0;
 
-  listingBoard: any[] = [];
-  industryList: any[] = [];
 
   constructor(
     private apiService: FlaskApiService,
@@ -72,27 +81,18 @@ export class HistogramAnalysisComponent {
         this.industryList = data.industry.filter(
           (item: any) => item !== 'Unknown'
         );
-        this.listingBoard = data.listingBoard;
+        this.listingBoardList = data.listingBoard;
         this.currentGroupBy = 'Metric';
 
         if (this.sectorList.length > 0) {
           this.currentSector = this.sectorList[0];
           this.selectedSector = [this.currentSector];
-          console.log('parent selectedSector', this.selectedSector);
-          console.log('parent currentSector', this.currentSector);
-          console.log('parent group', this.currentGroupBy);
         }
-        if(this.metricList.length > 0){
+        if (this.metricList.length > 0) {
           this.currentMetric = this.metricList[0];
           this.selectedMetric = [this.currentMetric];
         }
         this.getHistogramItems2();
-
-
-        console.log('sectorlist', this.sectorList);
-        console.log('metriclist', this.metricList);
-        console.log('industrylist', this.industryList);
-        console.log('listingboardlist', this.listingBoard);
       },
       error: (error) => console.log(error),
       complete: () => console.log('complete'),
@@ -105,7 +105,7 @@ export class HistogramAnalysisComponent {
         for (let sector of this.selectedSector) {
           // this.histogramData = [];
           const data: any = await firstValueFrom(
-            this.apiService.getHistogramItems(sector, this.currentMetric)
+            this.apiService.getHistogramItems(sector, this.currentMetric, this.currentListingBoard, this.currentIndustry)
           );
           const chartData = this.convertToChartData(
             data.stocklist,
@@ -128,7 +128,7 @@ export class HistogramAnalysisComponent {
       try {
         for (let metric of this.selectedMetric) {
           const data: any = await firstValueFrom(
-            this.apiService.getHistogramItems(this.currentSector, metric)
+            this.apiService.getHistogramItems(this.currentSector, metric, this.currentListingBoard, this.currentIndustry)
           );
           const chartData = this.convertToChartData(data.stocklist, metric);
           const title = `Sector: ${this.currentSector}, Metric: ${metric}`;
@@ -167,7 +167,6 @@ export class HistogramAnalysisComponent {
       this.histogramData = [];
       this.getHistogramItems2();
     }
-
     console.log('parent: ' + this.currentMetric);
   }
 
@@ -178,18 +177,38 @@ export class HistogramAnalysisComponent {
       this.getHistogramItems2();
       console.log('parent: ' + this.currentSector);
     } else if (this.currentGroupBy === 'Metric') {
+      this.histogramData = [];
       this.currentSector = event;
       this.getHistogramItems2();
-      this.histogramData = [];
     }
     console.log('parent: ' + this.currentSector);
   }
 
   receiveChangeGroupBy(event: string) {
+    
     this.currentGroupBy = event;
     this.histogramData = []; //kosongkan dulu histogramnya
     // this.getHistogramItems();
     this.getHistogramItems2();
-    console.log('parent: ' + this.currentGroupBy);
+  }
+
+  receiveSetListingBoard(event: string) {
+    if (this.currentGroupBy === 'Sector') {
+        this.currentListingBoard = event;
+        this.histogramData = [];
+        this.getHistogramItems2();  
+    } else if (this.currentGroupBy === 'Metric') {
+      this.currentListingBoard = event;
+      this.histogramData = [];
+      this.getHistogramItems2();
+    }
+  
+    
+  }
+
+  receiveSetIndustry(event: string) {
+    this.currentIndustry = event;
+    this.histogramData = [];
+    this.getHistogramItems2();
   }
 }
