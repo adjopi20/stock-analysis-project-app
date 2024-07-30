@@ -31,20 +31,31 @@
     <nav class="tabs is-boxed is-fullwidth">
       <div class="container">
         <ul>
-          <li class="is-active"><a>Overview</a></li>
+          <li><a>Overview</a></li>
           <li><a>News</a></li>
-          <li><a>Stocks</a></li>
-          <li><a>Financials</a></li>
-          <!-- <li><a>Components</a></li> -->
+          <li [ngClass]="{ 'is-active': feature === 'info' }">
+            <a (click)="onTabChange('info')">All Info</a>
+          </li>
+          <li
+            [ngClass]="{ 'is-active': feature === 'histogram' }"
+            (click)="onTabChange('histogram')"
+          >
+            <a>Metrics Histogram</a>
+          </li>
+          <li><a>Components</a></li>
           <!-- <li><a>Layout</a></li> -->
         </ul>
       </div>
     </nav>
   </div>
 </section>
-  <app-dashboard></app-dashboard>
 
-<!-- <app-dashboard-canvas></app-dashboard-canvas> -->
+<ng-container *ngIf="feature === 'info'">
+  <app-dashboard></app-dashboard>
+</ng-container>
+
+<ng-container *ngIf="feature === 'histogram'">
+  <app-dashboard-canvas></app-dashboard-canvas>
+</ng-container>
 
 <app-footer></app-footer>
-
