@@ -9,28 +9,27 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   styleUrl: './radio.component.scss'
 })
 export class RadioComponent {
-  @Input() model : any;
-  @Input() items: any[]=[];
-  @Output() itemEvent = new EventEmitter<string>();
+  // @Input() model : Model = {
+  //   list: [],
+  //   current: ''
+  // } ;
   @Input() currentItem: string = '';
+  @Input() items: any[]=[];
+  @Input() groupName: string = '';
+  @Output() itemEvent = new EventEmitter<string>();
+  @Input() label: string = '';
 
   ngOnInit(){ 
   }
 
   onItemChange(item: string) {
-    this.model.current = item;
+    this.currentItem = item;
     this.itemEvent.emit(item);
   }
 
-  // change(item: string){
-  //   this.model.current=item;
-  //   this.itemEvent.emit(this.currentItem);
-  //   console.log('currentGroupBy',this.currentItem);
-
-  // }
+  change(item: string){
+    this.currentItem=item;
+    this.itemEvent.emit(this.currentItem);
+    console.log('currentGroupBy',this.currentItem);
+  }
 }
-
-// export interface ModelRadio{
-//   list: any[];
-//   current: string;
-// }

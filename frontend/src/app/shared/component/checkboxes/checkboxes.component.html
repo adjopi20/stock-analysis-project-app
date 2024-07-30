@@ -1,8 +1,15 @@
-<div class="notification flex-container ">
-        <div class="checkboxes  " *ngFor="let item of items" >
-            <label class="checkbox">
-              <input type="checkbox" [checked]="currentItem" (click)="changeItem(currentItem)" />
-               {{ item}}
-            </label>
-        </div>  
+<div class="notification fixed-grid has-1-cols  ">
+    <div class="grid">
+        <div class="cell"><label for="menu-label">{{label}}</label></div>
+        <div class="flex-container">
+            <div class="checkboxes  cell" *ngFor="let item of items" >
+                <label class="checkbox">
+                  <input type="checkbox" [checked]="isChecked(item)" [name]="groupName" (click)="changeItem(item)" />
+                   {{ item}}
+                </label>
+            </div>
+        </div>    
+        
+    </div>
+      
 </div>

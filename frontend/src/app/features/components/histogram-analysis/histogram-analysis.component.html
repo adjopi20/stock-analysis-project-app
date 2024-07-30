@@ -4,41 +4,47 @@
         <h1 class="title is-align-self-center">Dashboard Histogram</h1>
       </div>
       <div class="cell is-row-span-3">
-        <ng-container>
-          <app-radio 
-            [model]="_model1"
+        
+          <app-radio
             (itemEvent)="receiveChangeGroupBy($event)"
-            [currentItem]="currentGroupBy"
             [items]="groups"
-          ></app-radio>
-        </ng-container>
+            [currentItem]="currentGroupBy"
+            groupName="kontol"
+            [label]="'Group By:'"></app-radio>
       </div>
       <div class="cell is-col-span-4">
-        <ng-container *ngIf="currentGroupBy === 'sector'">
-          <app-checkboxes
-            [items]="sectorList"
-            (itemEvent)="receiveSetSector($event)"
-            [currentItem]="currentSector"
-          ></app-checkboxes>
+
+        <ng-container *ngIf="currentGroupBy === 'Sector'">
           <app-radio
-            [model]="_model2"
-            [items]="sectorList"
             (itemEvent)="receiveSetSector($event)"
             [currentItem]="currentSector"
+            [items]="sectorList"
+            groupName="sectorGroup"
+            [label]="'Sector:'"
           ></app-radio>
+          <app-checkboxes
+            [items]="metricList"
+            [currentItem]="selectedMetric"
+            (itemEvent)="receiveSetMetric($event)"
+            groupName="metricGroup"
+            [label]="'Metric: '"
+          ></app-checkboxes>
         </ng-container>
 
         <ng-container *ngIf="currentGroupBy === 'Metric'">
           <app-radio
-            [model]="_model2"
-            [items]="sectorList"
-            (itemEvent)="receiveSetSector($event)"
-            [currentItem]="currentSector"
+            (itemEvent)="receiveSetMetric($event)"
+            [currentItem]="currentMetric"
+            [items]="metricList"
+            groupName="metricGroup"
+            [label]="'Metric: '"
           ></app-radio>
           <app-checkboxes
-            [items]="metricList"
+            [items]="sectorList"
             (itemEvent)="receiveSetSector($event)"
-            [currentItem]="currentMetric"
+            [currentItem]="selectedSector"
+            groupName="sectorGroup"
+            [label]="'Sector:'"
           ></app-checkboxes>
         </ng-container>
 
@@ -52,7 +58,7 @@
           <div
             class="grid notification is-white has-3-cols-fullhd has-3-cols-widescreen has-2-cols-desktop has-2-cols-tablet has-1-cols-mobile"
           >
-            <ng-container *ngIf="currentGroupBy == 'sector'">
+            <ng-container *ngIf="currentGroupBy == 'Sector'">
               <div class="cell" *ngFor="let item of histogramData">
                 <app-histogram
                   [metric]="item.metric"
