@@ -9,7 +9,7 @@ import { PaginationComponent } from '../pagination/pagination.component';
 import { FilterContainerComponent } from '../filter-container/filter-container.component';
 
 @Component({
-  selector: 'app-dashboard',
+  selector: 'app-stock-info',
   standalone: true,
   imports: [
     NgFor,
@@ -20,10 +20,10 @@ import { FilterContainerComponent } from '../filter-container/filter-container.c
     FilterContainerComponent,
     CurrencyPipe,
   ],
-  templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.scss',
+  templateUrl: './stock-info.component.html',
+  styleUrl: './stock-info.component.scss',
 })
-export class DashboardComponent {
+export class StockInfoComponent {
   // data = new Perform<[]>(); //jangan lupa sertakan <> untuk menspesifikkan output/keluaran fungsi kek di java kan "public dtype namafungsi(dtype parameter)"
   data: any[] = [];
   limitedData: any[] = [];

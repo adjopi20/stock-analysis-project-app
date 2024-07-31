@@ -38,9 +38,9 @@
           </li>
           <li
             [ngClass]="{ 'is-active': feature === 'histogram' }"
-            (click)="onTabChange('histogram')"
+            
           >
-            <a>Metrics Histogram</a>
+            <a (click)="onTabChange('histogram')">Metrics Histogram</a>
           </li>
           <li><a>Components</a></li>
           <!-- <li><a>Layout</a></li> -->
@@ -50,12 +50,11 @@
   </div>
 </section>
 
-<ng-container *ngIf="feature === 'info'">
-  <app-dashboard></app-dashboard>
-</ng-container>
 
-<ng-container *ngIf="feature === 'histogram'">
-  <app-dashboard-canvas></app-dashboard-canvas>
-</ng-container>
+
+<app-dashboard-canvas
+[feature]="feature"
+></app-dashboard-canvas>
+
 
 <app-footer></app-footer>

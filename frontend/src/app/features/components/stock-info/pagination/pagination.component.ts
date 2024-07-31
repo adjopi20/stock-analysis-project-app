@@ -1,5 +1,5 @@
 import { Component, Input, input } from '@angular/core';
-import { DashboardComponent } from '../dashboard/dashboard.component';
+import {  StockInfoComponent } from '../stock-info/stock-info.component';
 import { AllStockService } from '../../../all-stocks-service/all-stock.service';
 import { NgClass, NgFor, NgIf, NgStyle } from '@angular/common';
 import { combineLatest } from 'rxjs';
@@ -7,7 +7,7 @@ import { combineLatest } from 'rxjs';
 @Component({
   selector: 'app-pagination',
   standalone: true,
-  imports: [DashboardComponent, NgClass, NgFor, NgIf, NgStyle],
+  imports: [StockInfoComponent, NgClass, NgFor, NgIf, NgStyle],
   templateUrl: './pagination.component.html',
   styleUrl: './pagination.component.scss',
 })

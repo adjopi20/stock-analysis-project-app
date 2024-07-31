@@ -76,7 +76,7 @@ def histogram_for_sector(sector: str, category: str):
 @hist_bp.route('/histogram-analysis-for-sector-2/<sector>/<metric>', methods=['GET'])
 def histogram_for_sector_2(sector: str, metric: str):
         
-    # try:
+    try:
         #request param=========================================================================
         listingBoard = request.args.get('listingBoard')
         industry = request.args.get('industry')
@@ -86,6 +86,8 @@ def histogram_for_sector_2(sector: str, metric: str):
 
         #dataset===============================================================================
         dataset = get_stock_info_for_histogram(sector, metric, listingBoard, industry, marketCap, recKey) #dataset disini dtype list()
+        if dataset is None or len(dataset) == 0:
+            return jsonify({"error": "No data found"}), 404
         #===============================================================================
 
         #table stocklist ==========================================================================================
@@ -114,6 +116,8 @@ def histogram_for_sector_2(sector: str, metric: str):
         
         #trimmed mean==============================================================================================   
         tes = trimmed_mean(dataset, metric)
+        if np.isnan(tes):
+            tes = 'Not Available'
         #==========================================================================================================
 
         #output================================================================================================
@@ -125,8 +129,8 @@ def histogram_for_sector_2(sector: str, metric: str):
         })
         #==========================================================================================================
         
-    # except Exception as e:
-    #     return jsonify({"error": f"Exception occurred: {str(e)}"}), 500
+    except Exception as e:
+        return jsonify({"error": f"Exception occurred: {str(e)}"}), 500
 
 
 # @hist_bp.route('/table-for-sector/<sector>/<category>', methods=['GET'])
