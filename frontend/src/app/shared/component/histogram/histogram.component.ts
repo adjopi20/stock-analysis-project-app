@@ -22,14 +22,14 @@ export class HistogramComponent {
   @Input() industry: string | undefined;
   @Input() listingBoard: string | undefined;
   @Input() trimmedMean: number=0;
-  @Input() dataTable: any[] = [['Symbol', 'Metric']];
+  @Input() dataTable: any = [];
   @Input() title: string = '';
 
   histogram: GoogleChartInterface = {
     chartType: GoogleChartType.Histogram,
-    dataTable: this.dataTable,
+    dataTable: [],
     options: {
-      title: this.title,
+      title: '',
       subtitle: '',
       legend: { position: 'none' },
       // histogram: {
@@ -43,7 +43,7 @@ export class HistogramComponent {
   ) {}
 
   ngOnInit(){
-    // this.updateHistogram();
+    this.updateHistogram();
   }
 
   ngOnChanges(change : SimpleChanges){
@@ -55,9 +55,19 @@ export class HistogramComponent {
 
 
   updateHistogram(){
-    this.histogram.dataTable = this.dataTable;
-    this.histogram.options.title = this.title;
-    this.histogram.options.subtitle = `${this.trimmedMean}`;
+    // if (this.dataTable.length > 1){
+      this.histogram.dataTable = this.dataTable;
+      this.histogram.options.title = this.title;
+      this.histogram.options.subtitle = `${this.trimmedMean}`;
+    // } else if (this.dataTable.length == 1) {
+    //   this.histogram.options.title = `${this.title} NOT FOUND`;
+    //   this.histogram.options.subtitle = `NOT FOUND`;
+    // }
+    console.log('histogram datatable',this.dataTable);
+    console.log('histogram.datatable',this.histogram.dataTable);
+
+    
+    
     this.cdr.detectChanges();
   }
 

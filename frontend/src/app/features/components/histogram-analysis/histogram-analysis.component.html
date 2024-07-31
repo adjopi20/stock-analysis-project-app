@@ -85,6 +85,7 @@
                 [trimmedMean]="trimmedMean"
               >
               </app-histogram>
+
             </div>
           </ng-container>
 
@@ -101,15 +102,15 @@
               >
               </app-histogram>
               
-
+              
             </div>
           </ng-container>
           <!-- } @error {
           <app-histogram-handler [item]="errorStatus"></app-histogram-handler>
         } -->
-          <ng-container *ngIf="errorStatus === '404'">
-            <app-histogram-handler [item]="errorStatus"></app-histogram-handler>
-          </ng-container>
+        <!-- <ng-container *ngIf="(currentGroupBy === 'Metric' || currentGroupBy === 'Sector' ) &&errorStatus === '404'">
+          <app-histogram-handler [item]="errorStatus"></app-histogram-handler>
+        </ng-container> -->
         </div>
       </div>
     </div>

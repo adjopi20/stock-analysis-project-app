@@ -87,7 +87,11 @@ def histogram_for_sector_2(sector: str, metric: str):
         #dataset===============================================================================
         dataset = get_stock_info_for_histogram(sector, metric, listingBoard, industry, marketCap, recKey) #dataset disini dtype list()
         if dataset is None or len(dataset) == 0:
-            return jsonify({"error": "No data found"}), 404
+            return jsonify({
+                "identifier": sector + " - " + metric,
+                "stocklist": [] ,        
+                "trimmedMean": []
+                })
         #===============================================================================
 
         #table stocklist ==========================================================================================
