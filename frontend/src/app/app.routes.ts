@@ -12,8 +12,8 @@ export const routes: Routes = [
   {
     path: 'histogram-analysis',
     loadComponent: () =>
-      import('./core/layout/dashboard-canvas/dashboard-canvas.component').then(
-        (m) => m.DashboardCanvasComponent
+      import('./features/components/histogram-analysis/histogram-analysis.component').then(
+        (m) => m.HistogramAnalysisComponent
       ),
   },
   

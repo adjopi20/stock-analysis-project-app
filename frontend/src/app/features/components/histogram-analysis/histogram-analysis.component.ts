@@ -1,10 +1,6 @@
 import {
   ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  Input,
-  model,
-  Output,
+  Component
 } from '@angular/core';
 import { HistogramComponent } from '../../../shared/component/histogram/histogram.component';
 import { CommonModule, NgFor, NgSwitch } from '@angular/common';
@@ -15,6 +11,8 @@ import { RadioComponent } from '../../../shared/component/radio/radio.component'
 import { CheckboxesComponent } from '../../../shared/component/checkboxes/checkboxes.component';
 import { HistogramFilterComponent } from '../../../shared/component/histogram-filter/histogram-filter.component';
 import { DropdownComponent } from '../../../shared/component/dropdown/dropdown.component';
+import { HttpErrorResponse } from '@angular/common/http';
+import { HistogramHandlerComponent } from '../../../shared/component/histogram-handler/histogram-handler.component';
 
 @Component({
   selector: 'app-histogram-analysis',
@@ -29,6 +27,7 @@ import { DropdownComponent } from '../../../shared/component/dropdown/dropdown.c
     HistogramFilterComponent,
     NgSwitch,
     DropdownComponent,
+    HistogramHandlerComponent,
   ],
   templateUrl: './histogram-analysis.component.html',
   styleUrl: './histogram-analysis.component.scss',
@@ -51,13 +50,13 @@ export class HistogramAnalysisComponent {
   industryList: any[] = [];
   currentIndustry?: string | undefined;
 
+  errorStatus: string = '';
 
   // histogram =
   // chartData: any[] = [];
   histogramData: any[] = [];
   stocklist: any[] = [];
   trimmedMean: number = 0;
-
 
   constructor(
     private apiService: FlaskApiService,
@@ -105,12 +104,18 @@ export class HistogramAnalysisComponent {
         for (let sector of this.selectedSector) {
           // this.histogramData = [];
           const data: any = await firstValueFrom(
-            this.apiService.getHistogramItems(sector, this.currentMetric, this.currentListingBoard, this.currentIndustry)
+            this.apiService.getHistogramItems(
+              sector,
+              this.currentMetric,
+              this.currentListingBoard,
+              this.currentIndustry
+            )
           );
           const chartData = this.convertToChartData(
             data.stocklist,
             this.currentMetric
           );
+          this.trimmedMean = data.trimmedMean;
           const title = `Sector: ${sector}, Metric: ${this.currentMetric}`;
           this.histogramData.push({ sector, chartData, title });
           console.log('parent data:', this.histogramData);
@@ -120,7 +125,9 @@ export class HistogramAnalysisComponent {
           this.cdr.detectChanges(); // Mark for check after data is updated
         }
       } catch (error) {
-        console.log(error);
+        if (error instanceof HttpErrorResponse && error.status == 404) {
+          this.errorStatus = '404';}
+        console.log('Error fetching histogram items:', error);
       } finally {
         console.log('complete');
       }
@@ -128,8 +135,14 @@ export class HistogramAnalysisComponent {
       try {
         for (let metric of this.selectedMetric) {
           const data: any = await firstValueFrom(
-            this.apiService.getHistogramItems(this.currentSector, metric, this.currentListingBoard, this.currentIndustry)
+            this.apiService.getHistogramItems(
+              this.currentSector,
+              metric,
+              this.currentListingBoard,
+              this.currentIndustry
+            )
           );
+          this.trimmedMean = data.trimmedMean;
           const chartData = this.convertToChartData(data.stocklist, metric);
           const title = `Sector: ${this.currentSector}, Metric: ${metric}`;
           this.histogramData.push({ metric, chartData, title });
@@ -138,7 +151,9 @@ export class HistogramAnalysisComponent {
           this.cdr.detectChanges(); // Mark for check after data is updated
         }
       } catch (error) {
-        console.log(error);
+        if (error instanceof HttpErrorResponse && error.status == 404) {
+          this.errorStatus = '404';}
+        console.log('Error fetching histogram items:', error);
       } finally {
         console.log('complete');
       }
@@ -185,7 +200,6 @@ export class HistogramAnalysisComponent {
   }
 
   receiveChangeGroupBy(event: string) {
-    
     this.currentGroupBy = event;
     this.histogramData = []; //kosongkan dulu histogramnya
     // this.getHistogramItems();
@@ -194,16 +208,14 @@ export class HistogramAnalysisComponent {
 
   receiveSetListingBoard(event: string) {
     if (this.currentGroupBy === 'Sector') {
-        this.currentListingBoard = event;
-        this.histogramData = [];
-        this.getHistogramItems2();  
+      this.currentListingBoard = event;
+      this.histogramData = [];
+      this.getHistogramItems2();
     } else if (this.currentGroupBy === 'Metric') {
       this.currentListingBoard = event;
       this.histogramData = [];
       this.getHistogramItems2();
     }
-  
-    
   }
 
   receiveSetIndustry(event: string) {

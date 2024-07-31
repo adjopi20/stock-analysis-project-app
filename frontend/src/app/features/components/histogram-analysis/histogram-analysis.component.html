@@ -72,6 +72,7 @@
         <div
           class="grid notification is-white has-3-cols-fullhd has-3-cols-widescreen has-2-cols-desktop has-2-cols-tablet has-1-cols-mobile"
         >
+          <!-- @defer{ -->
           <ng-container *ngIf="currentGroupBy == 'Sector'">
             <div class="cell" *ngFor="let item of histogramData">
               <app-histogram
@@ -81,6 +82,7 @@
                 [sector]="currentSector"
                 [industry]="currentIndustry"
                 [listingBoard]="currentListingBoard"
+                [trimmedMean]="trimmedMean"
               >
               </app-histogram>
             </div>
@@ -95,9 +97,18 @@
                 [metric]="currentMetric"
                 [industry]="currentIndustry"
                 [listingBoard]="currentListingBoard"
+                [trimmedMean]="trimmedMean"
               >
               </app-histogram>
+              
+
             </div>
+          </ng-container>
+          <!-- } @error {
+          <app-histogram-handler [item]="errorStatus"></app-histogram-handler>
+        } -->
+          <ng-container *ngIf="errorStatus === '404'">
+            <app-histogram-handler [item]="errorStatus"></app-histogram-handler>
           </ng-container>
         </div>
       </div>

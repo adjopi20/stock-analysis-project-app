@@ -21,6 +21,7 @@ export class HistogramComponent {
   @Input() metric: string = '';
   @Input() industry: string | undefined;
   @Input() listingBoard: string | undefined;
+  @Input() trimmedMean: number=0;
   @Input() dataTable: any[] = [['Symbol', 'Metric']];
   @Input() title: string = '';
 
@@ -29,6 +30,7 @@ export class HistogramComponent {
     dataTable: this.dataTable,
     options: {
       title: this.title,
+      subtitle: '',
       legend: { position: 'none' },
       // histogram: {
       //   bucketSize: 0.1 
@@ -55,6 +57,7 @@ export class HistogramComponent {
   updateHistogram(){
     this.histogram.dataTable = this.dataTable;
     this.histogram.options.title = this.title;
+    this.histogram.options.subtitle = `${this.trimmedMean}`;
     this.cdr.detectChanges();
   }
 

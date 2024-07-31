@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { NONE_TYPE } from '@angular/compiler';
 import { Injectable } from '@angular/core';
-import { delay, map, multicast, Observable } from 'rxjs';
+import { catchError, delay, map, multicast, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
