@@ -34,7 +34,7 @@ import { HistogramHandlerComponent } from '../../../shared/component/histogram-h
 })
 export class HistogramAnalysisComponent {
   metricList: any[] = [];
-  currentMetric: string = 'bookValue';
+  currentMetric: string = '';
   selectedMetric: any[] = [];
 
   sectorList: any[] = [];
@@ -91,12 +91,10 @@ export class HistogramAnalysisComponent {
           this.currentMetric = this.metricList[0];
           this.selectedMetric = [this.currentMetric];
         }
-
+        this.currentListingBoard = '';
+        this.currentIndustry = '';
         this.tes();
-        // console.log('parent, selectedsector: ', this.selectedSector);
-        // console.log('parent, currentsector: ', this.currentSector);
-    
-        // this.getHistogramItems2();
+        
       },
       error: (error) => console.log(error),
       complete: () => console.log('complete'),
@@ -124,7 +122,9 @@ export class HistogramAnalysisComponent {
         );
         this.trimmedMean = data.trimmedMean;
         const chartData = this.convertToChartData(data.stocklist, metric);
-        const title = `Sector: ${this.currentSector}, Metric: ${metric}`;
+        const listingBoard = this.currentListingBoard;
+        const industry = this.currentIndustry;
+        const title = `Sector: ${this.currentSector}, Metric: ${metric}, Listing Board: ${listingBoard}, Industry: ${industry}`;
         this.histogramData.push({ metric, chartData, title });
 
         console.log('parent data:', this.histogramData);
@@ -156,7 +156,9 @@ export class HistogramAnalysisComponent {
           this.currentMetric
         );
         this.trimmedMean = data.trimmedMean;
-        const title = `Sector: ${sector}, Metric: ${this.currentMetric}`;
+        const listingBoard = this.currentListingBoard;
+        const industry = this.currentIndustry;
+        const title = `Sector: ${sector}, Metric: ${this.currentMetric}, Listing Board: ${listingBoard}, Industry: ${industry}`;
         this.histogramData.push({ sector, chartData, title });
         this.cdr.detectChanges(); // Mark for check after data is updated
       }
@@ -186,13 +188,10 @@ export class HistogramAnalysisComponent {
     if (this.currentGroupBy === 'Sector') {
       this.histogramData = [];
       this.currentMetric = event;
-      // this.getHistogramItems();
-      // this.getHistogramItems2();
       this.subscribeGroupSector();
     } else if (this.currentGroupBy === 'Metric') {
       this.currentMetric = event;
       this.histogramData = [];
-      // this.getHistogramItems2();
       this.subscribeGroupMetric();
     }
     console.log('parent: ' + this.currentMetric);
@@ -202,46 +201,45 @@ export class HistogramAnalysisComponent {
     if (this.currentGroupBy === 'Sector') {
       this.currentSector = event;
       this.histogramData = [];
-      // this.getHistogramItems2();
       this.subscribeGroupSector();
       console.log('parent: ' + this.currentSector);
     } else if (this.currentGroupBy === 'Metric') {
       this.histogramData = [];
       this.currentSector = event;
       this.subscribeGroupMetric();
-      // this.getHistogramItems2();
     }
     console.log('parent: ' + this.currentSector);
   }
 
   receiveChangeGroupBy(event: string) {
     this.currentGroupBy = event;
-    this.histogramData = []; //kosongkan dulu histogramnya
-    // this.getHistogramItems2();
-    
+    this.histogramData = []; 
+    this.getFilterOptions();    
   }
 
   receiveSetListingBoard(event: string) {
     if (this.currentGroupBy === 'Sector') {
       this.currentListingBoard = event;
       this.histogramData = [];
-      this.getFilterOptions();
-
-      // this.subscribeGroupSector();
-      // this.getHistogramItems2();
+      this.subscribeGroupSector();
     } else if (this.currentGroupBy === 'Metric') {
       this.currentListingBoard = event;
       this.histogramData = [];
-      this.getFilterOptions();
-
-      // this.subscribeGroupMetric();
-      // this.getHistogramItems2();
+      this.subscribeGroupMetric();
     }
   }
 
   receiveSetIndustry(event: string) {
-    this.currentIndustry = event;
-    this.histogramData = [];
-    // this.getHistogramItems2();
+    if (this.currentGroupBy === 'Sector') {
+      this.currentIndustry = event;
+      this.histogramData = [];
+      this.subscribeGroupSector();
+    } else if (this.currentGroupBy === 'Metric') {
+      this.currentIndustry = event;
+      this.histogramData = [];
+      this.subscribeGroupMetric();
+    }
+
+    
   }
 }

@@ -3,7 +3,7 @@
         <div class="cell"><label for="menu-label">{{label}}</label></div>
         <div class="select is-small is-fullwidth cell" >
           <select title="dropdown is-fullwidth" (change)="onItemChange($event)">
-            <option value="">ALL</option>
+            <option value="" [selected]="currentItem===''" >ALL</option>
             <option *ngFor="let item of items" [value]="item">{{item}} </option>
             </select>
         </div>
