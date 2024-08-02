@@ -95,6 +95,10 @@ export class FlaskApiService {
 
   }
 
+  getIncomeStatement(symbol: string): Observable<any>{
+    return this.http.get('http://127.0.0.1:5000/financials/q-inc-stmt/'+symbol)
+  }
+
   getHistogramPic(sector: string, metric: string): Observable<any>{
     const url = `${this.url}/hist/${sector}/${metric}/hist.png`
     return this.http.get(url, {responseType: 'blob'});

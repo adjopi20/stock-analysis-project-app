@@ -16,6 +16,13 @@ export const routes: Routes = [
         (m) => m.HistogramAnalysisComponent
       ),
   },
+  {
+    path: 'financials',
+    loadComponent: () =>
+      import('./features/components/financials/financials.component').then(
+        (m) => m.FinancialsComponent
+      ),
+  },
   
 
   // {

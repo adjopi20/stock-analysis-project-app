@@ -6,6 +6,15 @@ from services.stock_financial_service import *
 
 financials_bp = Blueprint('financials', __name__)
 
+@financials_bp.route('/financials/inc-stmt/<symbol>', methods=['GET'])
+def get_income_statement(symbol):
+    res = getIncStmt(symbol)
+    return jsonify(res)
+
+@financials_bp.route('/financials/q-inc-stmt/<symbol>', methods=['GET'])
+def get_q_income_statement(symbol):
+    res = getQIncStmt(symbol)
+    return jsonify(res)
 
 @financials_bp.route('/financials/q-income-statement/<symbol>', methods=['GET'])
 def get_quarterly_income_statement(symbol):

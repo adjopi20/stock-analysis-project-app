@@ -1,17 +1,18 @@
 import logging
 from utils.convertTimestamp import convert_timestamp
 import yfinance as yf
-from services.stock_info_service import scrape_stock
+from services.stock_info_service import scrape_stock, scrape_stock_with_cache
 from configs.cache_config import cache_ttl, client
 import pydantic
 import json
 import redis
+import numpy as np
 
 
     
 def get_all_q_income_statement():
     financials_arr = []
-    scraped_stocks = scrape_stock()
+    scraped_stocks = scrape_stock_with_cache()
     symbol_arr = [item['symbol'] for item in scraped_stocks]
 
     for symbol in symbol_arr:
@@ -73,12 +74,51 @@ def get_q_inc_stmt_with_cache(symbol):
     except Exception as e:  
         logging.error(f"found error: {e}")            
     
+def getIncStmt(symbol):
+    try:
+        inc_stmt = (yf.Ticker(symbol).income_stmt).to_dict()
+        financial_dict = convert_timestamp(inc_stmt)
+        res = {
+            'symbol' : symbol,
+            'income_statement' : financial_dict
+        }
+
+        # client.set(cache_key, json.dumps(res), ex=cache_ttl)
+        print("without cache")
+        return res
+    except Exception as e:  
+        logging.error(f"found error: {e}")      
+
+def getQIncStmt(symbol):
+    try:
+
+        inc_stmt = (yf.Ticker(symbol).quarterly_income_stmt).to_dict()
+        financial_dict = convert_timestamp(inc_stmt)
+        # print(f"findict: {financial_dict}")
+        for key, value in financial_dict.items():
+            # if np.isnan(value):
+            #     financial_dict[key] = None
+            for sub_key, sub_value in value.items():
+                if np.isnan(sub_value):
+                    value[sub_key] = None
+                    # value1 = None
+                    # financial_dict[key][key] = None
+                print(f"kontol {sub_key}: {sub_value}")
+        res = {
+            'symbol' : symbol,
+            'q_income_statement' : financial_dict
+        }
+        print("without cache")
+        return res
+    except Exception as e:  
+        logging.error(f"found error: {e}")         
+
 
 
 #========================================================================
 def get_all_q_bal_sheet():
     financials_arr = []
-    scraped_stocks = scrape_stock()
+    scraped_stocks = scrape_stock_with_cache()
     symbol_arr = [item['symbol'] for item in scraped_stocks]
 
     for symbol in symbol_arr:
@@ -145,7 +185,7 @@ def get_q_bal_sheet_with_cache(symbol):
 #========================================================================
 def get_all_q_cash_flow():
     financials_arr = []
-    scraped_stocks = scrape_stock()
+    scraped_stocks = scrape_stock_with_cache()
     symbol_arr = [item['symbol'] for item in scraped_stocks]
 
     for symbol in symbol_arr:

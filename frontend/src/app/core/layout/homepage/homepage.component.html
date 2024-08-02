@@ -36,13 +36,12 @@
           <li [ngClass]="{ 'is-active': feature === 'info' }">
             <a (click)="onTabChange('info')">All Info</a>
           </li>
-          <li
-            [ngClass]="{ 'is-active': feature === 'histogram' }"
-            
-          >
+          <li [ngClass]="{ 'is-active': feature === 'histogram' }">
             <a (click)="onTabChange('histogram')">Metrics Histogram</a>
           </li>
-          <li><a>Components</a></li>
+          <li [ngClass]="{ 'is-active': feature === 'financials' }">
+            <a (click)="onTabChange('financials')">Financials</a>
+          </li>
           <!-- <li><a>Layout</a></li> -->
         </ul>
       </div>
@@ -50,11 +49,6 @@
   </div>
 </section>
 
-
-
-<app-dashboard-canvas
-[feature]="feature"
-></app-dashboard-canvas>
-
+<app-dashboard-canvas [feature]="feature"></app-dashboard-canvas>
 
 <app-footer></app-footer>
