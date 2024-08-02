@@ -4,18 +4,38 @@
       <h1 class="title is-align-self-center">Dashboard Histogram</h1>
     </div>
     <div class="cell is-row-span-3">
-      <app-radio></app-radio>
+      <app-radio
+      [items]="FinancialTypeList" 
+      [currentItem]="currentFinancialType" 
+      (itemEvent)="receiveSetFinancialType($event)"
+      [groupName]="'financialTypeGroup'"
+      [label]="'Financial Type: '"></app-radio>
       <app-dropdown></app-dropdown>
       <app-dropdown> </app-dropdown>
     </div>
     <div class="cell is-col-span-4">
       <ng-container>
-        <app-radio></app-radio>
-        <app-checkboxes></app-checkboxes>
+        <app-radio
+        [items]="sectorList"
+        [currentItem]="currentSector"
+        [groupName]="'sectorGroup'"
+        (itemEvent)="receiveSetSector($event)"
+        [label]="'Sector: '"></app-radio>
+        <app-radio
+        [items]="industryList"
+        [currentItem]="currentIndustry"
+        [groupName]="'industryGroup'"
+        [label]="'Industry: '"
+        (itemEvent)="receiveSetIndustry($event)"></app-radio>
+        <app-checkboxes
+        [items]="symbolList"
+        [currentItem]="selectedSymbol"
+        [groupName]="'symbolGroup'"
+        ></app-checkboxes>
       </ng-container>
 
       <ng-container>
-        <app-radio></app-radio>
+       
         <app-checkboxes></app-checkboxes>
       </ng-container>
 
