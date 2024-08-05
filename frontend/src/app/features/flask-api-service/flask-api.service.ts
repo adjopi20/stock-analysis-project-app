@@ -98,6 +98,14 @@ export class FlaskApiService {
   getQIncomeStatement(symbol: string): Observable<any>{
     return this.http.get('http://127.0.0.1:5000/financials/q-inc-stmt/'+symbol)
   }
+  getQBalSheet(symbol: string): Observable<any>{
+    return this.http.get('http://127.0.0.1:5000/financials/q-balance-sheet/'+symbol)
+  }
+  getQCashFlow(symbol: string): Observable<any>{
+    return this.http.get('http://127.0.0.1:5000/financials/q-cash-flow/'+symbol)
+  }
+
+
   getIncomeStatement(symbol: string): Observable<any>{
     return this.http.get('http://127.0.0.1:5000/financials/inc-stmt/'+symbol)
   }
