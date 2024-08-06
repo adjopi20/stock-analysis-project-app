@@ -32,8 +32,12 @@ export class FinancialsComponent {
   industryList: any[] = [];
   currentIndustry: string = '';
 
+  listingBoardList: any[] = [];
+  currentListingBoard? : string | undefined ;
+
   symbolList: any[] = [];
   selectedSymbol: any[] = [];
+  currentSymbol: string = '';
 
   rawData: any[] = [];
   dataInASector: any[] = [];
@@ -58,7 +62,7 @@ export class FinancialsComponent {
 
       const filter = await firstValueFrom(this.apiService.getFilterOptions());
       this.sectorList = filter.sector.filter( (item: any) => item !== 'Unknown');
-
+      this.listingBoardList = filter.listingBoard;
       this.currentSector = this.sectorList[0];
 
       for (let item of data.data) {
@@ -74,13 +78,18 @@ export class FinancialsComponent {
       for (let item of this.dataInASector) {
         if (
           this.currentSector === item['sector'] &&
-          this.currentIndustry === item['industry']
+          this.currentIndustry === item['industry'] &&
+          (this.currentListingBoard === undefined || this.currentListingBoard === item['listing_board'])
         )
           this.symbolList.push(item['symbol']);
       }
-
-      this.selectedSymbol.push(this.symbolList[0], this.symbolList[1]);
-      console.log('selectedSymbol', this.selectedSymbol);
+      
+      if (this.symbolList.length > 0) {
+        this.currentSymbol = this.symbolList[0];
+        this.selectedSymbol.push(this.currentSymbol);
+      }
+      // this.selectedSymbol.push(this.symbolList[0]);
+      // console.log('selectedSymbol', this.selectedSymbol);
 
       if (this.currentFinancialType === 'Income Statement'){
         this.getIncomeStatement();
@@ -174,6 +183,7 @@ export class FinancialsComponent {
     }
   }
 
+
   convertToLineChartIncStmt(data: any, symbol: any) {
     // Initialize with header row
     const dataTable = [
@@ -194,14 +204,14 @@ export class FinancialsComponent {
       const periodData = data.q_income_statement[period];
       const datePeriod = new Date(period); // Convert date to timestamp
 
-      const totalRevenue = periodData['Total Revenue'];
-      const totalExpense = periodData['Total Expenses'];
-      const operatingRevenue = periodData['Operating Revenue'];
-      const operatingExpense = periodData['Operating Expense'];
-      const EBITDA = periodData['EBITDA'];
-      const grossProfit = periodData['Gross Profit'];
-      const netIncome = periodData['Net Income'];
-      const basicEPS = periodData['Basic EPS'];
+      const totalRevenue = periodData['Total Revenue'] ?? 0;
+      const totalExpense = periodData['Total Expenses'] ?? 0;
+      const operatingRevenue = periodData['Operating Revenue'] ?? 0;
+      const operatingExpense = periodData['Operating Expense'] ?? 0;
+      const EBITDA = periodData['EBITDA'] ?? 0;
+      const grossProfit = periodData['Gross Profit'] ?? 0;
+      const netIncome = periodData['Net Income'] ?? 0;
+      const basicEPS = periodData['Basic EPS'] ?? 0;
 
       dataTable.push([
         datePeriod,
@@ -239,15 +249,15 @@ export class FinancialsComponent {
     Object.keys(data.q_balance_sheet).forEach((period: any) => {
       const periodData = data.q_balance_sheet[period];
       const datePeriod = new Date(period); // Convert date to timestamp
-      const totalAssets = periodData['Total Assets'];
-      const totalDebt = periodData['Total Debt'];
-      const netDebt = periodData['Net Debt'];
-      const WC = periodData['Working Capital'];
-      const CCE = periodData['Cash And Cash Equivalents'];
-      const TLN = periodData['Total Liabilities Net Minority Interest'];
-      const TEG = periodData['Total Equity Gross Minority Interest'];
-      const SE = periodData['Stockholders Equity'];
-      const RE = periodData['Retained Earnings'];
+      const totalAssets = periodData['Total Assets'] ?? 0;
+      const totalDebt = periodData['Total Debt'] ?? 0;
+      const netDebt = periodData['Net Debt'] ?? 0;
+      const WC = periodData['Working Capital'] ?? 0;
+      const CCE = periodData['Cash And Cash Equivalents'] ?? 0;
+      const TLN = periodData['Total Liabilities Net Minority Interest'] ?? 0;
+      const TEG = periodData['Total Equity Gross Minority Interest'] ?? 0;
+      const SE = periodData['Stockholders Equity'] ?? 0;
+      const RE = periodData['Retained Earnings'] ?? 0;
 
       dataTable.push([
         datePeriod,
@@ -287,15 +297,15 @@ export class FinancialsComponent {
     Object.keys(data.q_cash_flow).forEach((period: any) => {
       const periodData = data.q_cash_flow[period];
       const datePeriod = new Date(period); // Convert date to timestamp
-      const freeCashFlow = periodData['Free Cash Flow'];
-      const CFFOAD = periodData['Cash Flowsfromusedin Operating Activities Direct']
-      const CE = periodData['Capital Expenditure'];
-      const CDP = periodData['Cash Dividends Paid'];
-      const ECP = periodData['End Cash Position'];
-      const NLTDI = periodData['Net Long Term Debt Issuance'];
-      const FCF = periodData['Financing Cash Flow'];
-      const ICF = periodData['Investing Cash Flow'];
-      const CC = periodData['Changes In Cash'];
+      const freeCashFlow = periodData['Free Cash Flow'] ?? 0;
+      const CFFOAD = periodData['Cash Flowsfromusedin Operating Activities Direct'] ?? 0;
+      const CE = periodData['Capital Expenditure'] ?? 0;
+      const CDP = periodData['Cash Dividends Paid'] ?? 0;
+      const ECP = periodData['End Cash Position'] ?? 0;
+      const NLTDI = periodData['Net Long Term Debt Issuance'] ?? 0;
+      const FCF = periodData['Financing Cash Flow'] ?? 0;
+      const ICF = periodData['Investing Cash Flow'] ?? 0;
+      const CC = periodData['Changes In Cash'] ?? 0;
 
       dataTable.push([
         datePeriod,
@@ -313,6 +323,16 @@ export class FinancialsComponent {
     this.cdr.detectChanges();
     console.log('dataTable: ', dataTable);
     return dataTable;
+  }
+
+  tes(){
+    if (this.currentFinancialType === 'Income Statement'){
+      this.getIncomeStatement();
+    } else if (this.currentFinancialType === 'Balance Sheet'){
+      this.getBalSheet();
+    } else if (this.currentFinancialType === 'Cash Flow'){
+      this.getCashFlow();
+    }
   }
 
   
@@ -341,6 +361,7 @@ export class FinancialsComponent {
     }
     this.selectedSymbol = [];
     this.selectedSymbol.push(this.symbolList[0]);
+    this.tes();
   }
 
   industryChanged() {
@@ -354,11 +375,13 @@ export class FinancialsComponent {
     }
     this.selectedSymbol = [];
     this.selectedSymbol.push(this.symbolList[0]);
+    this.tes();
   }
 
   receiveSetFinancialType(event: string) {
     // this.industryList = [];
     // this.sectorList = [];
+    this.dataInASector = [];
     this.symbolList = [];
     this.selectedSymbol = []; 
     this.currentFinancialType = event;
@@ -376,7 +399,27 @@ export class FinancialsComponent {
   }
 
   receiveSetSymbol(event: string) {
+    // this.selectedSymbol = [];
+    this.currentSymbol = event;
+    this.lineChart = [];
+    // this.selectedSymbol.push(event);
+    console.log('selectedSymbol: ', this.selectedSymbol);
+    
+    this.tes();
+  }
+
+  receiveSetListingBoard(event: string) {
+    this.symbolList = [];
     this.selectedSymbol = [];
-    this.selectedSymbol.push(event);
+    this.dataInASector = [];
+
+    this.currentListingBoard = event===''? undefined: event;
+    this.getStockList();
+    console.log('parent currenlistingboard: ' + this.currentListingBoard);
+    console.log('selectedSymbol: ', this.selectedSymbol);
+    console.log('symbollist', this.symbolList);
+    
+    
+    
   }
 }

@@ -10,8 +10,13 @@
       (itemEvent)="receiveSetFinancialType($event)"
       [groupName]="'financialTypeGroup'"
       [label]="'Financial Type: '"></app-radio>
-      <app-dropdown></app-dropdown>
-      <app-dropdown> </app-dropdown>
+      <app-dropdown
+      (itemEvent)="receiveSetListingBoard($event)"
+      [currentItem]="currentListingBoard"
+      [items]="listingBoardList"
+      [label]="'Listing Board: '">
+      </app-dropdown>
+      <!-- <app-dropdown> </app-dropdown> -->
     </div>
     <div class="cell is-col-span-4">
       <ng-container>
@@ -32,13 +37,14 @@
         [currentItem]="selectedSymbol"
         [groupName]="'symbolGroup'"
         [label]="'Ticker:'"
+        (itemEvent)="receiveSetSymbol($event)"
         ></app-checkboxes>
       </ng-container>
 
-      <ng-container>
+      <!-- <ng-container>
        
         <app-checkboxes></app-checkboxes>
-      </ng-container>
+      </ng-container> -->
 
       <hr class="new1" />
       <!-- <app-checkboxes
