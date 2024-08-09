@@ -10,14 +10,17 @@
         <div class="card-content">
           <div class="media">
             <div class="media-content">
-              <a
-                class="title is-4"
-                style="text-decoration: none"
-                [href]="mainNews.link"
-                >{{ mainNews.title }}</a
-              >
+              <a class="title is-4 no-underline" [href]="mainNews.link">{{
+                mainNews.title
+              }}</a>
+
               <p class="subtitle is-6 has-text-info">
-                {{ mainNews.publisher }}
+                {{ mainNews.publisher }}@for (item of mainRelatedTickers; track
+                $index) {
+                <span class="tag is-space-2 is-normal is-primary is-5">{{
+                  item
+                }}</span>
+                }
               </p>
             </div>
           </div>
@@ -34,68 +37,120 @@
     </div>
     <ng-container>
       <div class="cell is-col-span-2">
-        <a
-          class="title is-6"
-          style="text-decoration: none"
-          [href]="allNews[0].link"
-          >{{ allNews[0].title }}</a
-        >
+        <a class="title is-6 no-underline" [href]="allNews[0].link">{{
+          allNews[0].title
+        }}</a>
+
         <p class="subtitle is-6 has-text-info">
-          {{ allNews[0].publisher }}
+          {{ allNews[0].publisher }} @for (item of allNews[0].relatedTickers;
+          track $index) {
+          <span class="tag is-normal is-primary is-5">{{ item }}</span>
+          }
+        </p>
+
+        <hr class="new1" />
+      </div>
+
+      <div class="cell is-col-span-2">
+        <a class="title is-6 no-underline" [href]="allNews[1].link">{{
+          allNews[1].title
+        }}</a>
+        <p class="subtitle is-6 has-text-info">
+          {{ allNews[1].publisher }} @for (item of allNews[1].relatedTickers;
+          track $index) {
+          <span class="tag is-normal is-primary is-5">{{ item }}</span>
+          }
         </p>
         <hr class="new1" />
       </div>
 
       <div class="cell is-col-span-2">
-        <a
-          class="title is-6"
-          style="text-decoration: none"
-          [href]="allNews[1].link"
-          >{{ allNews[1].title }}</a
-        >
+        <a class="title is-6 no-underline" [href]="allNews[2].link">{{
+          allNews[2].title
+        }}</a>
         <p class="subtitle is-6 has-text-info">
-          {{ allNews[1].publisher }}
+          {{ allNews[2].publisher }} @for (item of allNews[2].relatedTickers;
+          track $index) {
+          <span class="tag is-normal is-primary is-5">{{ item }}</span>
+          }
         </p>
         <hr class="new1" />
       </div>
 
       <div class="cell is-col-span-2">
-        <a
-          class="title is-6"
-          style="text-decoration: none"
-          [href]="allNews[2].link"
-          >{{ allNews[2].title }}</a
-        >
+        <a class="title is-6 no-underline" [href]="allNews[3].link">{{
+          allNews[3].title
+        }}</a>
         <p class="subtitle is-6 has-text-info">
-          {{ allNews[2].publisher }}
+          {{ allNews[3].publisher }} @for (item of allNews[3].relatedTickers;
+          track $index) {
+          <span class="tag is-normal is-primary is-5">{{ item }}</span>
+          }
         </p>
         <hr class="new1" />
       </div>
 
       <div class="cell is-col-span-2">
-        <a
-          class="title is-6"
-          style="text-decoration: none"
-          [href]="allNews[3].link"
-          >{{ allNews[3].title }}</a
-        >
+        <a class="title is-6 no-underline" [href]="allNews[4].link">{{
+          allNews[4].title
+        }}</a>
         <p class="subtitle is-6 has-text-info">
-          {{ allNews[3].publisher }}
-        </p>
-        <hr class="new1" />
-      </div>
-
-      <div class="cell is-col-span-2">
-        <a
-          class="title is-6"
-          style="text-decoration: none"
-          [href]="allNews[4].link"
-          >{{ allNews[4].title }}</a
-        >
-        <p class="subtitle is-6 has-text-info">
-          {{ allNews[4].publisher }}
+          {{ allNews[4].publisher }} @for (item of allNews[4].relatedTickers;
+          track $index) {
+          <span class="tag is-normal is-primary is-5">{{ item }}</span>
+          }
         </p>
       </div>
     </ng-container>
   </div>
+
+  <ng-container
+    *ngTemplateOutlet="
+      newsTemplate || defaultNewsTemplate;
+      context: { $implicit: allNews }
+    "
+  >
+  </ng-container>
 </div>
+
+<div class="fixed-grid has-2-cols">
+  <div class="grid tes is-column-gap">
+    <div class="cell tes2" *ngFor="let item of slicedNews">
+      <div class="columns tes3 is-7">
+        <div class="column is-one-quarter">
+          <figure class="image-frame">
+            <img
+              [src]="
+                getImgForItem(item)[0]?.url ||
+                'https://via.placeholder.com/140x140?text=No+Image'
+              "
+              alt="Placeholder image"
+            />
+          </figure>
+        </div>
+        <div class="column title-news">
+          <a
+            class="title is-6"
+            style="text-decoration: none"
+            [href]="item.link"
+          >
+            {{ item.title }}
+          </a>
+          <p class="subtitle is-6 has-text-info">
+            {{ item.publisher }}
+            <ng-container *ngFor="let ticker of item.relatedTickers">
+              <span class="tag is-normal is-primary is-5">{{ ticker }}</span>
+            </ng-container>
+          </p>
+          <hr class="new1" />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #defaultNewsTemplate>
+  <div></div>
+</ng-template>
+
+<ng-template #newsTemplate> </ng-template>

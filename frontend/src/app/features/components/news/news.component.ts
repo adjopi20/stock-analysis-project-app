@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ContentChild, Input, TemplateRef } from '@angular/core';
 import { FlaskApiService } from '../../flask-api-service/flask-api.service';
 import { NgFor } from '@angular/common';
+import { NewsDirectiveDirective } from '../../../shared/directive/news-directive/news-directive.directive';
 
 @Component({
   selector: 'app-news',
@@ -10,10 +11,17 @@ import { NgFor } from '@angular/common';
   styleUrl: './news.component.scss',
 })
 export class NewsComponent {
-  allNews: any[] = [];
-  mainNews: any;
-  resolutions: any[] = [];
-  resolution: any = {};
+  @Input() allNews: any[] = [];
+  @Input() mainNews: any;
+  @Input() resolutions: any[] = [];
+  @Input() resolution: any = {};
+  @Input() relatedTickers: any[] = [];
+  @Input() mainRelatedTickers: any[] = [];
+  slicedNews: any[]=[];
+  slicedNewsImg: any[]=[];
+
+  @ContentChild(NewsDirectiveDirective, {read: TemplateRef}) newsTemplate?: any;
+
 
   constructor(private apiService: FlaskApiService) {}
 
@@ -26,11 +34,27 @@ export class NewsComponent {
       next: (data: any) => {
         console.log(data);
         this.allNews = data;
+        this.slicedNews = this.allNews.slice(5);
+
+        // getImagesForItem(item)
+
+        
+        // for(let item of this.slicedNews){
+        //   if (item.thumbnail && item.thumbnail.resolutions){
+        //     this.slicedNewsImg.push(item.thumbnail.resolutions);
+        //   } else{
+        //     this.slicedNewsImg.push([])
+        //   }
+        // }
+
+        this.relatedTickers=data.relatedTickers;
         for (let item of this.allNews) {
           if (item['thumbnail']) {
             this.mainNews = item;
             this.resolutions = item.thumbnail.resolutions;
-            this.resolution = this.resolutions[0] || {};;
+            this.resolution = this.resolutions[0] || {};
+            this.mainRelatedTickers = item.relatedTickers;
+
             break;
           }
         }
@@ -38,5 +62,9 @@ export class NewsComponent {
       error: (error) => console.error('Error news:', error),
       complete: () => console.log('complete'),
     });
+  }
+
+  getImgForItem(item: any){
+    return item.thumbnail?.resolutions || [];
   }
 }

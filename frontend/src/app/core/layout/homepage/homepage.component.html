@@ -31,7 +31,9 @@
     <nav class="tabs is-boxed is-fullwidth">
       <div class="container">
         <ul>
-          <li><a>Overview</a></li>
+          <li [ngClass]="{ 'is-active': feature === 'overview' }">
+            <a (click)="onTabChange('overview')">Overview</a>
+          </li>
           <li [ngClass]="{ 'is-active': feature === 'news' }">
             <a (click)="onTabChange('news')">News</a>
           </li>

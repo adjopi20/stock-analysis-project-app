@@ -12,9 +12,9 @@ export const routes: Routes = [
   {
     path: 'histogram-analysis',
     loadComponent: () =>
-      import('./features/components/histogram-analysis/histogram-analysis.component').then(
-        (m) => m.HistogramAnalysisComponent
-      ),
+      import(
+        './features/components/histogram-analysis/histogram-analysis.component'
+      ).then((m) => m.HistogramAnalysisComponent),
   },
   {
     path: 'financials',
@@ -29,8 +29,14 @@ export const routes: Routes = [
       import('./features/components/news/news.component').then(
         (m) => m.NewsComponent
       ),
-    },
-  
+  },
+  {
+    path: 'overview',
+    loadComponent: () =>
+      import('./features/components/overview/overview.component').then(
+        (m) => m.OverviewComponent
+      ),
+  },
 
   // {
   //   path: '',
