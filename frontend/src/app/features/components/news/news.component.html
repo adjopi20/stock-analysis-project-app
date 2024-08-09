@@ -113,6 +113,8 @@
   </ng-container>
 </div>
 
+<ng-container *ngIf="showAdditionalSection">
+
 <div class="fixed-grid has-2-cols">
   <div class="grid tes is-column-gap">
     <div class="cell tes2" *ngFor="let item of slicedNews">
@@ -131,7 +133,6 @@
         <div class="column title-news">
           <a
             class="title is-6"
-            style="text-decoration: none"
             [href]="item.link"
           >
             {{ item.title }}
@@ -148,6 +149,7 @@
     </div>
   </div>
 </div>
+</ng-container>
 
 <ng-template #defaultNewsTemplate>
   <div></div>

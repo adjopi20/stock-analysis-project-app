@@ -1,12 +1,12 @@
 import { Component, ContentChild, Input, TemplateRef } from '@angular/core';
 import { FlaskApiService } from '../../flask-api-service/flask-api.service';
-import { NgFor } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { NewsDirectiveDirective } from '../../../shared/directive/news-directive/news-directive.directive';
 
 @Component({
   selector: 'app-news',
   standalone: true,
-  imports: [NgFor],
+  imports: [NgFor, NgIf],
   templateUrl: './news.component.html',
   styleUrl: './news.component.scss',
 })
@@ -17,6 +17,8 @@ export class NewsComponent {
   @Input() resolution: any = {};
   @Input() relatedTickers: any[] = [];
   @Input() mainRelatedTickers: any[] = [];
+  @Input() showAdditionalSection: boolean = true; // Add this input property
+
   slicedNews: any[]=[];
   slicedNewsImg: any[]=[];
 
