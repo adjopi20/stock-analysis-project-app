@@ -23,6 +23,13 @@ export const routes: Routes = [
         (m) => m.FinancialsComponent
       ),
   },
+  {
+    path: 'news',
+    loadComponent: () =>
+      import('./features/components/news/news.component').then(
+        (m) => m.NewsComponent
+      ),
+    },
   
 
   // {

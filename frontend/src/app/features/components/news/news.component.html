@@ -1,0 +1,101 @@
+<div class="fixed-grid notification has-5-cols">
+  <div class="grid column is-column-gap-4">
+    <div class="cell is-col-span-3 is-row-span-5">
+      <div class="card">
+        <div class="card-image">
+          <figure class="image is-5by3">
+            <img [src]="resolution?.url" alt="Placeholder image" />
+          </figure>
+        </div>
+        <div class="card-content">
+          <div class="media">
+            <div class="media-content">
+              <a
+                class="title is-4"
+                style="text-decoration: none"
+                [href]="mainNews.link"
+                >{{ mainNews.title }}</a
+              >
+              <p class="subtitle is-6 has-text-info">
+                {{ mainNews.publisher }}
+              </p>
+            </div>
+          </div>
+
+          <!-- <div class="content">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec
+                iaculis mauris. <a>bulmaio</a>. <a href="#">#css</a>
+                <a href="#">#responsive</a>
+                <br />
+                <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+              </div> -->
+        </div>
+      </div>
+    </div>
+    <ng-container>
+      <div class="cell is-col-span-2">
+        <a
+          class="title is-6"
+          style="text-decoration: none"
+          [href]="allNews[0].link"
+          >{{ allNews[0].title }}</a
+        >
+        <p class="subtitle is-6 has-text-info">
+          {{ allNews[0].publisher }}
+        </p>
+        <hr class="new1" />
+      </div>
+
+      <div class="cell is-col-span-2">
+        <a
+          class="title is-6"
+          style="text-decoration: none"
+          [href]="allNews[1].link"
+          >{{ allNews[1].title }}</a
+        >
+        <p class="subtitle is-6 has-text-info">
+          {{ allNews[1].publisher }}
+        </p>
+        <hr class="new1" />
+      </div>
+
+      <div class="cell is-col-span-2">
+        <a
+          class="title is-6"
+          style="text-decoration: none"
+          [href]="allNews[2].link"
+          >{{ allNews[2].title }}</a
+        >
+        <p class="subtitle is-6 has-text-info">
+          {{ allNews[2].publisher }}
+        </p>
+        <hr class="new1" />
+      </div>
+
+      <div class="cell is-col-span-2">
+        <a
+          class="title is-6"
+          style="text-decoration: none"
+          [href]="allNews[3].link"
+          >{{ allNews[3].title }}</a
+        >
+        <p class="subtitle is-6 has-text-info">
+          {{ allNews[3].publisher }}
+        </p>
+        <hr class="new1" />
+      </div>
+
+      <div class="cell is-col-span-2">
+        <a
+          class="title is-6"
+          style="text-decoration: none"
+          [href]="allNews[4].link"
+          >{{ allNews[4].title }}</a
+        >
+        <p class="subtitle is-6 has-text-info">
+          {{ allNews[4].publisher }}
+        </p>
+      </div>
+    </ng-container>
+  </div>
+</div>

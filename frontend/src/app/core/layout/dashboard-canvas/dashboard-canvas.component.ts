@@ -10,6 +10,7 @@ import { HistogramAnalysisComponent } from '../../../features/components/histogr
 import { StockInfoComponent } from '../../../features/components/stock-info/stock-info/stock-info.component';
 import { NgComponentOutlet } from '@angular/common';
 import { FinancialsComponent } from '../../../features/components/financials/financials.component';
+import { NewsComponent } from '../../../features/components/news/news.component';
 
 @Component({
   selector: 'app-dashboard-canvas',
@@ -28,7 +29,8 @@ export class DashboardCanvasComponent {
   private componentMap: { [key: string]: any } = {
     info: StockInfoComponent,
     histogram: HistogramAnalysisComponent,
-    financials: FinancialsComponent
+    financials: FinancialsComponent,
+    news: NewsComponent
   }; //bikin objek komponent yang menampung semua kata kunci dari parent dan komponent yang berkolerasi
   
   ngOnChanges(changes: SimpleChanges): void {

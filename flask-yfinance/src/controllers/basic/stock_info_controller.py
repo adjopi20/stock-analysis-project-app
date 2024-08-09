@@ -142,12 +142,14 @@ def filter_options():
         'metrics': metric
     })
 
-@info_bp.route('/clear_cache', methods=['POST'])
-def clear_cache():
+@info_bp.route('/clear_cache/<key>', methods=['POST'])
+def clear_cache(key):
     try:
-        client.delete('fetched_all_stock')
-        client.delete('scrape_all_stock')
-        client.delete('all_stock')
+        client.delete(key)                
+        # client.delete('all-news')
+        # client.delete('fetched_all_stock')
+        # client.delete('scrape_all_stock')
+        # client.delete('all_stock')
         return jsonify({"message": "Cache cleared successfully"}), 200
     except Exception as e:
         logging.error(f"Error clearing cache: {e}")

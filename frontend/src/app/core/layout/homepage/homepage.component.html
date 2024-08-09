@@ -32,7 +32,9 @@
       <div class="container">
         <ul>
           <li><a>Overview</a></li>
-          <li><a>News</a></li>
+          <li [ngClass]="{ 'is-active': feature === 'news' }">
+            <a (click)="onTabChange('news')">News</a>
+          </li>
           <li [ngClass]="{ 'is-active': feature === 'info' }">
             <a (click)="onTabChange('info')">All Info</a>
           </li>

@@ -110,6 +110,10 @@ export class FlaskApiService {
     return this.http.get('http://127.0.0.1:5000/financials/inc-stmt/'+symbol)
   }
 
+  getNews(): Observable<any>{
+    return this.http.get('http://127.0.0.1:5000/news')
+  }
+
   getHistogramPic(sector: string, metric: string): Observable<any>{
     const url = `${this.url}/hist/${sector}/${metric}/hist.png`
     return this.http.get(url, {responseType: 'blob'});

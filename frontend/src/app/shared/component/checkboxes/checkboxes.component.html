@@ -6,7 +6,7 @@
                 <div class="checkboxes  cell" *ngFor="let item of items" >
                     <label class="checkbox">
                       <input type="checkbox" [value]="item" [checked]="currentItem.includes(item)" [name]="groupName" (change)="changeItem(item)" />
-                       {{ item}}
+                       {{item}}
                     </label>
                 </div>
             </ng-container>
