@@ -10,12 +10,12 @@
         <div class="card-content">
           <div class="media">
             <div class="media-content">
-              <a class="title is-4 no-underline" [href]="mainNews.link">{{
-                mainNews.title
+              <a class="no-underline title" [ngClass]="titleSizeMain" [href]="mainNews?.link" style="text-decoration: none;">{{
+                mainNews?.title
               }}</a>
 
-              <p class="subtitle is-6 has-text-info">
-                {{ mainNews.publisher }}@for (item of mainRelatedTickers; track
+              <p class="subtitle has-text-info" [ngClass]="subtitleSizeMain">
+                {{ mainNews?.publisher }}@for (item of mainRelatedTickers; track
                 $index) {
                 <span class="tag is-space-2 is-normal is-primary is-5">{{
                   item
@@ -24,25 +24,18 @@
               </p>
             </div>
           </div>
-
-          <!-- <div class="content">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec
-                iaculis mauris. <a>bulmaio</a>. <a href="#">#css</a>
-                <a href="#">#responsive</a>
-                <br />
-                <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
-              </div> -->
         </div>
       </div>
     </div>
-    <ng-container>
+    <ng-container *ngFor="let i of slicedMainNews">
+      
       <div class="cell is-col-span-2">
-        <a class="title is-6 no-underline" [href]="allNews[0].link">{{
-          allNews[0].title
+        <a class="title no-underline" [ngClass]="titleSizeSubMain" [href]="i?.link" style="text-decoration: none;">{{
+          i?.title
         }}</a>
 
-        <p class="subtitle is-6 has-text-info">
-          {{ allNews[0].publisher }} @for (item of allNews[0].relatedTickers;
+        <p class="subtitle has-text-info" [ngClass]="subtitleSizeSubMain">
+          {{i?.publisher }} @for (item of i.relatedTickers;
           track $index) {
           <span class="tag is-normal is-primary is-5">{{ item }}</span>
           }
@@ -51,66 +44,11 @@
         <hr class="new1" />
       </div>
 
-      <div class="cell is-col-span-2">
-        <a class="title is-6 no-underline" [href]="allNews[1].link">{{
-          allNews[1].title
-        }}</a>
-        <p class="subtitle is-6 has-text-info">
-          {{ allNews[1].publisher }} @for (item of allNews[1].relatedTickers;
-          track $index) {
-          <span class="tag is-normal is-primary is-5">{{ item }}</span>
-          }
-        </p>
-        <hr class="new1" />
-      </div>
-
-      <div class="cell is-col-span-2">
-        <a class="title is-6 no-underline" [href]="allNews[2].link">{{
-          allNews[2].title
-        }}</a>
-        <p class="subtitle is-6 has-text-info">
-          {{ allNews[2].publisher }} @for (item of allNews[2].relatedTickers;
-          track $index) {
-          <span class="tag is-normal is-primary is-5">{{ item }}</span>
-          }
-        </p>
-        <hr class="new1" />
-      </div>
-
-      <div class="cell is-col-span-2">
-        <a class="title is-6 no-underline" [href]="allNews[3].link">{{
-          allNews[3].title
-        }}</a>
-        <p class="subtitle is-6 has-text-info">
-          {{ allNews[3].publisher }} @for (item of allNews[3].relatedTickers;
-          track $index) {
-          <span class="tag is-normal is-primary is-5">{{ item }}</span>
-          }
-        </p>
-        <hr class="new1" />
-      </div>
-
-      <div class="cell is-col-span-2">
-        <a class="title is-6 no-underline" [href]="allNews[4].link">{{
-          allNews[4].title
-        }}</a>
-        <p class="subtitle is-6 has-text-info">
-          {{ allNews[4].publisher }} @for (item of allNews[4].relatedTickers;
-          track $index) {
-          <span class="tag is-normal is-primary is-5">{{ item }}</span>
-          }
-        </p>
-      </div>
+     
     </ng-container>
   </div>
 
-  <ng-container
-    *ngTemplateOutlet="
-      newsTemplate || defaultNewsTemplate;
-      context: { $implicit: allNews }
-    "
-  >
-  </ng-container>
+
 </div>
 
 <ng-container *ngIf="showAdditionalSection">
@@ -133,12 +71,12 @@
         <div class="column title-news">
           <a
             class="title is-6"
-            [href]="item.link"
+            [href]="item?.link"
           >
-            {{ item.title }}
+            {{ item?.title }}
           </a>
           <p class="subtitle is-6 has-text-info">
-            {{ item.publisher }}
+            {{ item?.publisher }}
             <ng-container *ngFor="let ticker of item.relatedTickers">
               <span class="tag is-normal is-primary is-5">{{ ticker }}</span>
             </ng-container>

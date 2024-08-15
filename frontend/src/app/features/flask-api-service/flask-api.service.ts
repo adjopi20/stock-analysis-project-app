@@ -118,5 +118,8 @@ export class FlaskApiService {
     const url = `${this.url}/hist/${sector}/${metric}/hist.png`
     return this.http.get(url, {responseType: 'blob'});
   }
+
+  getHistoricalPrice(period: string, start: string, end: string): Observable<any>{
+    return this.http.get(`http://127.0.0.1:5000/history-metadata/${period}/${start}/${end}`)}
   
 }

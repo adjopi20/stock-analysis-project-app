@@ -1,0 +1,50 @@
+<div class="container">
+    <div class="notification">
+        <p-carousel 
+        [value]="items" 
+        [numVisible]="3" 
+        [numScroll]="3" 
+        [circular]="true" 
+        [responsiveOptions]="responsiveOptions" 
+        autoplayInterval="3000">
+             <ng-template let-items pTemplate="item">
+                   <!-- <div class="border-1 surface-border border-round m-2 p-3">
+                        <div class="mb-3">
+                            <div class="relative mx-auto">
+                                <div
+                                [value]="product.inventoryStatus" 
+                                    [severity]="getSeverity(product.inventoryStatus)"></div>
+                                <img 
+                                    src="https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png" 
+                                    [alt]="product.name" 
+                                    class="w-full border-round"
+                                    title="{{ product.name }}" />
+                                <p-tag 
+                                     
+                                    class="absolute" 
+                                    [ngStyle]="{ 'left.px': 5, 'top.px': 5 }" />
+                            </div>
+                        </div>
+                        <div class="mb-3 font-medium">
+                            {{ product.name }}
+                        </div>
+                        <div class="flex justify-content-between align-items-center">
+                        <div class="mt-0 font-semibold text-xl">
+                            {{ '$' + product.price }}
+                        </div>
+                            <span>
+                                <p-button icon="pi pi-heart" severity="secondary" [outlined]="true" />
+                                <p-button icon="pi pi-shopping-cart" styleClass="ml-2" />
+                            </span>
+                        </div>
+                    </div> -->
+                    <!-- <div class="notification">
+                        <p>{{item}}</p>
+                        <img src="https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png" alt="Image" width="150" height="150" />
+                    </div> -->
+            </ng-template> 
+            
+    </p-carousel>
+    </div>
+</div>
+

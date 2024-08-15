@@ -11,6 +11,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 @import "https://cdn.jsdelivr.net/npm/bulma@1.0.1/css/bulma.min.css";
 @import "../node_modules/bulma/bulma.scss";
 @import "../node_modules/@fortawesome/fontawesome-free/css/all.min.css";
+// @import "node_modules/bulma-carousel/dist/css/bulma-carousel.min.css";
+
 
 $container-offset: 2 * iv.$gap !default;
 $container-max-width: iv.$fullhd !default;
@@ -94,6 +96,8 @@ $container-max-width: iv.$fullhd !default;
   --monkey-primary-03: #0a92c4;
   --monkey-primary-04: #eabfb9;
   --monkey-secondary-01: #bbf1ff;
+  --primeng-color: #007bff;
+
 
 
   --light: #d8dbe0;
@@ -149,3 +153,15 @@ $container-max-width: iv.$fullhd !default;
 hr.new1 {
   border-top: 1px solid var(--monkey-primary-01);
 }
+
+// /* Order */
+// @layer reset, primeng;
+
+// /* Reset CSS */
+// @layerreset {
+//     button,
+//     input {
+//         /* CSS to Reset */
+//     }
+// }
+  

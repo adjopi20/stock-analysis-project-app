@@ -1,12 +1,12 @@
 import { Component, ContentChild, Input, TemplateRef } from '@angular/core';
 import { FlaskApiService } from '../../flask-api-service/flask-api.service';
-import { NgFor, NgIf } from '@angular/common';
+import { NgClass, NgFor, NgIf } from '@angular/common';
 import { NewsDirectiveDirective } from '../../../shared/directive/news-directive/news-directive.directive';
 
 @Component({
   selector: 'app-news',
   standalone: true,
-  imports: [NgFor, NgIf],
+  imports: [NgFor, NgIf, NgClass],
   templateUrl: './news.component.html',
   styleUrl: './news.component.scss',
 })
@@ -18,7 +18,13 @@ export class NewsComponent {
   @Input() relatedTickers: any[] = [];
   @Input() mainRelatedTickers: any[] = [];
   @Input() showAdditionalSection: boolean = true; // Add this input property
+  @Input() titleSizeMain: string = 'is-5';
+  @Input() subtitleSizeMain: string = 'is-5';
+  @Input() titleSizeSubMain: string = 'is-6';
+  @Input() subtitleSizeSubMain: string = 'is-6';
 
+
+  slicedMainNews: any[]=[];
   slicedNews: any[]=[];
   slicedNewsImg: any[]=[];
 
@@ -37,6 +43,7 @@ export class NewsComponent {
         console.log(data);
         this.allNews = data;
         this.slicedNews = this.allNews.slice(5);
+        this.slicedMainNews = this.allNews.slice(1, 5);
 
         // getImagesForItem(item)
 
@@ -67,6 +74,12 @@ export class NewsComponent {
   }
 
   getImgForItem(item: any){
+    // for(let i = 0; i < 2; i++){
+    //   if(item.thumbnail?.resolutions[i]){
+    //     return item.thumbnail?.resolutions[i]
+    //   }
+    // }
     return item.thumbnail?.resolutions || [];
+   
   }
 }

@@ -30,7 +30,7 @@ import { HistogramAnalysisComponent } from '../../../features/components/histogr
   styleUrl: './homepage.component.scss',
 })
 export class HomepageComponent {
-  feature: string = 'info';
+  feature: string = 'overview';
 
 
   ngOnInit(): void {
