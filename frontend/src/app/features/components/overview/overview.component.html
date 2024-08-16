@@ -5,6 +5,13 @@
     </div>
     <div class="cell is-col-span-1"> <div class="notification">
         <h1>Top Gainers</h1>
+        <div class="columns is-multiline" *ngFor="let item of topGainers">
+          <div class="column" >
+            <p class="subtitle is-7 has-text-info" >{{item.symbol}}</p>
+            <p class="title is-7">{{item.percentChange}}</p>
+            <p class="title is-7">{{item.price}}</p>
+          </div>
+        </div>
     </div></div>
     <div class="cell is-row-start-2 is-col-span-2"> <div class="notification"></div></div>
     <div class="cell is-row-start-2 is-col-span-2"><div class="notification"></div></div>
