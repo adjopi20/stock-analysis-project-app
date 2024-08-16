@@ -8,5 +8,9 @@
     </div></div>
     <div class="cell is-row-start-2 is-col-span-2"> <div class="notification"></div></div>
     <div class="cell is-row-start-2 is-col-span-2"><div class="notification"></div></div>
+    <div class="cell is-row-start-3 is-col-span-2" *ngIf="latestPrice">
+        <div class="notification">Latest Price: {{ latestPrice.latestPrice }}
+        </div>
+      </div>
   </div>
 </div>
