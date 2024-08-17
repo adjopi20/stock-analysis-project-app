@@ -154,6 +154,15 @@ hr.new1 {
   border-top: 1px solid var(--monkey-primary-01);
 }
 
+.vr.new1 {
+  border-left: 2px solid var(--monkey-primary-01); /* Adjust thickness and color */
+  height: 100%; /* Full height of the container */
+  margin-right: 8px; /* Space between the vertical line and text */
+}
+
+.is-align-items-center {
+  align-items: center;
+}
 // /* Order */
 // @layer reset, primeng;
 

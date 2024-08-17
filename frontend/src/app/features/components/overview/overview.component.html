@@ -1,23 +1,68 @@
 <div class="fixed-frid has-4-cols has-4-">
   <div class="grid">
     <div class="cell is-col-span-3">
-      <app-news [showAdditionalSection]="false" [titleSizeMain]="'is-6'" [subtitleSizeMain]="'is-7'" [titleSizeSubMain]="'is-6'" [subtitleSizeSubMain]="'is-7'"></app-news>
+      <app-news
+        [showAdditionalSection]="false"
+        [titleSizeMain]="'is-6'"
+        [subtitleSizeMain]="'is-7'"
+        [titleSizeSubMain]="'is-6'"
+        [subtitleSizeSubMain]="'is-7'"
+      ></app-news>
     </div>
-    <div class="cell is-col-span-1"> <div class="notification">
-        <h1>Top Gainers</h1>
-        <div class="columns is-multiline" *ngFor="let item of topGainers">
-          <div class="column" >
-            <p class="subtitle is-7 has-text-info" >{{item.symbol}}</p>
-            <p class="title is-7">{{item.percentChange}}</p>
-            <p class="title is-7">{{item.price}}</p>
+    <div class="cell is-col-span-1">
+      <div class="notification">
+        <h1 class="subtitle is-6">Top Gainers</h1>
+        <!-- <hr class="new1" /> -->
+        <div class="columns is-multiline">
+          <div class="column is-half" *ngFor="let item of topGainers">
+            <div class="container" style="border-left: 2px solid var(--monkey-primary-01); padding-left: 1rem;">
+
+            <p class="is-size-7 has-text-info">{{ item.symbol }}</p>
+            <div class="is-flex is-justify-content-space-between">
+              <p class="is-size-7 has-text-success">
+                <i class="fas fa-caret-up"></i> {{ item.percentChange }}%
+              </p>
+              <p class="is-size-7">Rp{{ item.price }}</p>
+            </div>
+            </div>
           </div>
         </div>
-    </div></div>
-    <div class="cell is-row-start-2 is-col-span-2"> <div class="notification"></div></div>
-    <div class="cell is-row-start-2 is-col-span-2"><div class="notification"></div></div>
-    <div class="cell is-row-start-3 is-col-span-2" *ngIf="latestPrice">
-        <div class="notification">Latest Price: {{ latestPrice.latestPrice }}
+
+        <!-- <div class="cell is-col-span-1"> -->
+        <!-- <div class="notification"> -->
+          <hr class="new1" />
+
+          <h1 class="subtitle is-6">Top Losers</h1>
+
+          <div class="columns is-multiline">
+            <div class="column is-half" *ngFor="let item of topLosers">
+              <div class="container" style="border-left: 2px solid var(--monkey-primary-01); padding-left: 1rem;">
+                <p class="is-size-7 has-text-info">{{ item.symbol }}</p>
+                <div class="is-flex is-justify-content-space-between">
+                  <p class="is-size-7 has-text-danger">
+                    <i class="fas fa-caret-down"></i>
+                    {{ item.percentChange }}%
+                  </p>
+                  <p class="is-size-7">Rp{{ item.price }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        <!-- </div> -->
+
+        <!-- </div> -->
+      </div>
+      <div class="cell is-row-start-2 is-col-span-2">
+        <div class="notification"></div>
+      </div>
+      <div class="cell is-row-start-2 is-col-span-2">
+        <div class="notification"></div>
+      </div>
+      <div class="cell is-row-start-3 is-col-span-2" *ngIf="latestPrice">
+        <div class="notification">
+          Latest Price: {{ latestPrice.latestPrice }}
         </div>
       </div>
+    </div>
   </div>
 </div>

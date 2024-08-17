@@ -84,6 +84,8 @@ export class OverviewComponent {
   //   .slice(0, 10);
 
   topGainerss() {
+    let list = [];
+
     for (let item of this.stocks) {
       // if (item.metadata.symbol === 'AALI.JK') {
       const close = item.history.Close;
@@ -105,19 +107,16 @@ export class OverviewComponent {
         price: latestPrice,
         percentChange: percentChange,
       };
-      this.topGainers.push(tes);
+      list.push(tes);
     }
-
-    this.topGainers.sort((a, b) => b.percentChange - a.percentChange)
-    this.topGainers = this.topGainers.slice(0, 10);
-    console.log("this.topGainers",this.topGainers);
     
-    // this.latestPrice = {
-    //   latestPrice: latestPrice,
-    // };
-    // }
-  }
 
+    list = list.sort((a: any , b:any) => b.percentChange - a.percentChange);
+    this.topGainers = list.slice(0, 10);
+    this.topLosers=list.slice(list.length-10,list.length);
+  }  
+
+ 
   // const today: Date = new Date();
   // const oneDay: number = 24*60*60*1000;
   // const startDate= new Date(today.getTime()-oneDay*2);
