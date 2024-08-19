@@ -124,6 +124,7 @@ export class OverviewComponent {
       const end = dates[dates.length - 2];
       const endPrice = close[end];
       const volume = volumes[end];
+      const companyName = item.metadata.longName;
 
       const percentChange = (
         ((endPrice - startPrice) / startPrice) *
@@ -132,6 +133,7 @@ export class OverviewComponent {
 
       const tes = {
         symbol: item.metadata.symbol,
+        companyName: companyName,
         price: latestPrice,
         percentChange: percentChange,
         lastDayVolume: volume,
@@ -155,7 +157,6 @@ export class OverviewComponent {
 
     for (let item of this.stocks) {
       const close = item.history.Close;
-      const volumes = item.history.Volume;
       const dates = Object.keys(close);
       const latest = dates[dates.length - 1];
       const latestPrice = close[latest];
@@ -163,6 +164,7 @@ export class OverviewComponent {
       const startPrice = close[start];
       const end = dates[dates.length - 2];
       const endPrice = close[end];
+      const companyName = item.metadata.longName;
 
       const percentChange = (
         ((endPrice - startPrice) / startPrice) *
@@ -171,6 +173,7 @@ export class OverviewComponent {
 
       const tes = {
         symbol: item.metadata.symbol,
+        companyName: companyName,
         price: latestPrice,
         percentChange: percentChange,
       };
@@ -198,6 +201,7 @@ export class OverviewComponent {
       const startPrice = close[start];
       const end = dates[dates.length - 2];
       const endPrice = close[end];
+      const companyName = item.metadata.longName;
 
       const percentChange = (
         ((endPrice - startPrice) / startPrice) *
@@ -206,6 +210,7 @@ export class OverviewComponent {
 
       const tes = {
         symbol: item.metadata.symbol,
+        companyName: companyName,
         price: latestPrice,
         percentChange: percentChange,
       };

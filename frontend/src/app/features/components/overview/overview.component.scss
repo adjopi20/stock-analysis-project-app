@@ -2,3 +2,15 @@
     display: flex;
     flex-direction: column;
 }
+
+.truncated{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+}
+
+.left-border{
+    border-left: 2px solid var(--monkey-primary-01);
+    padding-left: 1rem;
+}
