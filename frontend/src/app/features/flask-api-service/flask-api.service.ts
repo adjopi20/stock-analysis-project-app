@@ -129,10 +129,20 @@ export class FlaskApiService {
   }
 
   getHistoricalPrice(
-    period: string,
+    period: string
     // start?: string,
     // end?: string
   ): Observable<any> {
     return this.http.get(`http://127.0.0.1:5000/history-metadata/${period}`);
+  }
+
+  getStockHistoricalData(symbol: string, period: string): Observable<any> {
+    return this.http.get(
+      `http://127.0.0.1:5000/history-metadata/${symbol}/${period}`
+    );
+  }
+
+  getStockInfo(symbol: string): Observable<any> {
+    return this.http.get(`http://127.0.0.1:5000/info2/${symbol}`);
   }
 }

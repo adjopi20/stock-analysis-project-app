@@ -42,7 +42,7 @@
 
             <div class="columns is-multiline">
               <div class="column is-half" *ngFor="let item of topDividendYield">
-                <div class="container left-border">
+                <div class="container is-loading left-border">
                   <div class="is-flex is-justify-content-space-between">
                     <p class="is-size-7 has-text-info">{{ item.symbol }}</p>
                     <p class="is-size-7 has-text-warning">
@@ -98,9 +98,10 @@
               <div class="column is-one-third" *ngFor="let item of topVolumes">
                 <div class="container left-border">
                   <div class="is-flex is-justify-content-space-between">
-                  <p class="is-size-7 has-text-info">{{ item.symbol }}</p>
-                  <p class="is-size-7 has-text-warning">{{ item.price | currency : "Rp"}}</p>
-
+                    <p class="is-size-7 has-text-info">{{ item.symbol }}</p>
+                    <p class="is-size-7 has-text-warning">
+                      {{ item.price | currency : "Rp" }}
+                    </p>
                   </div>
                   <div class="is-flex is-justify-content-space-between">
                     <p class="is-size-7 truncated">{{ item.companyName }}</p>
@@ -108,7 +109,6 @@
                   <p class="is-size-7 has-text-primary">
                     {{ item.lastDayVolume | number }}
                   </p>
-                  
                 </div>
               </div>
             </div>
@@ -185,12 +185,12 @@
   </div>
 
   <div class="column">
-    <div class="fixed-grid has-1 -cols">
+    <div class="fixed-grid has-1-cols">
       <div class="grid">
         <div class="cell is-row-start-1">
           <div class="notification">
+            <!-- @if (isLoading==false) { -->
             <h1 class="subtitle is-6">Top Gainers</h1>
-            <!-- <hr class="new1" /> -->
             <div class="columns is-multiline">
               <div class="column is-half" *ngFor="let item of topGainers">
                 <div class="container left-border">
@@ -206,6 +206,9 @@
                 </div>
               </div>
             </div>
+            <!-- } @else if (isLoading==true) { -->
+            <!-- <></  app-loading> -->
+            <!-- } -->
 
             <hr class="new1" />
 

@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { DashboardCanvasComponent } from './core/layout/dashboard-canvas/dashboard-canvas.component';
+import { StockPageComponent } from './features/components/stock-page/stock-page.component';
 
 export const routes: Routes = [
   {
@@ -35,6 +36,14 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/components/overview/overview.component').then(
         (m) => m.OverviewComponent
+      ),
+  },
+  {
+    path: 'stock/:symbol',
+    // component: StockPageComponent,
+    loadComponent: () =>
+      import('./features/components/stock-page/stock-page.component').then(
+        (m) => m.StockPageComponent
       ),
   },
 

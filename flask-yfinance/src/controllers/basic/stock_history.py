@@ -64,11 +64,15 @@ def get_all_history_metadata(period ):
     return jsonify({"data" : stock_arr,
                     "count" : len(stock_arr)}) 
 
-@history_bp.route('/history-metadata/<symbol>/<period>/<start_date>/<end_date>', methods=['GET'])
-def get_history_metadata(symbol, period, start_date, end_date):
+@history_bp.route('/history-metadata/<symbol>/<period>', methods=['GET'])
+def get_history_metadata(symbol, period):
     try:
+        start = request.args.get('start')
+        end = request.args.get('end')
+
         stock = yf.Ticker(symbol)
-        hist = stock.history(period=period, start=start_date, end=end_date)
+        hist = stock.history(period=period, start=start, end=end)
+
         hist_dict = convert_timestamp(hist.to_dict()) 
         metadata = stock.history_metadata
 

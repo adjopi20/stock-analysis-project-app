@@ -1,0 +1,130 @@
+<div class="notification has-text-centered cell is-col-span-5">
+  <h1 class="title is-align-self-center">Stock Page</h1>
+</div>
+<div class="columns is-multiline">
+  <div class="column is-three-quarters">
+    <div class="fixed-grid has-4-cols">
+      <div class="grid">
+        <div class="cell is-col-span-4">
+          <div class="flex-item notification">
+            <p class="title is-4">{{ name }}</p>
+            <p class="subtitle is-5">{{ stockInfo.symbol }}</p>
+            <p class="subtitle is-5">{{ stockInfo.currentPrice }}</p>
+            <p class="subtitle is-5">{{ stockInfo.industry }}</p>
+            <p class="subtitle is-5">{{ stockInfo.sector }}</p>
+            <p class="subtitle is-5">{{ stockInfo.listing_board }}</p>
+            <p class="subtitle is-5">{{ stockInfo.marketCap }}</p>
+            <p>Listing Date: {{ stockInfo.listing_date }}</p>
+            <p>Stock Shares: {{ stockInfo.stock_shares }}</p>
+            <p class="subtitle is-7">{{ stockInfo.longBusinessSummary }}</p>
+          </div>
+          <div class="flex-item notification">Item 2</div>
+        </div>
+        <!-- <div class="flex-container"> -->
+
+        <!-- </div> -->
+      </div>
+    </div>
+  </div>
+  <div class="column">
+    <div class="fixed-grid has-1-cols">
+      <div class="grid">
+        <div class="cell is-row-start-1">
+          <div class="notification">
+            <!-- <hr class="new1" /> -->
+            <p class="subtitle is-6 has-text-info">Profitability Indicators</p>
+            <p>EBITDA: {{ stockInfo.ebitda }}</p>
+            <p>EBITDA Margins: {{ stockInfo.ebitdaMargins }}</p>
+            <p>Net Income To Common: {{ stockInfo.netIncomeToCommon }}</p>
+            <p>Operating Margins: {{ stockInfo.operatingMargins }}</p>
+            <p>Profit Margins: {{ stockInfo.profitMargins }}</p>
+            <p>Return On Assets: {{ stockInfo.returnOnAssets }}</p>
+            <p>Return On Equity: {{ stockInfo.returnOnEquity }}</p>
+
+            <hr class="new1" />
+            <p class="subtitle is-6 has-text-info">Liquidity Indicators</p>
+            <p>Current Ratio: {{ stockInfo.currentRatio }}</p>
+            <p>Quick Ratio: {{ stockInfo.quickRatio }}</p>
+            <p>Total Cash: {{ stockInfo.totalCash }}</p>
+            <p>Total Cash Per Share: {{ stockInfo.totalCashPerShare }}</p>
+
+            <hr class="new1" />
+            <p class="subtitle is-6 has-text-info">Valuation Indicators</p>
+            <p>Book Value: {{ stockInfo.bookValue }}</p>
+            <p>Price To Book: {{ stockInfo.priceToBook }}</p>
+            <p>Enterprise Value: {{ stockInfo.enterpriseValue }}</p>
+            <p>Enterprise To EBITDA: {{ stockInfo.enterpriseToEbitda }}</p>
+            <p>Enterprise To Revenue: {{ stockInfo.enterpriseToRevenue }}</p>
+
+            <hr class="new1" />
+            <p class="subtitle is-6 has-text-info">Earnings Indicators</p>
+            <p>Total Revenue : {{ stockInfo.totalRevenue }}</p>
+            <p>Forward EPS: {{ stockInfo.forwardEps }}</p>
+            <p>Trailing EPS: {{ stockInfo.trailingEps }}</p>
+            <p>Forward PE: {{ stockInfo.forwardPE }}</p>
+            <p>Trailing PE: {{ stockInfo.trailingPE }}</p>
+            <p>Earnings Growth: {{ stockInfo.earningsGrowth }}</p>
+            <p>
+              Earnings Quarterly Growth: {{ stockInfo.earningsQuarterlyGrowth }}
+            </p>
+
+
+            <hr class="new1" />
+            <p class="subtitle is-6 has-text-info">Dividend Indicators</p>
+            <p>Dividend Rate: {{ stockInfo.dividendRate }}</p>
+            <p>Dividend Yield: {{ stockInfo.dividendYield }}</p>
+            <p>Payout Ratio: {{ stockInfo.payoutRatio }}</p>
+
+            <hr class="new1" />
+            <p class="subtitle is-6 has-text-info">Growth Indicators</p>
+            <p>Revenue Growth: {{ stockInfo.revenueGrowth }}</p>
+            <p>Revenue Per Share: {{ stockInfo.revenuePerShare }}</p>
+            <p>Free Cash Flow: {{ stockInfo.freeCashflow }}</p>
+
+            <hr class="new1" />
+            <p class="subtitle is-6 has-text-info">Leverage Indicators</p>
+            <p>Debt To Equity: {{ stockInfo.debtToEquity }}</p>
+
+            <hr class="new1" />
+            <p class="subtitle is-6 has-text-info">Efficiency Indicators</p>
+            <p>Gross Margin: {{ stockInfo.grossMargins }}</p>
+            <p>Operating Cash Flow: {{ stockInfo.operatingCashflow }}</p>
+
+            <hr class="new1" />
+            <p class="subtitle is-6 has-text-info">Market Indicators</p>
+            <p>Float Shares: {{ stockInfo.floatShares }}</p>
+            <p>PEG Ratio: {{ stockInfo.pegRatio }}</p>
+
+            <hr class="new1" />
+            <p class="subtitle is-6 has-text-info">Recommendation/p></p>
+            <p>Recommendation Key: {{ stockInfo.recommendationKey }}</p>
+            <p>Recommendation Mean: {{ stockInfo.recommendationMean }}</p>
+            <p>
+              Number Of Analyst Opinions:
+              {{ stockInfo.numberOfAnalystOpinions }}
+            </p>
+
+            
+            
+
+
+            <hr class="new1" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <div class="grid-container">
+    <div class="grid-item"> -->
+
+<!-- </div> -->
+<!-- <div class="grid-item">
+      <div class="flex-container">
+        <div class="flex-item notification">Item 3</div>
+        <div class="flex-item notification">Item 4</div>
+      </div>
+    </div> -->
+<!-- More grid items -->
+<!-- </div> -->

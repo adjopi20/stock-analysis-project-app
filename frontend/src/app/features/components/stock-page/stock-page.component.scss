@@ -1,0 +1,19 @@
+/* Define the grid layout */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columns, equally spaced */
+    grid-template-rows: auto; /* Rows auto-sized */
+    gap: 10px; /* Space between grid items */
+  }
+  
+  /* Inside each grid item, use Flexbox */
+  .flex-container {
+    display: flex;
+    justify-content: space-between; /* Distribute items evenly with space between */
+    align-items: center; /* Center items vertically */
+  }
+  
+  .flex-item {
+    /* Any specific styles for flex items */
+  }
+  

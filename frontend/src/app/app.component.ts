@@ -4,6 +4,7 @@ import { FormsModule, NgModel } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterOutlet } from '@angular/router';
 import { HistogramComponent } from './shared/component/histogram/histogram.component';
+import { LoadingIndicatorComponent } from './shared/component/loading-indicator/loading-indicator.component';
 
 @Component({
   selector: 'app-root',

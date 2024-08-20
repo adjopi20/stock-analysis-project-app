@@ -39,6 +39,7 @@ def get_major_holders(symbol):
     try:
         stock = yf.Ticker(symbol)
         major_holders = stock.major_holders
+        print(f'major_holders: {major_holders}')
         return jsonify({
             'symbol': symbol,
             'major_holders': major_holders.to_dict(orient='index')

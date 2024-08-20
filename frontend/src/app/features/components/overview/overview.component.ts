@@ -13,6 +13,9 @@ import { NewsComponent } from '../news/news.component';
 import { CarouselComponent } from '../../../shared/component/carousel/carousel.component';
 import { FlaskApiService } from '../../flask-api-service/flask-api.service';
 import { firstValueFrom } from 'rxjs';
+import { LoadingServiceService } from '../../../shared/service/loadingService/loading-service.service';
+import { LoadingIndicatorComponent } from '../../../shared/component/loading-indicator/loading-indicator.component';
+import { LoadingComponent } from '../../../shared/component/loading/loading.component';
 
 @Component({
   selector: 'app-overview',
@@ -24,7 +27,9 @@ import { firstValueFrom } from 'rxjs';
     CarouselComponent,
     PercentPipe,
     CurrencyPipe,
-    DecimalPipe
+    DecimalPipe, 
+    LoadingIndicatorComponent, 
+    LoadingComponent
   ],
   providers: [DatePipe],
   templateUrl: './overview.component.html',
@@ -47,10 +52,12 @@ export class OverviewComponent {
   topROE: any[] = [];
   topEarningsGrowth: any[] = [];
   latestPrice: any = {};
+  isLoading: boolean = false;
 
   constructor(
     private apiService: FlaskApiService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private loadingService: LoadingServiceService
   ) {}
 
   ngOnInit() {
@@ -60,6 +67,9 @@ export class OverviewComponent {
 
   async getStocks() {
     try {
+      this.loadingService.loadingOn();
+      this.isLoading = true;
+
       const data = await firstValueFrom(this.apiService.getStockList());
       this.stocks = data.data;
       this.stocks.sort((a, b) => b.marketCap - a.marketCap);
@@ -91,11 +101,17 @@ export class OverviewComponent {
       console.log(error);
     } finally {
       console.log('complete');
+      this.loadingService.loadingOff();
+      this.isLoading = false;
     }
   }
 
   async getHistoricalPrice() {
     try {
+      this.loadingService.loadingOn();
+      this.isLoading = true;
+
+
       const data = await firstValueFrom(
         this.apiService.getHistoricalPrice('1mo')
       );
@@ -107,6 +123,10 @@ export class OverviewComponent {
       console.log(error);
     } finally {
       console.log('complete');
+      this.loadingService.loadingOff();
+      this.isLoading = false;
+
+
     }
   }
 

@@ -150,6 +150,9 @@ def clear_cache(key):
         # client.delete('fetched_all_stock')
         # client.delete('scrape_all_stock')
         # client.delete('all_stock')
+        # all_historical_price_{period}
+        # curl -X POST http://127.0.0.1:5000/clear_cache/all_historical_price_1mo
+
         return jsonify({"message": "Cache cleared successfully"}), 200
     except Exception as e:
         logging.error(f"Error clearing cache: {e}")
