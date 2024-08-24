@@ -195,6 +195,11 @@
               <div class="column is-half" *ngFor="let item of topGainers">
                 <div class="container left-border">
                   <p class="is-size-7 has-text-info">{{ item.symbol }}</p>
+                  <!-- <span
+                  class="tag is-normal is-7"
+                  [ngClass]="setColorListingBoard(item.listing_board)"
+                  >{{ item.listing_board }}</span
+                > -->
                   <p class="is-size-7 truncated">{{ item.companyName }}</p>
 
                   <div class="is-flex is-justify-content-space-between">

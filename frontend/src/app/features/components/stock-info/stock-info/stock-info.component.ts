@@ -7,6 +7,7 @@ import { JsonPipe } from '@angular/common';
 import { SideNavComponent } from '../side-nav/side-nav.component';
 import { PaginationComponent } from '../pagination/pagination.component';
 import { FilterContainerComponent } from '../filter-container/filter-container.component';
+import { ListingBoardService } from '../../../../shared/service/listingBoardService/listing-board.service';
 
 @Component({
   selector: 'app-stock-info',
@@ -59,7 +60,8 @@ export class StockInfoComponent {
 
   constructor(
     @SkipSelf() private apiService: FlaskApiService,
-    private allStockService: AllStockService
+    private allStockService: AllStockService,
+    protected lbs: ListingBoardService
   ) {}
 
   ngOnInit() {
@@ -244,20 +246,5 @@ export class StockInfoComponent {
     this.getAllStock();
   }
 
-  setColorListingBoard(listingBoard: string): string {
-    switch (listingBoard) {
-      case 'UTAMA':
-        return 'is-info';
-      case 'PENGEMBANGAN':
-        return 'is-warning';
-      case 'AKSELERASI':
-        return 'is-white';
-      case 'PEMANTAUAN KHUSUS':
-        return 'is-danger';
-      case 'EKONOMI BARU':
-        return 'is-info';
-      default:
-        return '';
-    }
-  }
+  
 }

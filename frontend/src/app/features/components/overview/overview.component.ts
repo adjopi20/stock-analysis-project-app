@@ -72,6 +72,8 @@ export class OverviewComponent {
 
       const data = await firstValueFrom(this.apiService.getStockList());
       this.stocks = data.data;
+      console.log('stocks2', this.stocks);
+      
       this.stocks.sort((a, b) => b.marketCap - a.marketCap);
       this.topDividendRate = this.stocks
         .filter((item) => item.dividendRate)
@@ -132,7 +134,8 @@ export class OverviewComponent {
 
   topGainerss() {
     let list = [];
-
+    console.log('Stocks:', this.stocks);
+    
     for (let item of this.stocks) {
       const close = item.history.Close;
       const volumes = item.history.Volume;
@@ -145,6 +148,7 @@ export class OverviewComponent {
       const endPrice = close[end];
       const volume = volumes[end];
       const companyName = item.metadata.longName;
+      // if (item.metadata.symbol.toLowerCase() === )
 
       const percentChange = (
         ((endPrice - startPrice) / startPrice) *
@@ -244,4 +248,6 @@ export class OverviewComponent {
 
    
   }
+
+  
 }
