@@ -12,6 +12,7 @@ import {
 import { LineChartComponent } from '../../../shared/component/line-chart/line-chart.component';
 import { ListingBoardService } from '../../../shared/service/listingBoardService/listing-board.service';
 import { NgModel } from '@angular/forms';
+import { PieChartComponent } from "../../../shared/component/pie-chart/pie-chart.component";
 
 @Component({
   selector: 'app-stock-page',
@@ -23,7 +24,8 @@ import { NgModel } from '@angular/forms';
     DecimalPipe,
     LineChartComponent,
     PercentPipe,
-  ],
+    PieChartComponent
+],
   templateUrl: './stock-page.component.html',
   styleUrl: './stock-page.component.scss',
 })
@@ -34,6 +36,7 @@ export class StockPageComponent {
   companyOfficers: any[] = [];
   rawData: any[] = [];
   priceChart: any[] = [];
+  holdersChart: any[] = [];
   pricePeriod: string = '';
   percentChange: number = 0;
   currentPeriod: string = '1mo';
@@ -76,6 +79,9 @@ export class StockPageComponent {
         if (item.symbol.toLowerCase() === this.symbol.toLowerCase()) {
           this.stockInfo = item;
           this.companyOfficers = item.companyOfficers;
+          const dataTable = this.convertToPieChart(this.stockInfo)
+          const title = `Holders Percentage of ${this.symbol}`
+          this.holdersChart.push({ title, dataTable });
           break;
         }
       }
@@ -134,13 +140,25 @@ export class StockPageComponent {
       const date = new Date(period);
       const price = data.history.Close[period];
       dataTable.push([date, price]);
-    }); //lebih keren ini karena udah disiapkan iterasi untuk object data
+    }); 
 
-    // for (let [keys, values] of Object.entries(data.history.Close)) {
-    //   const date = new Date(keys);
-    //   const price = data.history.Close[keys];
-    //   dataTable.push([date, price]);
-    // }
+    this.cdr.detectChanges();
+    console.log('datatable: ', dataTable);
+
+    return dataTable;
+  }
+
+  convertToPieChart(data: any){
+    let dataTable: [string , any][] = [];
+    dataTable.push(['Holder', 'Percent Held']);
+
+
+    const heldPercentInsiders = data.heldPercentInsiders;
+    const heldPercentInstitutions = data.heldPercentInstitutions;
+    const others = 1 - (heldPercentInsiders+heldPercentInstitutions);
+    dataTable.push(['Insiders', heldPercentInsiders]);
+    dataTable.push(['Institutions', heldPercentInstitutions]);
+    dataTable.push(['Others', others]); 
 
     this.cdr.detectChanges();
     console.log('datatable: ', dataTable);
@@ -165,40 +183,5 @@ export class StockPageComponent {
     this.priceChart = [];
     this.getStockHistorical(this.currentPeriod);  
   }
-  // for (let item of this.stocks) {
-  //   const close = item.history.Close;
-  //   const volumes = item.history.Volume;
-  //   const dates = Object.keys(close);
-  //   const latest = dates[dates.length - 1];
-  //   const latestPrice = close[latest];
-  //   const start = dates[dates.length - 3];
-  //   const startPrice = close[start];
-  //   const end = dates[dates.length - 2];
-  //   const endPrice = close[end];
-  //   const volume = volumes[end];
-  //   const companyName = item.metadata.longName;
-  //   // if (item.metadata.symbol.toLowerCase() === )
-
-  //   const percentChange = (
-  //     ((endPrice - startPrice) / startPrice) *
-  //     100
-  //   ).toFixed(2);
-
-  //   const tes = {
-  //     symbol: item.metadata.symbol,
-  //     companyName: companyName,
-  //     price: latestPrice,
-  //     percentChange: percentChange,
-  //     lastDayVolume: volume,
-  //   };
-  //   list.push(tes);
-  // }
-  // const sortedPercentChange = list.sort(
-  //   (a: any, b: any) => b.percentChange - a.percentChange
-  // );
-  // this.topGainers = sortedPercentChange.slice(0, 10);
-  // this.topLosers = sortedPercentChange.slice(list.length - 10, list.length);
-
-  // const sortedVolume = list.sort((a: any, b: any) => b.lastDayVolume - a.lastDayVolume);
-  // this.topVolumes = sortedVolume.slice(0, 12);
+  
 }

@@ -40,13 +40,27 @@ def get_major_holders(symbol):
         stock = yf.Ticker(symbol)
         major_holders = stock.major_holders
         print(f'major_holders: {major_holders}')
-        return jsonify({
-            'symbol': symbol,
-            'major_holders': major_holders.to_dict(orient='index')
-        })
-    except Exception as e:
-            logging.error(f"error getting symbol for {symbol}: {e}")
+        if major_holders is not None and not major_holders.empty:
+            # Convert to dict and return JSON
+            return jsonify({
+                'symbol': symbol,
+                'major_holders': major_holders.to_dict(orient='index')
+            })
+        else:
+            # Handle cases where no major holders are found
+            return jsonify({
+                'symbol': symbol,
+                'major_holders': None,
+                'message': 'No major holders data found.'
+            }), 404
 
+    except Exception as e:
+        logging.error(f"Error getting major holders for {symbol}: {e}")
+        return jsonify({
+            'error': str(e),
+            'message': f"Failed to retrieve major holders for {symbol}"
+        }), 500
+    
 @holders_bp.route('/major-holders', methods=['GET'])
 def get_all_major_holders():
     holders_arr = []

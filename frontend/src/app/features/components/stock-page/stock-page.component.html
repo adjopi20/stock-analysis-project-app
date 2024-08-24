@@ -7,84 +7,162 @@
       <div class="grid">
         <div class="cell is-col-span-3">
           <div class="flex-item notification">
-            <div class="is-flex is-justify-content-space-between">
-              
-            </div>
+            <div class="is-flex is-justify-content-space-between"></div>
 
-            <p class="title is-size-3">{{ name     }}    <span
-              class="tag is-normal is-size-5"
-              style="margin-left: 1rem;"
-              [ngClass]="lbs.setColorListingBoard(stockInfo.listing_board)"
-              >{{ stockInfo.listing_board }}</span
-            ></p>
-            
-            <p class="subtitle is-size-4">{{ stockInfo.symbol }}<span
-              class="tag is-medium is-primary is-size-6"
-              style="margin-left: 1rem;"
-              >{{ stockInfo.currentPrice | currency : "Rp" }}</span
-            ></p>
+            <p class="title is-size-3">
+              {{ name }}
+              <span
+                class="tag is-normal is-size-5"
+                style="margin-left: 1rem"
+                [ngClass]="lbs.setColorListingBoard(stockInfo.listing_board)"
+                >{{ stockInfo.listing_board }}</span
+              >
+            </p>
+
+            <p class="subtitle is-size-4">
+              {{ stockInfo.symbol
+              }}<span
+                class="tag is-medium is-primary is-size-6"
+                style="margin-left: 1rem"
+                >{{ stockInfo.currentPrice | currency : "Rp" }}</span
+              >
+            </p>
             <p class="is-size-5">Sector: {{ stockInfo.sector }}</p>
             <p class="is-size-5">Industry: {{ stockInfo.industry }}</p>
-            
-            <p class="is-size-5">Market Cap: {{ stockInfo.marketCap | currency : "Rp" }}</p>
+
+            <p class="is-size-5">
+              Market Cap: {{ stockInfo.marketCap | currency : "Rp" }}
+            </p>
             <p class="is-size-5">Listing Date: {{ stockInfo.listing_date }}</p>
-            <p class="is-size-5">Stock Shares: {{ stockInfo.stock_shares | number  }}</p>
+            <p class="is-size-5">
+              Stock Shares: {{ stockInfo.stock_shares | number }}
+            </p>
           </div>
           <!-- <div class="flex-item notification">Item 2</div> -->
         </div>
         <div class="cell is-col-span-2">
-          <div class="flex-item notification" style="display: flex; flex-direction: column; max-height: 20rem;">
-            <p class="subtitle is-size-6 h  as-text-info" >Company Officers</p>
-            <div style="flex-grow: 1; overflow-y: auto;">
-
-            <table class="table overflow">
-              <thead>
-                <tr class="container top-border">
-                  <th class="is-size-7">No</th>
-                  <th class="is-size-7">Name</th>
-                  <th class="is-size-7">Title</th>
-                </tr>
-              </thead>
-              <tbody
-                *ngFor="let item of companyOfficers; let index = index"
-                class="container top-border"
-              >
-                <tr class="container top-border">
-                  <td class="is-size-7">{{ index + 1 }}</td>
-                  <td class="is-size-7">{{ item.name }}</td>
-                  <td class="is-size-7">{{ item.title }}</td>
-                </tr>
-              </tbody>
-            </table>
+          <div
+            class="flex-item notification"
+            style="display: flex; flex-direction: column; max-height: 20rem"
+          >
+            <p class="subtitle is-size-6 h as-text-info">Company Officers</p>
+            <div style="flex-grow: 1; overflow-y: auto">
+              <table class="table overflow">
+                <thead>
+                  <tr class="container top-border">
+                    <th class="is-size-7">No</th>
+                    <th class="is-size-7">Name</th>
+                    <th class="is-size-7">Title</th>
+                  </tr>
+                </thead>
+                <tbody
+                  *ngFor="let item of companyOfficers; let index = index"
+                  class="container top-border"
+                >
+                  <tr class="container top-border">
+                    <td class="is-size-7">{{ index + 1 }}</td>
+                    <td class="is-size-7">{{ item.name }}</td>
+                    <td class="is-size-7">{{ item.title }}</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
-        <div class="cell is-col-span-5 is-row-start-2" >
+        <div class="cell is-col-span-5 is-row-start-2">
           <div class="notification">
             <p class="subtitle has-text-info is-size-6">Company Summary</p>
             <p class="subtitle is-7">{{ stockInfo.longBusinessSummary }}</p>
-
           </div>
         </div>
-        <div class="cell is-col-span-5 is-row-start-3" >
-          <div class="notification has-background-white " *ngFor="let item of priceChart">
-            <div class="buttons   has-addons" (click)="onPeriodChange($event)" >
-              <button class="button is-small " value="5d" [ngClass]="{'is-success is-selected': currentPeriod === '5d'}">5 day</button> 
-              <button class="button is-small" value="1mo" [ngClass]="{'is-success is-selected': currentPeriod === '1mo'}">1 Month </button>
-              <button class="button is-small" value="3mo" [ngClass]="{'is-success is-selected': currentPeriod === '3mo'}">3 Month</button>
-              <button class="button is-small" value="6mo" [ngClass]="{'is-success is-selected': currentPeriod === '6mo'}">6 Month</button>
-              <button class="button is-small" value="1y" [ngClass]="{'is-success is-selected': currentPeriod === '1y'}">1 Year</button>
-              <button class="button is-small" value="2y" [ngClass]="{'is-success is-selected': currentPeriod === '2y'}">2 Year</button>
-              <button class="button is-small" value="5y" [ngClass]="{'is-success is-selected': currentPeriod === '5y'}">5 Year</button>
-            </div>
-            <div class="container" style="display: flex; flex-direction: row;">
-              <app-line-chart [dataTable]="item.dataTable"
-            [title]="item.title"></app-line-chart>
-            </div>
-            <p class="is-size-6 has-text-info">Percent Change: {{percentChange | percent : "1.0-2"}}</p>
-
-            
+        <div class="cell is-col-span-3 is-row-start-3">
+          <div class="notification has-background-white">
+            <p class="subtitle has-text-primary is-size-5">Price Chart</p>
+            <ng-container *ngFor="let item of priceChart">
+              <div class="buttons has-addons" (click)="onPeriodChange($event)">
+                <button
+                  class="button is-small"
+                  value="5d"
+                  [ngClass]="{
+                    'is-success is-selected': currentPeriod === '5d'
+                  }"
+                >
+                  5 day
+                </button>
+                <button
+                  class="button is-small"
+                  value="1mo"
+                  [ngClass]="{
+                    'is-success is-selected': currentPeriod === '1mo'
+                  }"
+                >
+                  1 Month
+                </button>
+                <button
+                  class="button is-small"
+                  value="3mo"
+                  [ngClass]="{
+                    'is-success is-selected': currentPeriod === '3mo'
+                  }"
+                >
+                  3 Month
+                </button>
+                <button
+                  class="button is-small"
+                  value="6mo"
+                  [ngClass]="{
+                    'is-success is-selected': currentPeriod === '6mo'
+                  }"
+                >
+                  6 Month
+                </button>
+                <button
+                  class="button is-small"
+                  value="1y"
+                  [ngClass]="{
+                    'is-success is-selected': currentPeriod === '1y'
+                  }"
+                >
+                  1 Year
+                </button>
+                <button
+                  class="button is-small"
+                  value="2y"
+                  [ngClass]="{
+                    'is-success is-selected': currentPeriod === '2y'
+                  }"
+                >
+                  2 Year
+                </button>
+                <button
+                  class="button is-small"
+                  value="5y"
+                  [ngClass]="{
+                    'is-success is-selected': currentPeriod === '5y'
+                  }"
+                >
+                  5 Year
+                </button>
+              </div>
+              <!-- <div class="container" style="display: flex; flex-direction: row"> -->
+                <app-line-chart
+                  [dataTable]="item.dataTable"
+                  [title]="item.title"
+                ></app-line-chart>
+              <!-- </div> -->
+              <p class="is-size-6 has-text-info">
+                Percent Change: {{ percentChange | percent : "1.0-2" }}
+              </p>    
+            </ng-container>
           </div>
+        </div>
+        <div class="cell is-col-span-2 is-row-start-3">
+          <div class="notification has-background-white">
+            <ng-container *ngFor="let item of holdersChart">
+              <app-pie-chart [dataTable]="item.dataTable" [title]="item.title"></app-pie-chart>
+            </ng-container>
+          </div>
+
         </div>
         <!-- <div class="flex-container"> -->
 
