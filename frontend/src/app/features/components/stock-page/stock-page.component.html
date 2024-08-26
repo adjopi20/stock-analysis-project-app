@@ -145,28 +145,56 @@
                 </button>
               </div>
               <!-- <div class="container" style="display: flex; flex-direction: row"> -->
-                <app-line-chart
-                  [dataTable]="item.dataTable"
-                  [title]="item.title"
-                ></app-line-chart>
+              <app-line-chart
+                [dataTable]="item.dataTable"
+                [title]="item.title"
+              ></app-line-chart>
               <!-- </div> -->
               <p class="is-size-6 has-text-info">
                 Percent Change: {{ percentChange | percent : "1.0-2" }}
-              </p>    
+              </p>
             </ng-container>
           </div>
         </div>
         <div class="cell is-col-span-2 is-row-start-3">
           <div class="notification has-background-white">
+            <p class="subtitle has-text-primary is-size-5">
+              Stock Holders Chart
+            </p>
             <ng-container *ngFor="let item of holdersChart">
-              <app-pie-chart [dataTable]="item.dataTable" [title]="item.title"></app-pie-chart>
+              <app-pie-chart
+                [dataTable]="item.dataTable"
+                [title]="item.title"
+              ></app-pie-chart>
             </ng-container>
           </div>
-
         </div>
-        <!-- <div class="flex-container"> -->
+        <div class="cell is-col-span-5 is row-start-4">
+          <div class="notification has-background-white">
+            <p class="subtitle has-text-primary is-size-5">Financials</p>
 
-        <!-- </div> -->
+            <!-- <div class="container" style="display: flex; flex-direction: row;"> -->
+            <ng-container *ngFor="let item of IncStmtChart">
+              <app-column-chart
+                [dataTable]="item.dataTable"
+                [title]="item.title"
+              ></app-column-chart>
+            </ng-container>
+            <ng-container *ngFor="let item of BalSheetChart">
+              <app-column-chart
+                [dataTable]="item.dataTable"
+                [title]="item.title"
+              ></app-column-chart>
+            </ng-container>
+            <ng-container *ngFor="let item of CashFlowChart">
+              <app-column-chart
+                [dataTable]="item.dataTable"
+                [title]="item.title"
+              ></app-column-chart>
+            </ng-container>
+            <!-- </div> -->
+          </div>
+        </div>
       </div>
     </div>
   </div>

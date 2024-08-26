@@ -98,26 +98,41 @@ export class FlaskApiService {
       { params: params }
     );
   }
-
+  //=========================================================================================
   getQIncomeStatement(symbol: string): Observable<any> {
     return this.http.get(
       'http://127.0.0.1:5000/financials/q-inc-stmt/' + symbol
     );
   }
+  getIncomeStatement(symbol: string): Observable<any> {
+    return this.http.get('http://127.0.0.1:5000/financials/inc-stmt/' + symbol);
+  }
+
   getQBalSheet(symbol: string): Observable<any> {
     return this.http.get(
       'http://127.0.0.1:5000/financials/q-balance-sheet/' + symbol
     );
   }
+
+  getBalSheet(symbol: string): Observable<any> {
+    return this.http.get(
+      'http://127.0.0.1:5000/financials/balance-sheet/' + symbol
+    );
+  }
+
   getQCashFlow(symbol: string): Observable<any> {
     return this.http.get(
       'http://127.0.0.1:5000/financials/q-cash-flow/' + symbol
     );
   }
 
-  getIncomeStatement(symbol: string): Observable<any> {
-    return this.http.get('http://127.0.0.1:5000/financials/inc-stmt/' + symbol);
+  getCashFlow(symbol: string): Observable<any> {
+    return this.http.get(
+      'http://127.0.0.1:5000/financials/cash-flow/' + symbol
+    );
   }
+  //=========================================================================================
+  
 
   getNews(): Observable<any> {
     return this.http.get('http://127.0.0.1:5000/news');
