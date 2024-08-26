@@ -27,7 +27,7 @@ import { Title } from '@angular/platform-browser';
     LineChartComponent,
     PercentPipe,
     PieChartComponent,
-    ColumnChartComponent
+    ColumnChartComponent,
   ],
   templateUrl: './stock-page.component.html',
   styleUrl: './stock-page.component.scss',
@@ -43,6 +43,8 @@ export class StockPageComponent {
   IncStmtChart: any[] = [];
   BalSheetChart: any[] = [];
   CashFlowChart: any[] = [];
+  DividendsChart: any[] = [];
+  StockSplitsChart: any[] = [];
   pricePeriod: string = '';
   percentChange: number = 0;
   currentPeriod: string = '1mo';
@@ -58,11 +60,11 @@ export class StockPageComponent {
   ngOnInit(): void {
     this.route.paramMap.subscribe((params: ParamMap) => {
       this.symbol = params.get('symbol') || '';
-      // console.log('Symbol from URL:', this.symbol); // Check if this logs correctly
       this.getStockInfo();
       this.getStockFinancials();
       this.getStockHistorical(this.currentPeriod);
-      
+      this.getStockActions();
+
       // this.getStockHistoricalData('1y');
     });
     // console.log('Symbol from URL:', this.symbol);
@@ -207,12 +209,11 @@ export class StockPageComponent {
       );
 
       console.log('Income Statement: ', data);
-      
 
       if (data) {
         const title = `Income Statement`;
         const dataTable = this.convertToLineChartIncStmt(data);
-        this.IncStmtChart.push({ title, dataTable })
+        this.IncStmtChart.push({ title, dataTable });
         console.log('data table: ', dataTable);
       } else {
         console.warn(`No data returned for symbol: ${this.name}`);
@@ -260,7 +261,7 @@ export class StockPageComponent {
       if (data) {
         const title = `Cash Flow`;
         console.log('name:: ', this.name);
-        
+
         const dataTable = this.convertToLineChartCashFlow(data);
         this.CashFlowChart.push({ title, dataTable });
         console.log('data table: ', dataTable);
@@ -418,4 +419,79 @@ export class StockPageComponent {
     console.log('dataTable: ', dataTable);
     return dataTable;
   }
+
+  async getStockActions() {
+    try {
+      const data = await firstValueFrom(
+        this.apiService.getStockAction(this.symbol)
+      );
+
+      const dividends = data.Dividends;
+      const stockSplit = data['Stock Splits'] || {}; // Default to an empty object if undefined
+
+
+      if (dividends) {
+        const title = `Dividends`;
+        const dataTable = this.convertToBarChartDividends(dividends);
+        this.DividendsChart.push({ title, dataTable });
+        console.log('data table: ', dataTable);
+      } else {
+        console.warn(`No dividend returned for symbol: ${this.name}`);
+      }
+      if (stockSplit && Object.keys(stockSplit).length > 0) {
+        const title = `Stock Splits`;
+        const dataTable = this.convertToBarChartStockSplits(stockSplit);
+        this.StockSplitsChart.push({ title, dataTable });
+        console.log('stock split: ', dataTable);
+      } else {
+        console.warn(`No stock split returned for symbol: ${this.name}`);
+      }
+
+      this.cdr.detectChanges();
+    } catch (error) {
+      console.log('get bal sheet error: ', error);
+    } finally {
+      console.log('complete');
+    }
+  }
+
+  convertToBarChartDividends(data: any) {
+    const dataTable = [['Period', 'Dividends']];
+    Object.keys(data).forEach((period: any) => {
+      const datePeriod = new Date(period); // Convert date to timestamp
+      const dividends = data[period] ?? 0;
+      dataTable.push([datePeriod, dividends]);
+    });
+    this.cdr.detectChanges();
+    console.log('dataTable: ', dataTable);
+    return dataTable;
+  }
+
+  // convertToBarChartStockSplits(data: any) {
+  //   const dataTable = [['Period', 'Stock Splits']];
+  //   Object.keys(data.Dividends).forEach((period: any) => {
+  //     const datePeriod = new Date(period); // Convert date to timestamp
+  //     const stockSplits = data[period] ?? 0;
+  //     dataTable.push([datePeriod, stockSplits]);
+  //   });
+  //   this.cdr.detectChanges();
+  //   console.log('dataTable: ', dataTable);
+  //   return dataTable;
+  // }
+
+  convertToBarChartStockSplits(stockSplit: Record<string, number>): any[] {
+    let dataTable: [any, any][] = [];
+    dataTable.push(['Holder', 'Percent Held']);
+
+    // Iterate over each date and split value
+    for (const [date, splitValue] of Object.entries(stockSplit)) {
+        // Skip entries where the split value is 0 (if you want)
+        if (splitValue !== 0) {
+            dataTable.push([new Date(date), splitValue]);
+        }
+    }
+
+    return dataTable;
+}
+
 }

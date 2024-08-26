@@ -160,4 +160,9 @@ export class FlaskApiService {
   getStockInfo(symbol: string): Observable<any> {
     return this.http.get(`http://127.0.0.1:5000/info2/${symbol}`);
   }
+
+  //=========================================================================================
+  getStockAction(symbol: string): Observable<any> {
+    return this.http.get(`http://127.0.0.1:5000/actions/${symbol}`);
+  }
 }

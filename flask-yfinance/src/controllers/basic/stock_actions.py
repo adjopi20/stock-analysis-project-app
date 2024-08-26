@@ -13,7 +13,7 @@ def get_actions(symbol):
         stock = yf.Ticker(symbol)   
         actions = stock.actions
         actions_dict = convert_timestamp(actions.to_dict())
-        if actions_dict is not None and not actions_dict.empty:
+        if actions_dict is not None :
             return jsonify(actions_dict)
         else:
             return {}

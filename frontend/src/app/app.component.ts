@@ -5,11 +5,13 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouterOutlet } from '@angular/router';
 import { HistogramComponent } from './shared/component/histogram/histogram.component';
 import { LoadingIndicatorComponent } from './shared/component/loading-indicator/loading-indicator.component';
+import { NavbarComponent } from './core/layout/navbar/navbar.component';
+import { FooterComponent } from './core/layout/footer/footer.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, FormsModule],
+  imports: [RouterOutlet, FormsModule, NavbarComponent, FooterComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })

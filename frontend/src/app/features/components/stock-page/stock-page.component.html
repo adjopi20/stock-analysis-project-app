@@ -1,480 +1,504 @@
-<div class="notification has-text-centered cell is-col-span-5">
-  <h1 class="title is-align-self-center">Stock Page</h1>
-</div>
-<div class="columns is-multiline">
-  <div class="column is-three-quarters">
-    <div class="fixed-grid has-5-cols">
-      <div class="grid">
-        <div class="cell is-col-span-3">
-          <div class="flex-item notification">
-            <div class="is-flex is-justify-content-space-between"></div>
+<div class="container is-fluid" style="margin-top: 5rem; margin-bottom: 1rem">
+  <div class="notification has-text-centered cell is-col-span-5">
+    <h1 class="title is-align-self-center">Stock Page</h1>
+  </div>
+  <div class="columns is-multiline">
+    <div class="column is-three-quarters">
+      <div class="fixed-grid has-5-cols">
+        <div class="grid">
+          <div class="cell is-col-span-3">
+            <div class="flex-item notification">
+              <div class="is-flex is-justify-content-space-between"></div>
 
-            <p class="title is-size-3">
-              {{ name }}
-              <span
-                class="tag is-normal is-size-5"
-                style="margin-left: 1rem"
-                [ngClass]="lbs.setColorListingBoard(stockInfo.listing_board)"
-                >{{ stockInfo.listing_board }}</span
-              >
-            </p>
-
-            <p class="subtitle is-size-4">
-              {{ stockInfo.symbol
-              }}<span
-                class="tag is-medium is-primary is-size-6"
-                style="margin-left: 1rem"
-                >{{ stockInfo.currentPrice | currency : "Rp" }}</span
-              >
-            </p>
-            <p class="is-size-5">Sector: {{ stockInfo.sector }}</p>
-            <p class="is-size-5">Industry: {{ stockInfo.industry }}</p>
-
-            <p class="is-size-5">
-              Market Cap: {{ stockInfo.marketCap | currency : "Rp" }}
-            </p>
-            <p class="is-size-5">Listing Date: {{ stockInfo.listing_date }}</p>
-            <p class="is-size-5">
-              Stock Shares: {{ stockInfo.stock_shares | number }}
-            </p>
-          </div>
-          <!-- <div class="flex-item notification">Item 2</div> -->
-        </div>
-        <div class="cell is-col-span-2">
-          <div
-            class="flex-item notification"
-            style="display: flex; flex-direction: column; max-height: 20rem"
-          >
-            <p class="subtitle is-size-6 h as-text-info">Company Officers</p>
-            <div style="flex-grow: 1; overflow-y: auto">
-              <table class="table overflow">
-                <thead>
-                  <tr class="container top-border">
-                    <th class="is-size-7">No</th>
-                    <th class="is-size-7">Name</th>
-                    <th class="is-size-7">Title</th>
-                  </tr>
-                </thead>
-                <tbody
-                  *ngFor="let item of companyOfficers; let index = index"
-                  class="container top-border"
+              <p class="title is-size-3">
+                {{ name }}
+                <span
+                  class="tag is-normal is-size-5"
+                  style="margin-left: 1rem"
+                  [ngClass]="lbs.setColorListingBoard(stockInfo.listing_board)"
+                  >{{ stockInfo.listing_board }}</span
                 >
-                  <tr class="container top-border">
-                    <td class="is-size-7">{{ index + 1 }}</td>
-                    <td class="is-size-7">{{ item.name }}</td>
-                    <td class="is-size-7">{{ item.title }}</td>
-                  </tr>
-                </tbody>
-              </table>
+              </p>
+
+              <p class="subtitle is-size-4">
+                {{ stockInfo.symbol
+                }}<span
+                  class="tag is-medium is-primary is-size-6"
+                  style="margin-left: 1rem"
+                  >{{ stockInfo.currentPrice | currency : "Rp" }}</span
+                >
+              </p>
+              <p class="is-size-5">Sector: {{ stockInfo.sector }}</p>
+              <p class="is-size-5">Industry: {{ stockInfo.industry }}</p>
+
+              <p class="is-size-5">
+                Market Cap: {{ stockInfo.marketCap | currency : "Rp" }}
+              </p>
+              <p class="is-size-5">
+                Listing Date: {{ stockInfo.listing_date }}
+              </p>
+              <p class="is-size-5">
+                Stock Shares: {{ stockInfo.stock_shares | number }}
+              </p>
+            </div>
+            <!-- <div class="flex-item notification">Item 2</div> -->
+          </div>
+          <div class="cell is-col-span-2">
+            <div
+              class="flex-item notification"
+              style="display: flex; flex-direction: column; max-height: 20rem"
+            >
+              <p class="subtitle is-size-6 h as-text-info">Company Officers</p>
+              <div style="flex-grow: 1; overflow-y: auto">
+                <table class="table overflow">
+                  <thead>
+                    <tr class="container top-border">
+                      <th class="is-size-7">No</th>
+                      <th class="is-size-7">Name</th>
+                      <th class="is-size-7">Title</th>
+                    </tr>
+                  </thead>
+                  <tbody
+                    *ngFor="let item of companyOfficers; let index = index"
+                    class="container top-border"
+                  >
+                    <tr class="container top-border">
+                      <td class="is-size-7">{{ index + 1 }}</td>
+                      <td class="is-size-7">{{ item.name }}</td>
+                      <td class="is-size-7">{{ item.title }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="cell is-col-span-5 is-row-start-2">
+            <div class="notification">
+              <p class="subtitle has-text-info is-size-6">Company Summary</p>
+              <p class="subtitle is-7">{{ stockInfo.longBusinessSummary }}</p>
+            </div>
+          </div>
+          <div class="cell is-col-span-3 is-row-start-3">
+            <div class="notification has-background-white">
+              <p class="subtitle has-text-primary is-size-5">Price Chart</p>
+              <ng-container *ngFor="let item of priceChart">
+                <div
+                  class="buttons has-addons"
+                  (click)="onPeriodChange($event)"
+                >
+                  <button
+                    class="button is-small"
+                    value="5d"
+                    [ngClass]="{
+                      'is-success is-selected': currentPeriod === '5d'
+                    }"
+                  >
+                    5 day
+                  </button>
+                  <button
+                    class="button is-small"
+                    value="1mo"
+                    [ngClass]="{
+                      'is-success is-selected': currentPeriod === '1mo'
+                    }"
+                  >
+                    1 Month
+                  </button>
+                  <button
+                    class="button is-small"
+                    value="3mo"
+                    [ngClass]="{
+                      'is-success is-selected': currentPeriod === '3mo'
+                    }"
+                  >
+                    3 Month
+                  </button>
+                  <button
+                    class="button is-small"
+                    value="6mo"
+                    [ngClass]="{
+                      'is-success is-selected': currentPeriod === '6mo'
+                    }"
+                  >
+                    6 Month
+                  </button>
+                  <button
+                    class="button is-small"
+                    value="1y"
+                    [ngClass]="{
+                      'is-success is-selected': currentPeriod === '1y'
+                    }"
+                  >
+                    1 Year
+                  </button>
+                  <button
+                    class="button is-small"
+                    value="2y"
+                    [ngClass]="{
+                      'is-success is-selected': currentPeriod === '2y'
+                    }"
+                  >
+                    2 Year
+                  </button>
+                  <button
+                    class="button is-small"
+                    value="5y"
+                    [ngClass]="{
+                      'is-success is-selected': currentPeriod === '5y'
+                    }"
+                  >
+                    5 Year
+                  </button>
+                </div>
+                <!-- <div class="container" style="display: flex; flex-direction: row"> -->
+                <app-line-chart
+                  [dataTable]="item.dataTable"
+                  [title]="item.title"
+                ></app-line-chart>
+                <!-- </div> -->
+                <p class="is-size-6 has-text-info">
+                  Percent Change: {{ percentChange | percent : "1.0-2" }}
+                </p>
+              </ng-container>
+            </div>
+          </div>
+          <div class="cell is-col-span-2 is-row-start-3">
+            <div class="notification has-background-white">
+              <p class="subtitle has-text-primary is-size-5">
+                Stock Holders Chart
+              </p>
+              <ng-container *ngFor="let item of holdersChart">
+                <app-pie-chart
+                  [dataTable]="item.dataTable"
+                  [title]="item.title"
+                ></app-pie-chart>
+              </ng-container>
+            </div>
+          </div>
+
+          <div class="cell is-col-span-5 is row-start-4">
+            <hr class="new1" />
+            <p class="subtitle has-text-primary is-size-5">Financials</p>
+
+            <div class="notification has-background-white">
+              <ng-container *ngFor="let item of IncStmtChart">
+                <app-column-chart
+                  [dataTable]="item.dataTable"
+                  [title]="item.title"
+                ></app-column-chart>
+              </ng-container>
+            </div>
+
+            <div class="notification has-background-white">
+              <ng-container *ngFor="let item of BalSheetChart">
+                <app-column-chart
+                  [dataTable]="item.dataTable"
+                  [title]="item.title"
+                ></app-column-chart>
+              </ng-container>
+            </div>
+
+            <div class="notification has-background-white">
+              <ng-container *ngFor="let item of CashFlowChart">
+                <app-column-chart
+                  [dataTable]="item.dataTable"
+                  [title]="item.title"
+                ></app-column-chart>
+              </ng-container>
+            </div>
+          </div>
+          <div class="cell is-col-span-5 is row-start-4">
+            <hr class="new1" />
+            <p class="subtitle has-text-primary is-size-5">Stocks Action</p>
+            <div class="grid">
+              <div class="cell">
+                <div class="notification has-background-white">
+                  <ng-container *ngFor="let item of DividendsChart">
+                    <app-column-chart [dataTable]="item.dataTable" [title]="item.title"></app-column-chart>
+                  </ng-container>
+                </div>
+              </div>
+              <div class="cell">
+                <div class="notification has-background-white">
+                  <ng-container *ngFor="let item of StockSplitsChart">
+                    <app-column-chart [dataTable]="item.dataTable" [title]="item.title"></app-column-chart>
+                  </ng-container>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        <div class="cell is-col-span-5 is-row-start-2">
-          <div class="notification">
-            <p class="subtitle has-text-info is-size-6">Company Summary</p>
-            <p class="subtitle is-7">{{ stockInfo.longBusinessSummary }}</p>
-          </div>
-        </div>
-        <div class="cell is-col-span-3 is-row-start-3">
-          <div class="notification has-background-white">
-            <p class="subtitle has-text-primary is-size-5">Price Chart</p>
-            <ng-container *ngFor="let item of priceChart">
-              <div class="buttons has-addons" (click)="onPeriodChange($event)">
-                <button
-                  class="button is-small"
-                  value="5d"
-                  [ngClass]="{
-                    'is-success is-selected': currentPeriod === '5d'
-                  }"
-                >
-                  5 day
-                </button>
-                <button
-                  class="button is-small"
-                  value="1mo"
-                  [ngClass]="{
-                    'is-success is-selected': currentPeriod === '1mo'
-                  }"
-                >
-                  1 Month
-                </button>
-                <button
-                  class="button is-small"
-                  value="3mo"
-                  [ngClass]="{
-                    'is-success is-selected': currentPeriod === '3mo'
-                  }"
-                >
-                  3 Month
-                </button>
-                <button
-                  class="button is-small"
-                  value="6mo"
-                  [ngClass]="{
-                    'is-success is-selected': currentPeriod === '6mo'
-                  }"
-                >
-                  6 Month
-                </button>
-                <button
-                  class="button is-small"
-                  value="1y"
-                  [ngClass]="{
-                    'is-success is-selected': currentPeriod === '1y'
-                  }"
-                >
-                  1 Year
-                </button>
-                <button
-                  class="button is-small"
-                  value="2y"
-                  [ngClass]="{
-                    'is-success is-selected': currentPeriod === '2y'
-                  }"
-                >
-                  2 Year
-                </button>
-                <button
-                  class="button is-small"
-                  value="5y"
-                  [ngClass]="{
-                    'is-success is-selected': currentPeriod === '5y'
-                  }"
-                >
-                  5 Year
-                </button>
-              </div>
-              <!-- <div class="container" style="display: flex; flex-direction: row"> -->
-              <app-line-chart
-                [dataTable]="item.dataTable"
-                [title]="item.title"
-              ></app-line-chart>
-              <!-- </div> -->
-              <p class="is-size-6 has-text-info">
-                Percent Change: {{ percentChange | percent : "1.0-2" }}
+      </div>
+    </div>
+    <div class="column">
+      <div class="fixed-grid has-1-cols">
+        <div class="grid">
+          <div class="cell is-row-start-1">
+            <div class="notification">
+              <!-- <hr class="new1" /> -->
+              <p class="subtitle is-6 has-text-info">
+                Profitability Indicators
               </p>
-            </ng-container>
-          </div>
-        </div>
-        <div class="cell is-col-span-2 is-row-start-3">
-          <div class="notification has-background-white">
-            <p class="subtitle has-text-primary is-size-5">
-              Stock Holders Chart
-            </p>
-            <ng-container *ngFor="let item of holdersChart">
-              <app-pie-chart
-                [dataTable]="item.dataTable"
-                [title]="item.title"
-              ></app-pie-chart>
-            </ng-container>
-          </div>
-        </div>
-        <div class="cell is-col-span-5 is row-start-4">
-          <div class="notification has-background-white">
-            <p class="subtitle has-text-primary is-size-5">Financials</p>
+              <p class="tooltip is-size-7">
+                EBITDA: {{ stockInfo.ebitda }}
+                <span class="tooltiptext"
+                  >Earnings Before Interest, Taxes, Depreciation, and
+                  Amortization.</span
+                >
+              </p>
+              <p class="tooltip is-size-7">
+                EBITDA Margins: {{ stockInfo.ebitdaMargins }}
+                <span class="tooltiptext"
+                  >Percentage of EBITDA relative to total revenue.</span
+                >
+              </p>
+              <p class="tooltip is-size-7">
+                Net Income To Common: {{ stockInfo.netIncomeToCommon }}
+                <span class="tooltiptext"
+                  >Net income available to common shareholders.</span
+                >
+              </p>
+              <p class="tooltip is-size-7">
+                Operating Margins: {{ stockInfo.operatingMargins }}
+                <span class="tooltiptext"
+                  >Percentage of operating income relative to total
+                  revenue.</span
+                >
+              </p>
+              <p class="tooltip is-size-7">
+                Profit Margins: {{ stockInfo.profitMargins }}
+                <span class="tooltiptext"
+                  >Percentage of net income relative to total revenue.</span
+                >
+              </p>
+              <p class="tooltip is-size-7">
+                Return On Assets: {{ stockInfo.returnOnAssets }}
+                <span class="tooltiptext"
+                  >Profitability relative to total assets.</span
+                >
+              </p>
+              <p class="tooltip is-size-7">
+                Return On Equity: {{ stockInfo.returnOnEquity }}
+                <span class="tooltiptext"
+                  >Profitability relative to shareholders' equity.</span
+                >
+              </p>
 
-            <!-- <div class="container" style="display: flex; flex-direction: row;"> -->
-            <ng-container *ngFor="let item of IncStmtChart">
-              <app-column-chart
-                [dataTable]="item.dataTable"
-                [title]="item.title"
-              ></app-column-chart>
-            </ng-container>
-            <ng-container *ngFor="let item of BalSheetChart">
-              <app-column-chart
-                [dataTable]="item.dataTable"
-                [title]="item.title"
-              ></app-column-chart>
-            </ng-container>
-            <ng-container *ngFor="let item of CashFlowChart">
-              <app-column-chart
-                [dataTable]="item.dataTable"
-                [title]="item.title"
-              ></app-column-chart>
-            </ng-container>
-            <!-- </div> -->
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="column">
-    <div class="fixed-grid has-1-cols">
-      <div class="grid">
-        <div class="cell is-row-start-1">
-          <div class="notification">
-            <!-- <hr class="new1" /> -->
-            <p class="subtitle is-6 has-text-info">Profitability Indicators</p>
-            <p class="tooltip is-size-7">
-              EBITDA: {{ stockInfo.ebitda }}
-              <span class="tooltiptext"
-                >Earnings Before Interest, Taxes, Depreciation, and
-                Amortization.</span
-              >
-            </p>
-            <p class="tooltip is-size-7">
-              EBITDA Margins: {{ stockInfo.ebitdaMargins }}
-              <span class="tooltiptext"
-                >Percentage of EBITDA relative to total revenue.</span
-              >
-            </p>
-            <p class="tooltip is-size-7">
-              Net Income To Common: {{ stockInfo.netIncomeToCommon }}
-              <span class="tooltiptext"
-                >Net income available to common shareholders.</span
-              >
-            </p>
-            <p class="tooltip is-size-7">
-              Operating Margins: {{ stockInfo.operatingMargins }}
-              <span class="tooltiptext"
-                >Percentage of operating income relative to total revenue.</span
-              >
-            </p>
-            <p class="tooltip is-size-7">
-              Profit Margins: {{ stockInfo.profitMargins }}
-              <span class="tooltiptext"
-                >Percentage of net income relative to total revenue.</span
-              >
-            </p>
-            <p class="tooltip is-size-7">
-              Return On Assets: {{ stockInfo.returnOnAssets }}
-              <span class="tooltiptext"
-                >Profitability relative to total assets.</span
-              >
-            </p>
-            <p class="tooltip is-size-7">
-              Return On Equity: {{ stockInfo.returnOnEquity }}
-              <span class="tooltiptext"
-                >Profitability relative to shareholders' equity.</span
-              >
-            </p>
+              <hr class="new1" />
+              <p class="subtitle is-6 has-text-info">
+                Liquidity Indicators
+                <span class="tooltiptext"
+                  >Earnings Before Interest, Taxes, Depreciation, and
+                  Amortization.</span
+                >
+              </p>
+              <p class="tooltip is-size-7">
+                Current Ratio: {{ stockInfo.currentRatio }}
+                <span class="tooltiptext"
+                  >Ability to cover short-term obligations with short-term
+                  assets.</span
+                >
+              </p>
+              <p class="tooltip is-size-7">
+                Quick Ratio: {{ stockInfo.quickRatio }}
+                <span class="tooltiptext">
+                  Ability to cover short-term obligations with quick assets
+                  (excluding inventory).</span
+                >
+              </p>
+              <p class="tooltip is-size-7">
+                Total Cash: {{ stockInfo.totalCash }}
+                <span class="tooltiptext">Total cash on hand.</span>
+              </p>
+              <p class="tooltip is-size-7">
+                Total Cash Per Share: {{ stockInfo.totalCashPerShare }}
+                <span class="tooltiptext"
+                  >Total cash divided by the number of shares outstanding.</span
+                >
+              </p>
 
-            <hr class="new1" />
-            <p class="subtitle is-6 has-text-info">
-              Liquidity Indicators
-              <span class="tooltiptext"
-                >Earnings Before Interest, Taxes, Depreciation, and
-                Amortization.</span
-              >
-            </p>
-            <p class="tooltip is-size-7">
-              Current Ratio: {{ stockInfo.currentRatio }}
-              <span class="tooltiptext"
-                >Ability to cover short-term obligations with short-term
-                assets.</span
-              >
-            </p>
-            <p class="tooltip is-size-7">
-              Quick Ratio: {{ stockInfo.quickRatio }}
-              <span class="tooltiptext">
-                Ability to cover short-term obligations with quick assets
-                (excluding inventory).</span
-              >
-            </p>
-            <p class="tooltip is-size-7">
-              Total Cash: {{ stockInfo.totalCash }}
-              <span class="tooltiptext">Total cash on hand.</span>
-            </p>
-            <p class="tooltip is-size-7">
-              Total Cash Per Share: {{ stockInfo.totalCashPerShare }}
-              <span class="tooltiptext"
-                >Total cash divided by the number of shares outstanding.</span
-              >
-            </p>
+              <hr class="new1" />
+              <p class="subtitle is-6 has-text-info">Valuation Indicators</p>
+              <p class="tooltip is-size-7">
+                Book Value: {{ stockInfo.bookValue }}
+                <span class="tooltiptext">Net asset value per share.</span>
+              </p>
+              <p class="tooltip is-size-7">
+                Price To Book: {{ stockInfo.priceToBook }}
+                <span class="tooltiptext"
+                  >Market price per share divided by book value per share.</span
+                >
+              </p>
+              <p class="tooltip is-size-7">
+                Enterprise Value: {{ stockInfo.enterpriseValue }}
+                <span class="tooltiptext"
+                  >Total value of the company, including debt, minus cash.</span
+                >
+              </p>
+              <p class="tooltip is-size-7">
+                Enterprise To EBITDA: {{ stockInfo.enterpriseToEbitda }}
+                <span class="tooltiptext"
+                  >Ratio of enterprise value to EBITDA.</span
+                >
+              </p>
+              <p class="tooltip is-size-7">
+                Enterprise To Revenue: {{ stockInfo.enterpriseToRevenue }}
+                <span class="tooltiptext"
+                  >Ratio of enterprise value to revenue.</span
+                >
+              </p>
 
-            <hr class="new1" />
-            <p class="subtitle is-6 has-text-info">Valuation Indicators</p>
-            <p class="tooltip is-size-7">
-              Book Value: {{ stockInfo.bookValue }}
-              <span class="tooltiptext">Net asset value per share.</span>
-            </p>
-            <p class="tooltip is-size-7">
-              Price To Book: {{ stockInfo.priceToBook }}
-              <span class="tooltiptext"
-                >Market price per share divided by book value per share.</span
-              >
-            </p>
-            <p class="tooltip is-size-7">
-              Enterprise Value: {{ stockInfo.enterpriseValue }}
-              <span class="tooltiptext"
-                >Total value of the company, including debt, minus cash.</span
-              >
-            </p>
-            <p class="tooltip is-size-7">
-              Enterprise To EBITDA: {{ stockInfo.enterpriseToEbitda }}
-              <span class="tooltiptext"
-                >Ratio of enterprise value to EBITDA.</span
-              >
-            </p>
-            <p class="tooltip is-size-7">
-              Enterprise To Revenue: {{ stockInfo.enterpriseToRevenue }}
-              <span class="tooltiptext"
-                >Ratio of enterprise value to revenue.</span
-              >
-            </p>
+              <hr class="new1" />
+              <p class="subtitle is-6 has-text-info">Earnings Indicators</p>
+              <p class="tooltip is-size-7">
+                Total Revenue : {{ stockInfo.totalRevenue }}
+                <span class="tooltiptext"
+                  >Total amount of money brought in by a company's operations,
+                  measured over a set amount of time.</span
+                >
+              </p>
+              <p class="tooltip is-size-7">
+                Forward EPS: {{ stockInfo.forwardEps }}
+                <span class="tooltiptext"
+                  >Estimated earnings per share for the future.</span
+                >
+              </p>
+              <p class="tooltip is-size-7">
+                Trailing EPS: {{ stockInfo.trailingEps }}
+                <span class="tooltiptext"
+                  >Actual earnings per share for the past period.</span
+                >
+              </p>
+              <p class="tooltip is-size-7">
+                Forward PE: {{ stockInfo.forwardPE }}
+                <span class="tooltiptext"
+                  >Price-to-earnings ratio based on future earnings.</span
+                >
+              </p>
+              <p class="tooltip is-size-7">
+                Trailing PE: {{ stockInfo.trailingPE }}
+                <span class="tooltiptext"
+                  >Price-to-earnings ratio based on past earnings.</span
+                >
+              </p>
+              <p class="tooltip is-size-7">
+                Earnings Growth: {{ stockInfo.earningsGrowth }}
+                <span class="tooltiptext">Year-over-year earnings growth.</span>
+              </p>
+              <p class="tooltip is-size-7">
+                Earnings Quarterly Growth:
+                {{ stockInfo.earningsQuarterlyGrowth }}
+                <span class="tooltiptext"
+                  >Quarter-over-quarter earnings growth.</span
+                >
+              </p>
 
-            <hr class="new1" />
-            <p class="subtitle is-6 has-text-info">Earnings Indicators</p>
-            <p class="tooltip is-size-7">
-              Total Revenue : {{ stockInfo.totalRevenue }}
-              <span class="tooltiptext"
-                >Total amount of money brought in by a company's operations,
-                measured over a set amount of time.</span
-              >
-            </p>
-            <p class="tooltip is-size-7">
-              Forward EPS: {{ stockInfo.forwardEps }}
-              <span class="tooltiptext"
-                >Estimated earnings per share for the future.</span
-              >
-            </p>
-            <p class="tooltip is-size-7">
-              Trailing EPS: {{ stockInfo.trailingEps }}
-              <span class="tooltiptext"
-                >Actual earnings per share for the past period.</span
-              >
-            </p>
-            <p class="tooltip is-size-7">
-              Forward PE: {{ stockInfo.forwardPE }}
-              <span class="tooltiptext"
-                >Price-to-earnings ratio based on future earnings.</span
-              >
-            </p>
-            <p class="tooltip is-size-7">
-              Trailing PE: {{ stockInfo.trailingPE }}
-              <span class="tooltiptext"
-                >Price-to-earnings ratio based on past earnings.</span
-              >
-            </p>
-            <p class="tooltip is-size-7">
-              Earnings Growth: {{ stockInfo.earningsGrowth }}
-              <span class="tooltiptext">Year-over-year earnings growth.</span>
-            </p>
-            <p class="tooltip is-size-7">
-              Earnings Quarterly Growth: {{ stockInfo.earningsQuarterlyGrowth }}
-              <span class="tooltiptext"
-                >Quarter-over-quarter earnings growth.</span
-              >
-            </p>
+              <hr class="new1" />
+              <p class="subtitle is-6 has-text-info">Dividend Indicators</p>
+              <p class="tooltip is-size-7">
+                Dividend Rate: {{ stockInfo.dividendRate }}
+                <span class="tooltiptext"
+                  >Annual dividend payment per share.</span
+                >
+              </p>
+              <p class="tooltip is-size-7">
+                Dividend Yield: {{ stockInfo.dividendYield }}
+                <span class="tooltiptext"
+                  >Dividend as a percentage of the stock price.</span
+                >
+              </p>
+              <p class="tooltip is-size-7">
+                Payout Ratio: {{ stockInfo.payoutRatio }}
+                <span class="tooltiptext"
+                  >Percentage of earnings paid out as dividends.</span
+                >
+              </p>
 
-            <hr class="new1" />
-            <p class="subtitle is-6 has-text-info">Dividend Indicators</p>
-            <p class="tooltip is-size-7">
-              Dividend Rate: {{ stockInfo.dividendRate }}
-              <span class="tooltiptext"
-                >Annual dividend payment per share.</span
-              >
-            </p>
-            <p class="tooltip is-size-7">
-              Dividend Yield: {{ stockInfo.dividendYield }}
-              <span class="tooltiptext"
-                >Dividend as a percentage of the stock price.</span
-              >
-            </p>
-            <p class="tooltip is-size-7">
-              Payout Ratio: {{ stockInfo.payoutRatio }}
-              <span class="tooltiptext"
-                >Percentage of earnings paid out as dividends.</span
-              >
-            </p>
+              <hr class="new1" />
+              <p class="subtitle is-6 has-text-info">Growth Indicators</p>
+              <p class="tooltip is-size-7">
+                Revenue Growth: {{ stockInfo.revenueGrowth }}
+                <span class="tooltiptext">Year-over-year revenue growth.</span>
+              </p>
+              <p class="tooltip is-size-7">
+                Revenue Per Share: {{ stockInfo.revenuePerShare }}
+                <span class="tooltiptext"
+                  >Revenue divided by the number of shares outstanding.</span
+                >
+              </p>
+              <p class="tooltip is-size-7">
+                Free Cash Flow: {{ stockInfo.freeCashflow }}
+                <span class="tooltiptext"
+                  >Cash generated after capital expenditures.</span
+                >
+              </p>
 
-            <hr class="new1" />
-            <p class="subtitle is-6 has-text-info">Growth Indicators</p>
-            <p class="tooltip is-size-7">
-              Revenue Growth: {{ stockInfo.revenueGrowth }}
-              <span class="tooltiptext">Year-over-year revenue growth.</span>
-            </p>
-            <p class="tooltip is-size-7">
-              Revenue Per Share: {{ stockInfo.revenuePerShare }}
-              <span class="tooltiptext"
-                >Revenue divided by the number of shares outstanding.</span
-              >
-            </p>
-            <p class="tooltip is-size-7">
-              Free Cash Flow: {{ stockInfo.freeCashflow }}
-              <span class="tooltiptext"
-                >Cash generated after capital expenditures.</span
-              >
-            </p>
+              <hr class="new1" />
+              <p class="subtitle is-6 has-text-info">Leverage Indicators</p>
+              <p class="tooltip is-size-7">
+                Debt To Equity: {{ stockInfo.debtToEquity }}
+                <span class="tooltiptext"
+                  >Ratio of total debt to shareholders' equity.</span
+                >
+              </p>
 
-            <hr class="new1" />
-            <p class="subtitle is-6 has-text-info">Leverage Indicators</p>
-            <p class="tooltip is-size-7">
-              Debt To Equity: {{ stockInfo.debtToEquity }}
-              <span class="tooltiptext"
-                >Ratio of total debt to shareholders' equity.</span
-              >
-            </p>
+              <hr class="new1" />
+              <p class="subtitle is-6 has-text-info">Efficiency Indicators</p>
+              <p class="tooltip is-size-7">
+                Gross Margin: {{ stockInfo.grossMargins }}
+                <span class="tooltiptext"
+                  >Percentage of gross profit relative to total revenue.</span
+                >
+              </p>
+              <p class="tooltip is-size-7">
+                Operating Cash Flow: {{ stockInfo.operatingCashflow }}
+                <span class="tooltiptext"
+                  >Cash generated from core business operations.</span
+                >
+              </p>
 
-            <hr class="new1" />
-            <p class="subtitle is-6 has-text-info">Efficiency Indicators</p>
-            <p class="tooltip is-size-7">
-              Gross Margin: {{ stockInfo.grossMargins }}
-              <span class="tooltiptext"
-                >Percentage of gross profit relative to total revenue.</span
-              >
-            </p>
-            <p class="tooltip is-size-7">
-              Operating Cash Flow: {{ stockInfo.operatingCashflow }}
-              <span class="tooltiptext"
-                >Cash generated from core business operations.</span
-              >
-            </p>
+              <hr class="new1" />
+              <p class="subtitle is-6 has-text-info">Market Indicators</p>
+              <p class="tooltip is-size-7">
+                Float Shares: {{ stockInfo.floatShares }}
+                <span class="tooltiptext"
+                  >Number of shares available for trading.</span
+                >
+              </p>
+              <p class="tooltip is-size-7">
+                PEG Ratio: {{ stockInfo.pegRatio }}
+                <span class="tooltiptext"
+                  >Price-to-earnings ratio adjusted for growth.</span
+                >
+              </p>
 
-            <hr class="new1" />
-            <p class="subtitle is-6 has-text-info">Market Indicators</p>
-            <p class="tooltip is-size-7">
-              Float Shares: {{ stockInfo.floatShares }}
-              <span class="tooltiptext"
-                >Number of shares available for trading.</span
-              >
-            </p>
-            <p class="tooltip is-size-7">
-              PEG Ratio: {{ stockInfo.pegRatio }}
-              <span class="tooltiptext"
-                >Price-to-earnings ratio adjusted for growth.</span
-              >
-            </p>
+              <hr class="new1" />
+              <p class="subtitle is-6 has-text-info">Recommendation</p>
+              <p class="tooltip is-size-7">
+                Recommendation Key: {{ stockInfo.recommendationKey }}
+                <span class="tooltiptext"
+                  >Analyst's buy/hold/sell recommendation.</span
+                >
+              </p>
+              <p class="tooltip is-size-7">
+                Recommendation Mean: {{ stockInfo.recommendationMean }}
+                <span class="tooltiptext"
+                  >Average recommendation from analysts.</span
+                >
+              </p>
+              <p class="tooltip is-size-7">
+                Number Of Analyst Opinions:
+                {{ stockInfo.numberOfAnalystOpinions }}
+                <span class="tooltiptext"
+                  >Total number of analyst recommendations.</span
+                >
+              </p>
 
-            <hr class="new1" />
-            <p class="subtitle is-6 has-text-info">Recommendation</p>
-            <p class="tooltip is-size-7">
-              Recommendation Key: {{ stockInfo.recommendationKey }}
-              <span class="tooltiptext"
-                >Analyst's buy/hold/sell recommendation.</span
-              >
-            </p>
-            <p class="tooltip is-size-7">
-              Recommendation Mean: {{ stockInfo.recommendationMean }}
-              <span class="tooltiptext"
-                >Average recommendation from analysts.</span
-              >
-            </p>
-            <p class="tooltip is-size-7">
-              Number Of Analyst Opinions:
-              {{ stockInfo.numberOfAnalystOpinions }}
-              <span class="tooltiptext"
-                >Total number of analyst recommendations.</span
-              >
-            </p>
-
-            <hr class="new1" />
+              <hr class="new1" />
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
-
-<!-- <div class="grid-container">
-    <div class="grid-item"> -->
-
-<!-- </div> -->
-<!-- <div class="grid-item">
-      <div class="flex-container">
-        <div class="flex-item notification">Item 3</div>
-        <div class="flex-item notification">Item 4</div>
-      </div>
-    </div> -->
-<!-- More grid items -->
-<!-- </div> -->
+</div>  
