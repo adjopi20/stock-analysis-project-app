@@ -22,7 +22,7 @@ def get_all_q_income_statement():
             financials_dict = convert_timestamp(financials.to_dict())
             financials_arr.append({
                 'symbol': symbol,
-                'quarterly-income-statement': financials_dict
+                'income_statement': financials_dict
             })
         except Exception as e:
             logging.error(f"error getting symbol for {symbol}: {e}")
@@ -65,7 +65,7 @@ def get_q_inc_stmt_with_cache(symbol):
         financial_dict = convert_timestamp(inc_stmt)
         res = {
             'symbol' : symbol,
-            'quarterly_income_statement' : financial_dict
+            'income_statement' : financial_dict
         }
 
         client.set(cache_key, json.dumps(res), ex=cache_ttl)
@@ -108,7 +108,7 @@ def getQIncStmt(symbol):
         
         res = {
             'symbol' : symbol,
-            'q_income_statement' : financial_dict
+            'income_statement' : financial_dict
         }
         print("without cache")
         return res
@@ -130,7 +130,7 @@ def get_all_q_bal_sheet():
             financials_dict = convert_timestamp(financials.to_dict())
             financials_arr.append({
                 'symbol': symbol,
-                'quarterly-balance-sheet': financials_dict
+                'balance_sheet': financials_dict
             })
         except Exception as e:
             logging.error(f"error getting symbol for {symbol}: {e}")
@@ -171,7 +171,7 @@ def get_q_bal_sheet(symbol):
         
         res = {
             'symbol' : symbol,
-            'q_balance_sheet' : financial_dict
+            'balance_sheet' : financial_dict
         }
 
         return res
@@ -214,7 +214,7 @@ def get_all_q_cash_flow():
             financials_dict = convert_timestamp(financials.to_dict())
             financials_arr.append({
                 'symbol': symbol,
-                'quarterly-cash-flow': financials_dict
+                'cash_flow': financials_dict
             })
         except Exception as e:
             logging.error(f"error getting symbol for {symbol}: {e}")
@@ -254,7 +254,7 @@ def get_q_cash_flow(symbol):
         
         res = {
             'symbol' : symbol,
-            'q_cash_flow' : financial_dict
+            'cash_flow' : financial_dict
         }
 
         

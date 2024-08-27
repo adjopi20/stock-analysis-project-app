@@ -15,6 +15,8 @@ import { NgModel } from '@angular/forms';
 import { PieChartComponent } from '../../../shared/component/pie-chart/pie-chart.component';
 import { ColumnChartComponent } from '../../../shared/component/column-chart/column-chart.component';
 import { Title } from '@angular/platform-browser';
+import { FinancialsComponent } from '../financials/financials.component';
+import { FinancialsService } from '../../../shared/service/financials/financials.service';
 
 @Component({
   selector: 'app-stock-page',
@@ -48,20 +50,21 @@ export class StockPageComponent {
   pricePeriod: string = '';
   percentChange: number = 0;
   currentPeriod: string = '1mo';
+  finPeriod: string = 'quarterly';
   priceData: any;
 
   constructor(
     private apiService: FlaskApiService,
     private route: ActivatedRoute,
     private cdr: ChangeDetectorRef,
-    protected lbs: ListingBoardService
+    protected lbs: ListingBoardService,
+    private fs: FinancialsService
   ) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params: ParamMap) => {
       this.symbol = params.get('symbol') || '';
       this.getStockInfo();
-      this.getStockFinancials();
       this.getStockHistorical(this.currentPeriod);
       this.getStockActions();
 
@@ -97,9 +100,7 @@ export class StockPageComponent {
 
       console.log('stck info', this.stockInfo);
       console.log('name', this.name);
-      this.getIncomeStatement();
-      this.getBalSheet();
-      this.getCashFlow();
+      this.getStockFinancials();
     } catch (err) {
       console.log(err);
     } finally {
@@ -108,15 +109,9 @@ export class StockPageComponent {
   }
 
   async getStockFinancials() {
-    const balSheet = await firstValueFrom(
-      this.apiService.getQBalSheet(this.symbol)
-    );
-    const cashFlow = await firstValueFrom(
-      this.apiService.getQCashFlow(this.symbol)
-    );
-    const incomeStmt = await firstValueFrom(
-      this.apiService.getQIncomeStatement(this.symbol)
-    );
+    this.getIncomeStatement();
+    this.getCashFlow();
+    this.getBalSheet();
   }
 
   async getStockHistorical(period: string) {
@@ -201,18 +196,36 @@ export class StockPageComponent {
     this.getStockHistorical(this.currentPeriod);
   }
 
+  onFinancialPeriodChange(event: any) {
+    this.finPeriod = event.target.value;
+    console.log('financial period: ', this.finPeriod);
+    
+    this.IncStmtChart = [];
+    this.BalSheetChart = [];
+    this.CashFlowChart = [];
+    this.getStockFinancials();
+  }
+
   async getIncomeStatement() {
     try {
       // this.IncStmtChart = []; // Clear previous data
-      const data = await firstValueFrom(
-        this.apiService.getQIncomeStatement(this.symbol)
-      );
+      let data: any = [];
+
+      if (this.finPeriod === 'quarterly') {
+        data = await firstValueFrom(
+          this.apiService.getQIncomeStatement(this.symbol)
+        );
+      } else if (this.finPeriod === 'yearly') {
+        data = await firstValueFrom(
+          this.apiService.getIncomeStatement(this.symbol)
+        );
+      }
 
       console.log('Income Statement: ', data);
 
       if (data) {
         const title = `Income Statement`;
-        const dataTable = this.convertToLineChartIncStmt(data);
+        const dataTable = this.fs.convertToChartIncStmt(data, this.symbol);
         this.IncStmtChart.push({ title, dataTable });
         console.log('data table: ', dataTable);
       } else {
@@ -221,22 +234,25 @@ export class StockPageComponent {
 
       this.cdr.detectChanges();
     } catch (error) {
-      console.log('get income statement error: ', error);
+      console.error('get income statement error: ', error);
     } finally {
       console.log('complete');
     }
   }
 
   async getBalSheet() {
+    let data: any = [];
     try {
-      const data = await firstValueFrom(
-        this.apiService.getQBalSheet(this.symbol)
-      );
+      if (this.finPeriod === 'quarterly') {
+        data = await firstValueFrom(this.apiService.getQBalSheet(this.symbol));
+      } else {
+        data = await firstValueFrom(this.apiService.getBalSheet(this.symbol));
+      }
 
       // Check if data is available
       if (data) {
         const title = `Balance Sheet`;
-        const dataTable = this.convertToLineChartBalSh(data);
+        const dataTable = this.fs.convertToChartBalSh(data, this.symbol);
         this.BalSheetChart.push({ title, dataTable });
         console.log('data table: ', dataTable);
       } else {
@@ -245,7 +261,7 @@ export class StockPageComponent {
 
       this.cdr.detectChanges();
     } catch (error) {
-      console.log('get bal sheet error: ', error);
+      console.warn('get bal sheet error: ', error);
     } finally {
       console.log('complete');
     }
@@ -253,16 +269,31 @@ export class StockPageComponent {
 
   async getCashFlow() {
     try {
-      const data = await firstValueFrom(
-        this.apiService.getQCashFlow(this.symbol)
-      );
+      let data: any = [];
+
+      // if (this.finPeriod === 'quarterly') {
+      //   data = await firstValueFrom(
+      //     this.apiService.getQCashFlow(this.symbol)
+      //   );
+      // } else if (this.finPeriod === 'yearly') {
+      //   data = await firstValueFrom(
+      //     this.apiService.getCashFlow(this.symbol)
+      //   );
+      // }
+
+      data =
+        this.finPeriod === 'quarterly'
+          ? await firstValueFrom(this.apiService.getQCashFlow(this.symbol))
+          : (data = await firstValueFrom(
+              this.apiService.getCashFlow(this.symbol)
+            ));
 
       // Check if data is available
       if (data) {
         const title = `Cash Flow`;
         console.log('name:: ', this.name);
 
-        const dataTable = this.convertToLineChartCashFlow(data);
+        const dataTable = this.fs.convertToChartCashFlow(data, this.symbol);
         this.CashFlowChart.push({ title, dataTable });
         console.log('data table: ', dataTable);
       } else {
@@ -277,148 +308,7 @@ export class StockPageComponent {
     }
   }
 
-  convertToLineChartIncStmt(data: any) {
-    // Initialize with header row
-    const dataTable = [
-      [
-        'Period',
-        'Total Revenue',
-        'Total Expenses',
-        'Operating Revenue',
-        'Operating Expense',
-        'EBITDA',
-        'Gross Profit',
-        'Net Income',
-        'Basic EPS',
-      ],
-    ];
-
-    Object.keys(data.q_income_statement).forEach((period: any) => {
-      const periodData = data.q_income_statement[period];
-      const datePeriod = new Date(period); // Convert date to timestamp
-
-      const totalRevenue = periodData['Total Revenue'] ?? 0;
-      const totalExpense = periodData['Total Expenses'] ?? 0;
-      const operatingRevenue = periodData['Operating Revenue'] ?? 0;
-      const operatingExpense = periodData['Operating Expense'] ?? 0;
-      const EBITDA = periodData['EBITDA'] ?? 0;
-      const grossProfit = periodData['Gross Profit'] ?? 0;
-      const netIncome = periodData['Net Income'] ?? 0;
-      const basicEPS = periodData['Basic EPS'] ?? 0;
-
-      dataTable.push([
-        datePeriod,
-        totalRevenue,
-        totalExpense,
-        operatingRevenue,
-        operatingExpense,
-        EBITDA,
-        grossProfit,
-        netIncome,
-        basicEPS,
-      ]);
-    });
-    this.cdr.detectChanges();
-    console.log('dataTable: ', dataTable);
-    return dataTable;
-  }
-
-  convertToLineChartBalSh(data: any) {
-    // Initialize with header row
-    const dataTable = [
-      [
-        'Period',
-        'Total Assets',
-        'Total Debt',
-        'Net Debt',
-        'Working Capital',
-        'Cash And Cash Equivalents',
-        'Total Liabilities Net Minority Interest',
-        'Total Equity Gross Minority Interest',
-        'Stockholders Equity',
-        'Retained Earnings',
-      ],
-    ];
-
-    Object.keys(data.q_balance_sheet).forEach((period: any) => {
-      const periodData = data.q_balance_sheet[period];
-      const datePeriod = new Date(period); // Convert date to timestamp
-      const totalAssets = periodData['Total Assets'] ?? 0;
-      const totalDebt = periodData['Total Debt'] ?? 0;
-      const netDebt = periodData['Net Debt'] ?? 0;
-      const WC = periodData['Working Capital'] ?? 0;
-      const CCE = periodData['Cash And Cash Equivalents'] ?? 0;
-      const TLN = periodData['Total Liabilities Net Minority Interest'] ?? 0;
-      const TEG = periodData['Total Equity Gross Minority Interest'] ?? 0;
-      const SE = periodData['Stockholders Equity'] ?? 0;
-      const RE = periodData['Retained Earnings'] ?? 0;
-
-      dataTable.push([
-        datePeriod,
-        totalAssets,
-        totalDebt,
-        netDebt,
-        WC,
-        CCE,
-        TLN,
-        TEG,
-        SE,
-        RE,
-      ]);
-    });
-    this.cdr.detectChanges();
-    console.log('dataTable: ', dataTable);
-    return dataTable;
-  }
-
-  convertToLineChartCashFlow(data: any) {
-    // Initialize with header row
-    const dataTable = [
-      [
-        'Period',
-        'Free Cash Flow',
-        'Cash Flows from Operating Activities Direct',
-        'Capital Expenditure',
-        'Cash Dividends Paid',
-        'End Cash Position',
-        'Net Long Term Debt Issuance',
-        'Financing Cash Flow',
-        'Investing Cash Flow',
-        'Changes in Cash',
-      ],
-    ];
-
-    Object.keys(data.q_cash_flow).forEach((period: any) => {
-      const periodData = data.q_cash_flow[period];
-      const datePeriod = new Date(period); // Convert date to timestamp
-      const freeCashFlow = periodData['Free Cash Flow'] ?? 0;
-      const CFFOAD =
-        periodData['Cash Flowsfromusedin Operating Activities Direct'] ?? 0;
-      const CE = periodData['Capital Expenditure'] ?? 0;
-      const CDP = periodData['Cash Dividends Paid'] ?? 0;
-      const ECP = periodData['End Cash Position'] ?? 0;
-      const NLTDI = periodData['Net Long Term Debt Issuance'] ?? 0;
-      const FCF = periodData['Financing Cash Flow'] ?? 0;
-      const ICF = periodData['Investing Cash Flow'] ?? 0;
-      const CC = periodData['Changes In Cash'] ?? 0;
-
-      dataTable.push([
-        datePeriod,
-        freeCashFlow,
-        CFFOAD,
-        CE,
-        CDP,
-        ECP,
-        NLTDI,
-        FCF,
-        ICF,
-        CC,
-      ]);
-    });
-    this.cdr.detectChanges();
-    console.log('dataTable: ', dataTable);
-    return dataTable;
-  }
+  
 
   async getStockActions() {
     try {
@@ -428,7 +318,6 @@ export class StockPageComponent {
 
       const dividends = data.Dividends;
       const stockSplit = data['Stock Splits'] || {}; // Default to an empty object if undefined
-
 
       if (dividends) {
         const title = `Dividends`;
@@ -467,31 +356,18 @@ export class StockPageComponent {
     return dataTable;
   }
 
-  // convertToBarChartStockSplits(data: any) {
-  //   const dataTable = [['Period', 'Stock Splits']];
-  //   Object.keys(data.Dividends).forEach((period: any) => {
-  //     const datePeriod = new Date(period); // Convert date to timestamp
-  //     const stockSplits = data[period] ?? 0;
-  //     dataTable.push([datePeriod, stockSplits]);
-  //   });
-  //   this.cdr.detectChanges();
-  //   console.log('dataTable: ', dataTable);
-  //   return dataTable;
-  // }
-
   convertToBarChartStockSplits(stockSplit: Record<string, number>): any[] {
     let dataTable: [any, any][] = [];
     dataTable.push(['Holder', 'Percent Held']);
 
     // Iterate over each date and split value
     for (const [date, splitValue] of Object.entries(stockSplit)) {
-        // Skip entries where the split value is 0 (if you want)
-        if (splitValue !== 0) {
-            dataTable.push([new Date(date), splitValue]);
-        }
+      // Skip entries where the split value is 0 (if you want)
+      if (splitValue !== 0) {
+        dataTable.push([new Date(date), splitValue]);
+      }
     }
 
     return dataTable;
-}
-
+  }
 }
