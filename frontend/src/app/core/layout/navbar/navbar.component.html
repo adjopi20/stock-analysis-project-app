@@ -67,15 +67,69 @@
     </a>
   </div>
 
-  <div class="panel-block">
-    <p class="control has-icons-left">
-      <input class="input is-success" type="text" placeholder="Search" />
-      <span class="icon is-left">
-        <i class="fas fa-search" aria-hidden="true"></i>
-        <i class="fal fa-undefined"></i>
-      </span>
-    </p>
+  <div class="panel-block dropdown is-active" role="main">
+    <div class="dropdown-trigger">
+      <!-- <div class="control has-icons-left form-group"> -->
+      <input
+        class="input is-success form-control"
+        [(ngModel)]="searchText"
+        (input)="onSearchInput()"
+        appClickOutside
+        (clickOutside)="clickOutsideSearchBar()"
+        type="text"
+        id="search-text"
+        placeholder="Search"
+        aria-label="Search"
+        aria-describedby="search-text"
+        autofocus
+      />
+      <!-- <button title="Search button" class="icon is-left" type="button">
+          <i class="fas fa-search" aria-hidden="true"></i>
+          <i class="fal fa-undefined"></i>
+        </button> -->
+      <!-- </div> -->
+    </div>
+
+    <div
+      class="dropdown-menu"
+      id="dropdown-menu2"
+      [class.is-active]="showDropdown"
+    >
+      <div class="dropdown-content" *ngIf="showDropdown">
+        <div
+          class="dropdown-item"
+          *ngFor="let item of filteredData"
+          
+        >
+          <a (click)="selectStock(item)"
+            ><p class="is-size-6 has-text-primary" appSearch
+            [searchedWord]="searchText"
+            [content]="item.symbol"
+            [classToApply]="'has-text-weight-bold'"
+            [setTitle]="true">{{ item.symbol }}</p>
+            <p class="is-size-7 has-text-info" appSearch
+            [searchedWord]="searchText"
+            [content]="item.company_name"
+            [classToApply]="'has-text-weight-bold'"
+            [setTitle]="true">{{ item.company_name }}</p>
+          </a>
+          <!-- <hr class="dropdown-divider" /> -->
+        </div>
+      </div>
+    </div>
   </div>
+
+  <!-- <div
+    |
+    search
+    :
+    searchText
+    appSearch
+    [searchedWord]="searchText"
+    [content]="item.symbol"
+    [classToApply]="'font-weight-bold'"
+    [setTitle]="true"
+  ></div> -->
 
   <div id="navbarBasicExample" class="navbar-menu">
     <div class="navbar-start">

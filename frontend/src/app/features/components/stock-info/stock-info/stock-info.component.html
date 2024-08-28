@@ -86,7 +86,13 @@
                 </p>
                 <p class="is-size-7">Listing date: {{ item.listing_date }}</p>
               </div>
-              <footer class="card-footer" *ngIf="isLogin">
+              <!-- <div class="has-background-grey-lighter">  -->
+                <footer class="card-footer ">
+                <a [routerLink]="['/stock', item.symbol]" routerLinkActive="router-link-active"  class="card-footer-item control">Details</a>
+              </footer>
+            <!-- </div> -->
+             
+              <!-- <footer class="card-footer" *ngIf="isLogin">
                 <div class="card-footer-item control">
                   <div class="columns is-vcentered is-multiline is-gapless">
                     <div class="column is-half is-vcentered">
@@ -144,7 +150,7 @@
                     </div>
                   </div>
                 </div>
-              </footer>
+              </footer> -->
             </div>
             }
             <!-- <div *ngIf="isLoading" class="card">

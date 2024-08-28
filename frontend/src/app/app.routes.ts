@@ -11,6 +11,13 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'info',
+    loadComponent: () =>
+      import(
+        './features/components/stock-info/stock-info/stock-info.component'
+      ).then((m) => m.StockInfoComponent),
+  },
+  {
     path: 'histogram-analysis',
     loadComponent: () =>
       import(

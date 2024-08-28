@@ -14,7 +14,7 @@ export class ColumnChartComponent {
   @Input() reportType: string = '';
   @Input() dataTable: any[] = [];
 
-  public lineChart: GoogleChartInterface = {
+  public columnChart: GoogleChartInterface = {
     chartType: GoogleChartType.ColumnChart,
     dataTable: [],
     options: {
@@ -39,8 +39,8 @@ export class ColumnChartComponent {
   }
 
   updateChart() {
-    this.lineChart.dataTable = this.dataTable;
-    this.lineChart.options.title = this.title;
+    this.columnChart.dataTable = this.dataTable;
+    this.columnChart.options.title = this.title;
     this.cdr.detectChanges();
   }
 }

@@ -199,7 +199,7 @@ export class StockPageComponent {
   onFinancialPeriodChange(event: any) {
     this.finPeriod = event.target.value;
     console.log('financial period: ', this.finPeriod);
-    
+
     this.IncStmtChart = [];
     this.BalSheetChart = [];
     this.CashFlowChart = [];
@@ -308,8 +308,6 @@ export class StockPageComponent {
     }
   }
 
-  
-
   async getStockActions() {
     try {
       const data = await firstValueFrom(
@@ -327,7 +325,7 @@ export class StockPageComponent {
       } else {
         console.warn(`No dividend returned for symbol: ${this.name}`);
       }
-      if (stockSplit && Object.keys(stockSplit).length > 0) {
+      if (stockSplit) {
         const title = `Stock Splits`;
         const dataTable = this.convertToBarChartStockSplits(stockSplit);
         this.StockSplitsChart.push({ title, dataTable });
@@ -356,17 +354,22 @@ export class StockPageComponent {
     return dataTable;
   }
 
-  convertToBarChartStockSplits(stockSplit: Record<string, number>): any[] {
-    let dataTable: [any, any][] = [];
-    dataTable.push(['Holder', 'Percent Held']);
+  convertToBarChartStockSplits(
+    // stockSplit: Record<string, number>
+    data: any
+  ) {
+    const dataTable = [['Period', 'Stock Split']];
+    Object.keys(data).forEach((period: any) => {
+      const datePeriod = new Date(period); // Convert date to timestamp
+      const stockSplit = data[period] ?? 0;
 
-    // Iterate over each date and split value
-    for (const [date, splitValue] of Object.entries(stockSplit)) {
-      // Skip entries where the split value is 0 (if you want)
-      if (splitValue !== 0) {
-        dataTable.push([new Date(date), splitValue]);
+      if (stockSplit !== 0) {
+        dataTable.push([datePeriod, stockSplit]);
       }
-    }
+    });
+
+    this.cdr.detectChanges();
+    console.log('dataTable: ', dataTable);
 
     return dataTable;
   }

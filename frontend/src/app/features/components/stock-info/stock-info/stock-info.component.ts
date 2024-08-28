@@ -8,6 +8,7 @@ import { SideNavComponent } from '../side-nav/side-nav.component';
 import { PaginationComponent } from '../pagination/pagination.component';
 import { FilterContainerComponent } from '../filter-container/filter-container.component';
 import { ListingBoardService } from '../../../../shared/service/listingBoardService/listing-board.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-stock-info',
@@ -20,6 +21,7 @@ import { ListingBoardService } from '../../../../shared/service/listingBoardServ
     PaginationComponent,
     FilterContainerComponent,
     CurrencyPipe,
+    RouterLink
   ],
   templateUrl: './stock-info.component.html',
   styleUrl: './stock-info.component.scss',

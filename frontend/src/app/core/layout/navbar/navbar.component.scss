@@ -10,3 +10,30 @@
     right: 0;
     z-index: 1000;
   }
+
+  .card{
+    position: relative;
+  }
+
+  .list-group{
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    max-height: 200px;
+    overflow-y: auto;
+    background-color: white;
+    border: 1px solid #ccc;
+
+  }
+
+  .dropdown-menu{
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    max-height: 200px;
+    overflow-y: auto;
+  }
