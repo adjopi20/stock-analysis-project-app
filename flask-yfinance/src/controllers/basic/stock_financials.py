@@ -16,15 +16,15 @@ def get_q_income_statement(symbol):
     res = getQIncStmt(symbol)
     return jsonify(res)
 
-@financials_bp.route('/financials/q-income-statement/<symbol>', methods=['GET'])
-def get_quarterly_income_statement(symbol):
-    res = get_q_inc_stmt_with_cache(symbol)
-    return jsonify(res)
+# @financials_bp.route('/financials/q-income-statement/<symbol>', methods=['GET'])
+# def get_quarterly_income_statement(symbol):
+#     res = get_q_inc_stmt_with_cache(symbol)
+#     return jsonify(res)
     
-@financials_bp.route('/financials/q-income-statement', methods=['GET'])
-def get_all_quarterly_income_statement():
-    res = get_all_q_income_statement_with_cache()
-    return jsonify(res)
+# @financials_bp.route('/financials/q-income-statement', methods=['GET'])
+# def get_all_quarterly_income_statement():
+#     res = get_all_q_income_statement_with_cache()
+#     return jsonify(res)
 
 #========================================================================================
 @financials_bp.route('/financials/q-balance-sheet/<symbol>', methods=['GET'])   

@@ -16,6 +16,7 @@ import { firstValueFrom } from 'rxjs';
 import { LoadingServiceService } from '../../../shared/service/loadingService/loading-service.service';
 import { LoadingIndicatorComponent } from '../../../shared/component/loading-indicator/loading-indicator.component';
 import { LoadingComponent } from '../../../shared/component/loading/loading.component';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-overview',
@@ -27,9 +28,10 @@ import { LoadingComponent } from '../../../shared/component/loading/loading.comp
     CarouselComponent,
     PercentPipe,
     CurrencyPipe,
-    DecimalPipe, 
-    LoadingIndicatorComponent, 
-    LoadingComponent
+    DecimalPipe,
+    LoadingIndicatorComponent,
+    LoadingComponent,
+    RouterLink,
   ],
   providers: [DatePipe],
   templateUrl: './overview.component.html',
@@ -57,7 +59,8 @@ export class OverviewComponent {
   constructor(
     private apiService: FlaskApiService,
     private datePipe: DatePipe,
-    private loadingService: LoadingServiceService
+    private loadingService: LoadingServiceService,
+    private router : Router
   ) {}
 
   ngOnInit() {
@@ -73,7 +76,7 @@ export class OverviewComponent {
       const data = await firstValueFrom(this.apiService.getStockList());
       this.stocks = data.data;
       console.log('stocks2', this.stocks);
-      
+
       this.stocks.sort((a, b) => b.marketCap - a.marketCap);
       this.topDividendRate = this.stocks
         .filter((item) => item.dividendRate)
@@ -113,7 +116,6 @@ export class OverviewComponent {
       this.loadingService.loadingOn();
       this.isLoading = true;
 
-
       const data = await firstValueFrom(
         this.apiService.getHistoricalPrice('1mo')
       );
@@ -127,15 +129,13 @@ export class OverviewComponent {
       console.log('complete');
       this.loadingService.loadingOff();
       this.isLoading = false;
-
-
     }
   }
 
   topGainerss() {
     let list = [];
     console.log('Stocks:', this.stocks);
-    
+
     for (let item of this.stocks) {
       const close = item.history.Close;
       const volumes = item.history.Volume;
@@ -170,10 +170,10 @@ export class OverviewComponent {
     this.topGainers = sortedPercentChange.slice(0, 10);
     this.topLosers = sortedPercentChange.slice(list.length - 10, list.length);
 
-    const sortedVolume = list.sort((a: any, b: any) => b.lastDayVolume - a.lastDayVolume);
+    const sortedVolume = list.sort(
+      (a: any, b: any) => b.lastDayVolume - a.lastDayVolume
+    );
     this.topVolumes = sortedVolume.slice(0, 12);
-
-
   }
 
   WeeklyGainers() {
@@ -207,9 +207,10 @@ export class OverviewComponent {
       (a: any, b: any) => b.percentChange - a.percentChange
     );
     this.weeklyGainers = sortedPercentChange.slice(0, 10);
-    this.weeklyLosers = sortedPercentChange.slice(list.length - 10, list.length);
-
-   
+    this.weeklyLosers = sortedPercentChange.slice(
+      list.length - 10,
+      list.length
+    );
   }
 
   MonthlyGainers() {
@@ -244,10 +245,17 @@ export class OverviewComponent {
       (a: any, b: any) => b.percentChange - a.percentChange
     );
     this.monthlyGainers = sortedPercentChange.slice(0, 10);
-    this.monthlyLosers = sortedPercentChange.slice(list.length - 10, list.length);
-
-   
+    this.monthlyLosers = sortedPercentChange.slice(
+      list.length - 10,
+      list.length
+    );
   }
 
-  
+  selectStock(stock: any) {
+    // this.searchText = `${stock.company_name} (${stock.symbol})`;
+    // this.showDropdown = false;
+    // Navigate to the stock details page
+    this.router.navigate(['/stock', stock.symbol]);
+    // this.searchText = ''; // Clear the search input
+  }
 }

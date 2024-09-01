@@ -6,13 +6,37 @@
     height: 100%;
   }
 
-.cupid{
-  justify-content: center;
-  align-items: center;
-//   display: flex;
-  margin-top: 5rem;
-  width: 30%; 
-  height: 30%;
-  
+// .cupid{
+//   justify-content: center;
+//   align-items: center;
+// //   display: flex;
+//   margin-top: 5rem;
+//   width: 30%; 
+//   height: 30%;
+// }
 
+
+.presentation-item {
+  font-size: 2rem;
+  color: #333;
+  // padding: 20px;
 }
+
+// .slidable-container {
+//   overflow-x: auto;
+//   white-space: nowrap;
+//   padding: 1rem;
+// }
+
+// .slidable-content {
+//   display: inline-flex; /* Makes the child elements inline and side by side */
+// }
+
+// .slidable-item {
+//   min-width: 300px; /* Define the width of each item */
+//   margin-right: 1rem; /* Add space between items */
+//   background-color: #f5f5f5;
+//   padding: 1rem;
+//   border-radius: 5px;
+//   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+// }

@@ -33,19 +33,9 @@ def get_all_news():
             cached_news = json.loads(cached_raw_value)
             return jsonify(cached_news)
         
-        # scraped_stock = scrape_stock_with_cache()        
-        # symbolJK = [item['symbol'] for item in scraped_stock]
-        # news_arr = []
-        # for symbol in symbolJK:
-            # try:
         stock = yf.Ticker('AALI.JK')
         news = stock.news
-        # news_arr.append({
-        #     'symbol': symbol,
-        #     'news': news
-        # })
-            # except Exception as e:
-            #     logging.error(f"error getting symbol for {symbol}: {e}")
+        
         cached=json.dumps(news)
         client.set(cached_key, cached, ex=cache_ttl)
         return jsonify(news)

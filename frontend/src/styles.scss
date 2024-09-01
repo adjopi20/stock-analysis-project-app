@@ -163,16 +163,6 @@ hr.new1 {
 .is-align-items-center {
   align-items: center;
 }
-// /* Order */
-// @layer reset, primeng;
-
-// /* Reset CSS */
-// @layerreset {
-//     button,
-//     input {
-//         /* CSS to Reset */
-//     }
-// }
 
 .left-border{
   border-left: 2px solid var(--monkey-primary-01);
@@ -183,9 +173,4 @@ hr.new1 {
   border-right: 2px solid var(--monkey-primary-01);
   padding-right: 1rem;
 }
-
-// .top-border{
-//   border-top: 1px solid var(--monkey-primary-01);
-//   padding-left: 1rem;
-// }
 
