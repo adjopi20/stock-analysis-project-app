@@ -11,6 +11,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 @import "https://cdn.jsdelivr.net/npm/bulma@1.0.1/css/bulma.min.css";
 @import "../node_modules/bulma/bulma.scss";
 @import "../node_modules/@fortawesome/fontawesome-free/css/all.min.css";
+// @import "node_modules/bulma-carousel/dist/css/bulma-carousel.min.css";
+
 
 $container-offset: 2 * iv.$gap !default;
 $container-max-width: iv.$fullhd !default;
@@ -92,7 +94,11 @@ $container-max-width: iv.$fullhd !default;
   --monkey-primary-01: #0ac497;
   --monkey-primary-02: #a5236e;
   --monkey-primary-03: #0a92c4;
+  --monkey-primary-04: #eabfb9;
   --monkey-secondary-01: #bbf1ff;
+  --primeng-color: #007bff;
+
+
 
   --light: #d8dbe0;
   --dark: #28292c;
@@ -147,3 +153,24 @@ $container-max-width: iv.$fullhd !default;
 hr.new1 {
   border-top: 1px solid var(--monkey-primary-01);
 }
+
+.vr.new1 {
+  border-left: 2px solid var(--monkey-primary-01); /* Adjust thickness and color */
+  height: 100%; /* Full height of the container */
+  margin-right: 8px; /* Space between the vertical line and text */
+}
+
+.is-align-items-center {
+  align-items: center;
+}
+
+.left-border{
+  border-left: 2px solid var(--monkey-primary-01);
+  padding-left: 1rem;
+}
+
+.right-border{
+  border-right: 2px solid var(--monkey-primary-01);
+  padding-right: 1rem;
+}
+

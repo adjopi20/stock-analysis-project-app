@@ -1,18 +1,118 @@
-<app-filter-component keyword="sector"></app-filter-component>
-<hr class="new1" />
-<app-filter-component
-  (keywordEvent)="receiveChangeMetric($event)"
-  [currentOption]="currentMetric"
-  keyword="metrics"
-></app-filter-component>
-<hr class="new1" />
-<div class="fixed-grid">
-  <div
-    class="grid notification is-white has-3-cols-fullhd has-3-cols-widescreen has-2-cols-desktop has-2-cols-tablet has-1-cols-mobile"
-  >
-    <div class="cell" *ngFor="let item of histogramData">
-        <app-histogram [sector]="item.sector" [dataTable]="item.chartData" [title]="item.title"  [metric]="currentMetric"> </app-histogram>
+<div class="fixed-grid has-5-cols">
+  <div class="grid">
+    <div class="notification has-text-centered cell is-col-span-5">
+      <h1 class="title is-align-self-center">Dashboard Histogram</h1>
     </div>
+    <div class="cell is-row-span-3">
+      <app-radio
+        (itemEvent)="receiveChangeGroupBy($event)"
+        [items]="groups"
+        [currentItem]="currentGroupBy"
+        groupName="kontol"
+        [label]="'Group By:'"
+      ></app-radio>
+      <app-dropdown
+        [label]="'Listing Board: '"
+        [currentItem]="currentListingBoard"
+        (itemEvent)="receiveSetListingBoard($event)"
+        [items]="listingBoardList"
+        groupName="listingBoardGroup"
+      ></app-dropdown>
+      <app-dropdown
+        [label]="'Industry: '"
+        [currentItem]="currentIndustry"
+        (itemEvent)="receiveSetIndustry($event)"
+        [items]="industryList"
+        groupName="listingBoardGroup"
+      >
+      </app-dropdown>
+    </div>
+    <div class="cell is-col-span-4">
+      <ng-container *ngIf="currentGroupBy === 'Sector'">
+        <app-radio
+          (itemEvent)="receiveSetSector($event)"
+          [currentItem]="currentSector"
+          [items]="sectorList"
+          groupName="sectorGroup"
+          [label]="'Sector:'"
+        ></app-radio>
+        <app-checkboxes
+          [items]="metricList"
+          [currentItem]="selectedMetric"
+          (itemEvent)="receiveSetMetric($event)"
+          groupName="metricGroup"
+          [label]="'Metric: '"
+        ></app-checkboxes>
+      </ng-container>
 
+      <ng-container *ngIf="currentGroupBy === 'Metric'">
+        <app-radio
+          (itemEvent)="receiveSetMetric($event)"
+          [currentItem]="currentMetric"
+          [items]="metricList"
+          groupName="metricGroup"
+          [label]="'Metric: '"
+        ></app-radio>
+        <app-checkboxes
+          [items]="sectorList"
+          (itemEvent)="receiveSetSector($event)"
+          [currentItem]="selectedSector"
+          groupName="sectorGroup"
+          [label]="'Sector:'"
+        ></app-checkboxes>
+      </ng-container>
+
+      <hr class="new1" />
+      <!-- <app-checkboxes
+          [items]="listingBoard"
+          (itemEvent)="receiveSetMetric($event)"
+        ></app-checkboxes> -->
+
+      <div class="fixed-grid is-fluid">
+        <div
+          class="grid notification is-white has-3-cols-fullhd has-3-cols-widescreen has-2-cols-desktop has-2-cols-tablet has-1-cols-mobile"
+        >
+          <!-- @defer{ -->
+          <ng-container *ngIf="currentGroupBy == 'Sector'">
+            <div class="cell" *ngFor="let item of histogramData">
+              <app-histogram
+                [metric]="item.metric"
+                [dataTable]="item.chartData"
+                [title]="item.title"
+                [sector]="currentSector"
+                [industry]="currentIndustry"
+                [listingBoard]="currentListingBoard"
+                [trimmedMean]="trimmedMean"
+              >
+              </app-histogram>
+
+            </div>
+          </ng-container>
+
+          <ng-container *ngIf="currentGroupBy === 'Metric'">
+            <div class="cell" *ngFor="let item of histogramData">
+              <app-histogram
+                [sector]="item.sector"
+                [dataTable]="item.chartData"
+                [title]="item.title"
+                [metric]="currentMetric"
+                [industry]="currentIndustry"
+                [listingBoard]="currentListingBoard"
+                [trimmedMean]="trimmedMean"
+              >
+              </app-histogram>
+              
+              
+            </div>
+          </ng-container>
+          <!-- } @error {
+          <app-histogram-handler [item]="errorStatus"></app-histogram-handler>
+        } -->
+        <!-- <ng-container *ngIf="(currentGroupBy === 'Metric' || currentGroupBy === 'Sector' ) &&errorStatus === '404'">
+          <app-histogram-handler [item]="errorStatus"></app-histogram-handler>
+        </ng-container> -->
+        </div>
+      </div>
+    </div>
   </div>
 </div>

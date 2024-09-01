@@ -1,0 +1,66 @@
+/* Define the grid layout */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columns, equally spaced */
+    grid-template-rows: auto; /* Rows auto-sized */
+    gap: 10px; /* Space between grid items */
+  }
+  
+  /* Inside each grid item, use Flexbox */
+  .flex-container {
+    display: flex;
+    justify-content: space-between; /* Distribute items evenly with space between */
+    align-items: center; /* Center items vertically */
+  }
+  
+  
+
+  .table {
+    background-color: transparent;
+  }
+  
+  .tooltip {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+  }
+  
+  .tooltip .tooltiptext {
+    visibility: hidden;
+    width: 200px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%; /* Position the tooltip above the text */
+    left: 50%;
+    margin-left: -100px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  
+  .tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  .indicator-title{
+    padding-top: 2rem;
+  }
+
+  .a{
+    width: 35%;
+  }
+
+  .b{
+    width: 5%;
+  }
+
+  .c{
+    width: 60%;
+    // text-align: right;
+  }

@@ -1,0 +1,16 @@
+.monkey-04{
+    background-color: white;
+    color: rgb(22, 104, 255);
+    
+}
+
+.notification{
+    margin-bottom: 1rem ;
+    margin-top: 1rem ;
+    border: 1px solid black; /* Set border color here */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 80%; /* Make sure it adjusts to the parent's height */
+    box-sizing: border-box; 
+}

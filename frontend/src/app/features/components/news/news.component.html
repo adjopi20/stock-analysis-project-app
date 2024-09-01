@@ -1,0 +1,101 @@
+<ng-container *ngIf="showAdditionalSection">
+<div class="notification has-text-centered cell is-col-span-5">
+  <h1 class="title is-align-self-center">News</h1>
+</div>
+</ng-container>
+<div class="fixed-grid notification has-5-cols">
+  <div class="grid column is-column-gap-4">
+    <div class="cell is-col-span-3 is-row-span-5">
+      <div class="card">
+        <div class="card-image">
+          <figure class="image is-5by3">
+            <img [src]="resolution?.url" alt="Placeholder image" />
+          </figure>
+        </div>
+        <div class="card-content">
+          <div class="media">
+            <div class="media-content">
+              <a class="no-underline title" [ngClass]="titleSizeMain" [href]="mainNews?.link" style="text-decoration: none;">{{
+                mainNews?.title
+              }}</a>
+
+              <p class="subtitle has-text-info" [ngClass]="subtitleSizeMain">
+                {{ mainNews?.publisher }}@for (item of mainRelatedTickers; track
+                $index) {
+                <span class="tag is-space-2 is-normal is-primary is-5">{{
+                  item
+                }}</span>
+                }
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ng-container *ngFor="let i of slicedMainNews">
+      
+      <div class="cell is-col-span-2">
+        <a class="title no-underline" [ngClass]="titleSizeSubMain" [href]="i?.link" style="text-decoration: none;">{{
+          i?.title
+        }}</a>
+
+        <p class="subtitle has-text-info" [ngClass]="subtitleSizeSubMain">
+          {{i?.publisher }} @for (item of i.relatedTickers;
+          track $index) {
+          <span class="tag is-normal is-primary is-5">{{ item }}</span>
+          }
+        </p>
+
+        <hr class="new1" />
+      </div>
+
+     
+    </ng-container>
+  </div>
+
+
+</div>
+
+<ng-container *ngIf="showAdditionalSection">
+
+<div class="fixed-grid has-2-cols">
+  <div class="grid tes is-column-gap">
+    <div class="cell tes2" *ngFor="let item of slicedNews">
+      <div class="columns tes3 is-7">
+        <div class="column is-one-quarter">
+          <figure class="image-frame">
+            <img
+              [src]="
+                getImgForItem(item)[0]?.url ||
+                'https://via.placeholder.com/140x140?text=No+Image'
+              "
+              alt="Placeholder image"
+            />
+          </figure>
+        </div>
+        <div class="column title-news">
+          <a
+            class="title is-6"
+            [href]="item?.link"
+          >
+            {{ item?.title }}
+          </a>
+          <p class="subtitle is-6 has-text-info">
+            {{ item?.publisher }}
+            <ng-container *ngFor="let ticker of item.relatedTickers">
+              <span class="tag is-normal is-primary is-5">{{ ticker }}</span>
+            </ng-container>
+          </p>
+          <hr class="new1" />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</ng-container>
+
+<ng-template #defaultNewsTemplate>
+  <div></div>
+</ng-template>
+
+<ng-template #newsTemplate> </ng-template>

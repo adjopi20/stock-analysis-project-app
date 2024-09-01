@@ -1,4 +1,3 @@
-<div class="container is-fluid">
   <div class="fixed-grid has-5-cols has-1-cols-mobile">
     <div class="grid">
       <div class="notification has-text-centered	cell is-col-span-5  ">
@@ -57,7 +56,7 @@
       
       <div class="cell is-col-span-4">
         <div
-          class="fixed-grid has-5-cols-fullhd has-5-cols-widescreen has-5-cols-widescreen has-5-cols-tablet has-3-cols-mobile"
+          class="fixed-grid has-5-cols-fullhd has-5-cols-widescreen has-5-cols-widescreen has-5-cols-tablet has-1-cols-mobile"
         >
           <div class="grid">
             @for (item of limitedData; track $index) {
@@ -69,7 +68,7 @@
                   <br />
                   <span
                     class="tag is-normal is-7"
-                    [ngClass]="setColorListingBoard(item.listing_board)"
+                    [ngClass]="lbs.setColorListingBoard(item.listing_board)"
                     >{{ item.listing_board }}</span
                   >
                   <br />
@@ -87,7 +86,13 @@
                 </p>
                 <p class="is-size-7">Listing date: {{ item.listing_date }}</p>
               </div>
-              <footer class="card-footer" *ngIf="isLogin">
+              <!-- <div class="has-background-grey-lighter">  -->
+                <footer class="card-footer ">
+                <a [routerLink]="['/stock', item.symbol]" routerLinkActive="router-link-active"  class="card-footer-item control">Details</a>
+              </footer>
+            <!-- </div> -->
+             
+              <!-- <footer class="card-footer" *ngIf="isLogin">
                 <div class="card-footer-item control">
                   <div class="columns is-vcentered is-multiline is-gapless">
                     <div class="column is-half is-vcentered">
@@ -145,7 +150,7 @@
                     </div>
                   </div>
                 </div>
-              </footer>
+              </footer> -->
             </div>
             }
             <!-- <div *ngIf="isLoading" class="card">
@@ -159,7 +164,6 @@
       </div>
     </div>
   </div>
-</div>
 
 
 <div class="container is-fluid">

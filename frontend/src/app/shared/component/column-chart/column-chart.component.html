@@ -1,0 +1,13 @@
+<div class="container">
+  <!-- <div>*ngIf="dataTable.length > 1"</div> -->
+  <ng-container *ngIf="dataTable.length > 1">
+    <google-chart [data]="columnChart"></google-chart>
+  </ng-container>
+  <ng-container *ngIf="dataTable.length === 1">
+    <div class="notification notification-not-found is-light is-size-7">
+      <h3 class="is-size-6 set has-text-black-bis">{{ columnChart.options.title }}</h3>
+      <br />
+      <h1 class="is-size-4 set has-text-black-bis">NOT FOUND</h1>
+    </div>
+  </ng-container>
+</div>

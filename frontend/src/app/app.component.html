@@ -1,7 +1,31 @@
+<!-- <app-navbar class="app-navbar"></app-navbar>
+
 <router-outlet />
+
+<app-footer></app-footer>
+
 <div class='toggle-switch' >
     <label>
         <input placeholder="theme"  type='checkbox' [(ngModel)]="isLight" (click)="themeToggleMode()" ngDefaultControl  >
         <span class = 'slider'></span>
     </label>
-</div>
+</div> -->
+
+<div class="app-container">
+    <app-navbar class="app-navbar"></app-navbar>
+  
+    <main>
+      <router-outlet></router-outlet>
+      <!-- <app-loading-indicator /> -->
+    </main>
+  
+    <app-footer></app-footer>
+  
+    <div class="toggle-switch">
+      <label>
+        <input placeholder="theme" type="checkbox" [(ngModel)]="isLight" (click)="themeToggleMode()" ngDefaultControl>
+        <span class="slider"></span>
+      </label>
+    </div>
+  </div>
+  

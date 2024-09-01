@@ -1,17 +1,18 @@
 import logging
 from utils.convertTimestamp import convert_timestamp
 import yfinance as yf
-from services.stock_info_service import scrape_stock
+from services.stock_info_service import scrape_stock, scrape_stock_with_cache
 from configs.cache_config import cache_ttl, client
 import pydantic
 import json
 import redis
+import numpy as np
 
 
     
 def get_all_q_income_statement():
     financials_arr = []
-    scraped_stocks = scrape_stock()
+    scraped_stocks = scrape_stock_with_cache()
     symbol_arr = [item['symbol'] for item in scraped_stocks]
 
     for symbol in symbol_arr:
@@ -21,7 +22,7 @@ def get_all_q_income_statement():
             financials_dict = convert_timestamp(financials.to_dict())
             financials_arr.append({
                 'symbol': symbol,
-                'quarterly-income-statement': financials_dict
+                'income_statement': financials_dict
             })
         except Exception as e:
             logging.error(f"error getting symbol for {symbol}: {e}")
@@ -64,7 +65,7 @@ def get_q_inc_stmt_with_cache(symbol):
         financial_dict = convert_timestamp(inc_stmt)
         res = {
             'symbol' : symbol,
-            'quarterly_income_statement' : financial_dict
+            'income_statement' : financial_dict
         }
 
         client.set(cache_key, json.dumps(res), ex=cache_ttl)
@@ -73,12 +74,53 @@ def get_q_inc_stmt_with_cache(symbol):
     except Exception as e:  
         logging.error(f"found error: {e}")            
     
+def getIncStmt(symbol):
+    try:
+        inc_stmt = (yf.Ticker(symbol).income_stmt).to_dict()
+        financial_dict = convert_timestamp(inc_stmt)
+
+        for key, value in financial_dict.items():
+            for sub_key, sub_value in value.items():
+                if np.isnan(sub_value):
+                    value[sub_key] = None
+
+        res = {
+            'symbol' : symbol,
+            'income_statement' : financial_dict
+        }
+
+        # client.set(cache_key, json.dumps(res), ex=cache_ttl)
+        print("without cache")
+        return res
+    except Exception as e:  
+        logging.error(f"found error: {e}")      
+
+def getQIncStmt(symbol):
+    try:
+
+        inc_stmt = (yf.Ticker(symbol).quarterly_income_stmt).to_dict()
+        financial_dict = convert_timestamp(inc_stmt)
+        # print(f"findict: {financial_dict}")
+        for key, value in financial_dict.items():
+            for sub_key, sub_value in value.items():
+                if np.isnan(sub_value):
+                    value[sub_key] = None
+        
+        res = {
+            'symbol' : symbol,
+            'income_statement' : financial_dict
+        }
+        print("without cache")
+        return res
+    except Exception as e:  
+        logging.error(f"found error: {e}")         
+
 
 
 #========================================================================
 def get_all_q_bal_sheet():
     financials_arr = []
-    scraped_stocks = scrape_stock()
+    scraped_stocks = scrape_stock_with_cache()
     symbol_arr = [item['symbol'] for item in scraped_stocks]
 
     for symbol in symbol_arr:
@@ -88,7 +130,7 @@ def get_all_q_bal_sheet():
             financials_dict = convert_timestamp(financials.to_dict())
             financials_arr.append({
                 'symbol': symbol,
-                'quarterly-balance-sheet': financials_dict
+                'balance_sheet': financials_dict
             })
         except Exception as e:
             logging.error(f"error getting symbol for {symbol}: {e}")
@@ -115,37 +157,54 @@ def get_all_q_bal_sheet_with_cache():
     except Exception as e:
         logging.error(f"found error: {e}")
 
-def get_q_bal_sheet_with_cache(symbol):
-    cache_key: str = "bal-sheet" + symbol
+def get_q_bal_sheet(symbol):
 
     try:
-        cached_raw_value = client.get(cache_key)
-
-        if cached_raw_value is not None:
-            typeAdapter = pydantic.TypeAdapter(dict)
-            retrieved_cache = typeAdapter.validate_json(cached_raw_value)
-            print("with cache")
-            return retrieved_cache
-
+        
         inc_stmt = (yf.Ticker(symbol).quarterly_balance_sheet).to_dict()
         financial_dict = convert_timestamp(inc_stmt)
+        
+        for key, value in financial_dict.items():
+            for sub_key, sub_value in value.items():
+                if np.isnan(sub_value):
+                    value[sub_key] = None
+        
         res = {
             'symbol' : symbol,
-            'quarterly_balance_sheet' : financial_dict
+            'balance_sheet' : financial_dict
         }
 
-        client.set(cache_key, json.dumps(res), ex=cache_ttl)
-        print("without cache")
         return res
     
     except Exception as e:  
         logging.error(f"found error: {e}")  
 
+def get_bal_sheet(symbol):
+
+    try:
+        
+        inc_stmt = (yf.Ticker(symbol).balance_sheet).to_dict()
+        financial_dict = convert_timestamp(inc_stmt)
+        
+        for key, value in financial_dict.items():
+            for sub_key, sub_value in value.items():
+                if np.isnan(sub_value):
+                    value[sub_key] = None
+        
+        res = {
+            'symbol' : symbol,
+            'balance_sheet' : financial_dict
+        }
+
+        return res
+    
+    except Exception as e:  
+        logging.error(f"found error: {e}")  
 
 #========================================================================
 def get_all_q_cash_flow():
     financials_arr = []
-    scraped_stocks = scrape_stock()
+    scraped_stocks = scrape_stock_with_cache()
     symbol_arr = [item['symbol'] for item in scraped_stocks]
 
     for symbol in symbol_arr:
@@ -155,7 +214,7 @@ def get_all_q_cash_flow():
             financials_dict = convert_timestamp(financials.to_dict())
             financials_arr.append({
                 'symbol': symbol,
-                'quarterly-cash-flow': financials_dict
+                'cash_flow': financials_dict
             })
         except Exception as e:
             logging.error(f"error getting symbol for {symbol}: {e}")
@@ -182,28 +241,46 @@ def get_all_q_cash_flow_with_cache():
     except Exception as e:
         logging.error(f"found error: {e}")
 
-def get_q_cash_flow_with_cache(symbol):
-    cache_key: str = "cash-flow" + symbol
+def get_q_cash_flow(symbol):
 
     try:
-        cached_raw_value = client.get(cache_key)
-
-        if cached_raw_value is not None:
-            typeAdapter = pydantic.TypeAdapter(dict)
-            retrieved_cache = typeAdapter.validate_json(cached_raw_value)
-            print("with cache")
-            return retrieved_cache
 
         cash_flow = (yf.Ticker(symbol).quarterly_cashflow).to_dict()
         financial_dict = convert_timestamp(cash_flow)
+        for key, value in financial_dict.items():
+            for sub_key, sub_value in value.items():
+                if np.isnan(sub_value):
+                    value[sub_key] = None
+        
         res = {
             'symbol' : symbol,
-            'quarterly_cash_flow' : financial_dict
+            'cash_flow' : financial_dict
         }
 
-        client.set(cache_key, json.dumps(res), ex=cache_ttl)
-        print("without cache")
+        
         return res
     
     except Exception as e:  
-        logging.error(f"found error: {e}")  
+        logging.error(f"found error: {e}")
+
+def get_cash_floww(symbol):
+
+    try:
+
+        cash_flow = (yf.Ticker(symbol).cashflow).to_dict()
+        financial_dict = convert_timestamp(cash_flow)
+        for key, value in financial_dict.items():
+            for sub_key, sub_value in value.items():
+                if np.isnan(sub_value):
+                    value[sub_key] = None
+        
+        res = {
+            'symbol' : symbol,
+            'cash_flow' : financial_dict
+        }
+
+        
+        return res
+    
+    except Exception as e:  
+        logging.error(f"found error: {e}")    

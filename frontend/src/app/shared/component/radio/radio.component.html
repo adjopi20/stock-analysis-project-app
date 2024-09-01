@@ -1,0 +1,15 @@
+<div class="notification  fixed-grid has-1-cols">
+    <div class="grid">
+        <div class="cell"><label for="menu-label">{{label}}</label></div>
+      <div class="flex-container">
+        <div class="control cell " *ngFor="let item of items">
+            <label class="filter-radio">
+              <input type="radio" [value]="item"  [name]="groupName" (change)="onItemChange(item)" [checked]="item === currentItem"/>
+              {{ item }}
+            </label>
+          </div>
+    
+      </div>      
+            
+    </div>
+    </div>

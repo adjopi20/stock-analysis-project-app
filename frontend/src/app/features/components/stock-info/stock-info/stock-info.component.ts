@@ -7,9 +7,11 @@ import { JsonPipe } from '@angular/common';
 import { SideNavComponent } from '../side-nav/side-nav.component';
 import { PaginationComponent } from '../pagination/pagination.component';
 import { FilterContainerComponent } from '../filter-container/filter-container.component';
+import { ListingBoardService } from '../../../../shared/service/listingBoardService/listing-board.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
-  selector: 'app-dashboard',
+  selector: 'app-stock-info',
   standalone: true,
   imports: [
     NgFor,
@@ -19,11 +21,12 @@ import { FilterContainerComponent } from '../filter-container/filter-container.c
     PaginationComponent,
     FilterContainerComponent,
     CurrencyPipe,
+    RouterLink
   ],
-  templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.scss',
+  templateUrl: './stock-info.component.html',
+  styleUrl: './stock-info.component.scss',
 })
-export class DashboardComponent {
+export class StockInfoComponent {
   // data = new Perform<[]>(); //jangan lupa sertakan <> untuk menspesifikkan output/keluaran fungsi kek di java kan "public dtype namafungsi(dtype parameter)"
   data: any[] = [];
   limitedData: any[] = [];
@@ -59,7 +62,8 @@ export class DashboardComponent {
 
   constructor(
     @SkipSelf() private apiService: FlaskApiService,
-    private allStockService: AllStockService
+    private allStockService: AllStockService,
+    protected lbs: ListingBoardService
   ) {}
 
   ngOnInit() {
@@ -150,14 +154,6 @@ export class DashboardComponent {
   getFilterOptions() {
     this.apiService
       .getFilterOptions()
-      .pipe(
-        catchError((error) => {
-          this.isLoading = false;
-          this.hasError = true;
-          console.error(error);
-          return [];
-        })
-      )
       .subscribe({
         next: (data: any) => {
           this.listingBoard = data.listingBoard;
@@ -252,20 +248,5 @@ export class DashboardComponent {
     this.getAllStock();
   }
 
-  setColorListingBoard(listingBoard: string): string {
-    switch (listingBoard) {
-      case 'UTAMA':
-        return 'is-info';
-      case 'PENGEMBANGAN':
-        return 'is-warning';
-      case 'AKSELERASI':
-        return 'is-white';
-      case 'PEMANTAUAN KHUSUS':
-        return 'is-danger';
-      case 'EKONOMI BARU':
-        return 'is-info';
-      default:
-        return '';
-    }
-  }
+  
 }

@@ -1,4 +1,14 @@
 <div class="container">
-    <google-chart [data]="histogram" ></google-chart>
-
+  <ng-container *ngIf="dataTable?.length > 1">
+    <google-chart [data]="histogram"></google-chart>
+    <p class="additional is-size-7">
+      MEAN: <span class="tag is-info">{{ histogram.options.subtitle }}</span>
+    </p>
+  </ng-container>
+  <ng-container *ngIf="dataTable?.length === 1">
+    <div class="notification notification-not-found is-light is-size-7">
+      <h3 class="is-size-6 set">{{ histogram.options.title }}</h3><br>
+      <h1 class="is-size-4 set">NOT FOUND</h1>
+    </div>
+  </ng-container>
 </div>

@@ -1,0 +1,22 @@
+.notification{
+    margin-bottom: 1rem ;
+}
+
+.flex-container{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px
+}
+
+.radio{
+    // flex: 1 1 10px;
+    box-sizing: border-box;
+    // padding: 5px;
+    padding-right: 5px;
+}
+
+input.radio{
+    display: flex;
+    align-items: center;
+    margin-right: 2px ;
+}

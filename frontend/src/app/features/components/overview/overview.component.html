@@ -1,0 +1,325 @@
+<div class="notification has-text-centered cell is-col-span-5">
+  <h1 class="title is-align-self-center">Overview</h1>
+</div>
+<div class="columns">
+  <div class="column is-three-quarters">
+    <div class="fixed-frid has-3-cols">
+      <div class="grid">
+        <div class="cell is-col-span-3">
+          <app-news
+            [showAdditionalSection]="false"
+            [titleSizeMain]="'is-6'"
+            [subtitleSizeMain]="'is-7'"
+            [titleSizeSubMain]="'is-6'"
+            [subtitleSizeSubMain]="'is-7'"
+          ></app-news>
+        </div>
+        <div class="cell is-row-start-2 is-col-span-1">
+          <div class="notification">
+            <h1 class="subtitle is-6">Top Dividend Rate</h1>
+
+            <div class="columns is-multiline">
+              <div class="column is-half" *ngFor="let item of topDividendRate">
+                <div class="container left-border">
+                  <div class="is-flex is-justify-content-space-between">
+                    <p class="is-size-7 has-text-info " routerLinkActive="router-link-active" [routerLink]="['/stock',item.symbol]">{{ item.symbol }}</p>
+                    <p class="is-size-7 has-text-warning">
+                      Rp{{ item.dividendRate }}
+                    </p>
+                  </div>
+                  <div class="is-flex is-justify-content-space-between">
+                    <p class="is-size-7 truncated">{{ item.company_name }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="cell is-row-start-3 is-col-span-1">
+          <div class="notification">
+            <h1 class="subtitle is-6">Top Dividend Yield</h1>
+
+            <div class="columns is-multiline">
+              <div class="column is-half" *ngFor="let item of topDividendYield">
+                <div class="container is-loading left-border">
+                  <div class="is-flex is-justify-content-space-between">
+                    <p class="is-size-7 has-text-info" routerLinkActive="router-link-active" [routerLink]="['/stock',item.symbol]">{{ item.symbol }}</p>
+                    <p class="is-size-7 has-text-warning">
+                      {{ item.dividendYield | percent : "1.0-2" }}
+                    </p>
+                  </div>
+                  <div class="is-flex is-justify-content-space-between">
+                    <p class="is-size-7 truncated">{{ item.company_name }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="cell is-row-start-2 is-col-span-2 is-col-start-2">
+          <div class="notification">
+            <h1 class="subtitle is-6">Top Market Caps</h1>
+            <div class="columns is-multiline">
+              <div
+                class="column is-one-third"
+                *ngFor="let item of topMarketCaps"
+              >
+                <div class="container left-border">
+                  <div class="is-flex is-justify-content-space-between">
+                    <p
+                      class="is-size-7 has-text-info"
+                      style="margin-right: 1rem"
+                      routerLinkActive="router-link-active" [routerLink]="['/stock',item.symbol]"
+                    >
+                      {{ item.symbol }}
+                    </p>
+                    <p class="is-size-7 has-text-warning truncated">
+                      {{ item.currentPrice | currency : "Rp" }}
+                    </p>
+                  </div>
+
+                  <p class="is-size-7 truncated">{{ item.company_name }}</p>
+                  <div class="is-flex is-justify-content-space-between">
+                    <p class="is-size-7 has-text-primary">
+                      {{ item.marketCap | currency : "Rp" }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="cell is-row-start-3 is-col-span-2 is-col-start-2">
+          <div class="notification">
+            <h1 class="subtitle is-6">Top Last Day Volume</h1>
+            <div class="columns is-multiline">
+              <div class="column is-one-third" *ngFor="let item of topVolumes">
+                <div class="container left-border">
+                  <div class="is-flex is-justify-content-space-between">
+                    <p class="is-size-7 has-text-info" routerLinkActive="router-link-active" [routerLink]="['/stock',item.symbol]">{{ item.symbol }}</p>
+                    <p class="is-size-7 has-text-warning">
+                      {{ item.price | currency : "Rp" }}
+                    </p>
+                  </div>
+                  <div class="is-flex is-justify-content-space-between">
+                    <p class="is-size-7 truncated">{{ item.companyName }}</p>
+                  </div>
+                  <p class="is-size-7 has-text-primary">
+                    {{ item.lastDayVolume | number }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="cell is-row-start-4 is-col-span-2 is-col-start-2">
+          <div class="notification">
+            <h1 class="subtitle is-6">Top Return On Equity</h1>
+            <div class="columns is-multiline">
+              <div class="column is-one-quarter" *ngFor="let item of topROE">
+                <div class="container left-border">
+                  <div class="is-flex is-justify-content-space-between">
+                    <p class="is-size-7 has-text-info" routerLinkActive="router-link-active" [routerLink]="['/stock',item.symbol]">{{ item.symbol }}</p>
+                    <p class="is-size-7 has-text-warning">
+                      {{ item.returnOnEquity | number }}
+                    </p>
+                  </div>
+                  <div class="is-flex is-justify-content-space-between">
+                    <p class="is-size-7 truncated">{{ item.company_name }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="cell is-row-start-5 is-col-span-2 is-col-start-2">
+          <div class="notification">
+            <h1 class="subtitle is-6">Top Earning per Share</h1>
+            <div class="columns is-multiline">
+              <div class="column is-one-quarter" *ngFor="let item of topEPS">
+                <div class="container left-border">
+                  <div class="is-flex is-justify-content-space-between">
+                    <p class="is-size-7 has-text-info" routerLinkActive="router-link-active" [routerLink]="['/stock',item.symbol]">{{ item.symbol }}</p>
+                    <p class="is-size-7 has-text-warning">
+                      {{ item.trailingEps | number }}
+                    </p>
+                  </div>
+                  <div class="is-flex is-justify-content-space-between">
+                    <p class="is-size-7 truncated">{{ item.company_name }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="cell is-row-start-6 is-col-span-2 is-col-start-2">
+          <div class="notification">
+            <h1 class="subtitle is-6">Top Earnings Growth</h1>
+            <div class="columns is-multiline">
+              <div
+                class="column is-one-quarter"
+                *ngFor="let item of topEarningsGrowth"
+              >
+                <div class="container left-border">
+                  <div class="is-flex is-justify-content-space-between">
+                    <p class="is-size-7 has-text-info" routerLinkActive="router-link-active" [routerLink]="['/stock',item.symbol]">{{ item.symbol }}</p>
+                    <p class="is-size-7 has-text-warning">
+                      {{ item.earningsGrowth | number }}
+                    </p>
+                  </div>
+                  <div class="is-flex is-justify-content-space-between">
+                    <p class="is-size-7 truncated">{{ item.company_name }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="column">
+    <div class="fixed-grid has-1-cols">
+      <div class="grid">
+        <div class="cell is-row-start-1">
+          <div class="notification">
+            <!-- @if (isLoading==false) { -->
+            <h1 class="subtitle is-6">Top Gainers</h1>
+            <div class="columns is-multiline">
+              <div class="column is-half" *ngFor="let item of topGainers">
+                <div class="container left-border">
+                  <p class="is-size-7 has-text-info" routerLinkActive="router-link-active" [routerLink]="['/stock',item.symbol]">{{ item.symbol }}</p>
+                  <!-- <span
+                  class="tag is-normal is-7"
+                  [ngClass]="setColorListingBoard(item.listing_board)"
+                  >{{ item.listing_board }}</span
+                > -->
+                  <p class="is-size-7 truncated">{{ item.companyName }}</p>
+
+                  <div class="is-flex is-justify-content-space-between">
+                    <p class="is-size-7 has-text-success">
+                      <i class="fas fa-caret-up"></i> {{ item.percentChange }}%
+                    </p>
+                    <p class="is-size-7 has-text-warning">Rp{{ item.price }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- } @else if (isLoading==true) { -->
+            <!-- <></  app-loading> -->
+            <!-- } -->
+
+            <hr class="new1" />
+
+            <h1 class="subtitle is-6">Top Losers</h1>
+            <div class="columns is-multiline">
+              <div class="column is-half" *ngFor="let item of topLosers">
+                <div class="container left-border">
+                  <p class="is-size-7 has-text-info" routerLinkActive="router-link-active" [routerLink]="['/stock',item.symbol]">{{ item.symbol }}</p>
+                  <p class="is-size-7 truncated">{{ item.companyName }}</p>
+
+                  <div class="is-flex is-justify-content-space-between">
+                    <p class="is-size-7 has-text-danger">
+                      <i class="fas fa-caret-down"></i>
+                      {{ item.percentChange }}%
+                    </p>
+                    <p class="is-size-7 has-text-warning">Rp{{ item.price }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="cell is-row-start-2">
+          <div class="notification">
+            <h1 class="subtitle is-6">Weekly Gainers</h1>
+            <div class="columns is-multiline">
+              <div class="column is-half" *ngFor="let item of weeklyGainers">
+                <div class="container left-border">
+                  <p class="is-size-7 has-text-info" routerLinkActive="router-link-active" [routerLink]="['/stock',item.symbol]">{{ item.symbol }}</p>
+                  <p class="is-size-7 truncated">{{ item.companyName }}</p>
+
+                  <div class="is-flex is-justify-content-space-between">
+                    <p class="is-size-7 has-text-success">
+                      <i class="fas fa-caret-up"></i> {{ item.percentChange }}%
+                    </p>
+                    <p class="is-size-7 has-text-warning">Rp{{ item.price }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <hr class="new1" />
+
+            <h1 class="subtitle is-6">Weekly Losers</h1>
+            <div class="columns is-multiline">
+              <div class="column is-half" *ngFor="let item of weeklyLosers">
+                <div class="container left-border">
+                  <p class="is-size-7 has-text-info" routerLinkActive="router-link-active" [routerLink]="['/stock',item.symbol]">{{ item.symbol }}</p>
+                  <p class="is-size-7 truncated">{{ item.companyName }}</p>
+
+                  <div class="is-flex is-justify-content-space-between">
+                    <p class="is-size-7 has-text-danger">
+                      <i class="fas fa-caret-down"></i>
+                      {{ item.percentChange }}%
+                    </p>
+                    <p class="is-size-7 has-text-warning">Rp{{ item.price }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="cell is-row-start-3">
+          <div class="notification">
+            <h1 class="subtitle is-6">Monthly Gainers</h1>
+            <div class="columns is-multiline">
+              <div class="column is-half" *ngFor="let item of monthlyGainers">
+                <div class="container left-border">
+                  <p class="is-size-7 has-text-info" routerLinkActive="router-link-active" [routerLink]="['/stock',item.symbol]">{{ item.symbol }}</p>
+                  <p class="is-size-7 truncated">{{ item.companyName }}</p>
+
+                  <div class="is-flex is-justify-content-space-between">
+                    <p class="is-size-7 has-text-success">
+                      <i class="fas fa-caret-up"></i> {{ item.percentChange }}%
+                    </p>
+                    <p class="is-size-7 has-text-warning">Rp{{ item.price }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <hr class="new1" />
+
+            <h1 class="subtitle is-6">Monthly Losers</h1>
+            <div class="columns is-multiline">
+              <div class="column is-half" *ngFor="let item of monthlyLosers">
+                <div class="container left-border">
+                  <p class="is-size-7 has-text-info" routerLinkActive="router-link-active" [routerLink]="['/stock',item.symbol]">{{ item.symbol }}</p>
+                  <p class="is-size-7 truncated">{{ item.companyName }}</p>
+
+                  <div class="is-flex is-justify-content-space-between">
+                    <p class="is-size-7 has-text-danger">
+                      <i class="fas fa-caret-down"></i>
+                      {{ item.percentChange }}%
+                    </p>
+                    <p class="is-size-7 has-text-warning">Rp{{ item.price }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

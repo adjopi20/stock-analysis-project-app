@@ -1,0 +1,21 @@
+<div class="notification fixed-grid has-1-cols  ">
+    <div class="grid">
+        <div class="cell"><label for="menu-label">{{label}}</label></div>
+        <div class="flex-container">
+            <ng-container *ngIf="items.length > 0">
+                <div class="checkboxes  cell" *ngFor="let item of items" >
+                    <label class="checkbox">
+                      <input type="checkbox" [value]="item" [checked]="currentItem.includes(item)" [name]="groupName" (change)="changeItem(item)" />
+                       {{item}}
+                    </label>
+                </div>
+            </ng-container>
+            <ng-container *ngIf="items.length === 0">
+                <div class="cell">NO DATA AVAILABLE</div>
+            </ng-container>
+            
+        </div>    
+        
+    </div>
+      
+</div>

@@ -1,1 +1,47 @@
-<p>signin works!</p>
+<div
+  class="container"
+  
+>
+  <form class="box" >
+    <div class="block">
+        <p class="is-size-7">Actually you don't need to login to access and you can't login either, but go ahead if you wanna try. </p>
+    <p class="is-size-7">Meanwhile, just enjoy my design portfolio below!</p>
+    </div>
+    
+
+    <div class="columns">
+      <div class="column">
+        <img src="../../../../assets/TES4.png" alt="cat" style="height: 100%;">
+      </div>
+      <div class="column">
+        <div class="field">
+          <label class="label">Email</label>
+          <div class="control">
+            <input
+              class="input"
+              type="email"
+              placeholder="e.g. alex@example.com"
+            />
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Password</label>
+          <div class="control">
+            <input class="input" type="password" placeholder="********" />
+          </div>
+        </div>
+
+        <!-- <div class="container" style="display: flex; flex-direction: column;"> -->
+            <a class="button is-primary" (click)="onSignIn()">Sign in</a>
+
+            <hr class="new1">
+            <p class="subtitle is-size-7 has-text-warning">Don't have an account yet? Register below:</p>
+            <a class="button is-info" (click)="onSignUp()"   >Sign up</a>
+        <!-- </div> -->
+        
+
+      </div>
+    </div>
+  </form>
+</div>

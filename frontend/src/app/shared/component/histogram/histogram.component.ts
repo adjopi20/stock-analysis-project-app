@@ -19,15 +19,18 @@ import { CommonModule, NgIf } from '@angular/common';
 export class HistogramComponent {
   @Input() sector: string = '';
   @Input() metric: string = '';
-  @Input() dataTable: any[] = [['Symbol', 'Metric']];
+  @Input() industry: string | undefined;
+  @Input() listingBoard: string | undefined;
+  @Input() trimmedMean: number=0;
+  @Input() dataTable: any = [];
   @Input() title: string = '';
-
 
   histogram: GoogleChartInterface = {
     chartType: GoogleChartType.Histogram,
-    dataTable: this.dataTable,
+    dataTable: [],
     options: {
-      title: this.title,
+      title: '',
+      subtitle: '',
       legend: { position: 'none' },
       // histogram: {
       //   bucketSize: 0.1 
@@ -43,17 +46,28 @@ export class HistogramComponent {
     this.updateHistogram();
   }
 
-  // ngOnChanges(change : SimpleChanges){
-  //   if (change['dataTable'] || change['title']){
-  //     this.updateHistogram();
-  //   }
-  // }
+  ngOnChanges(change : SimpleChanges){
+    if (change['dataTable'] || change['title']){
+      this.updateHistogram();
+    }
+  }
 
 
 
   updateHistogram(){
-    this.histogram.dataTable = this.dataTable;
-    this.histogram.options.title = this.title;
+    // if (this.dataTable.length > 1){
+      this.histogram.dataTable = this.dataTable;
+      this.histogram.options.title = this.title;
+      this.histogram.options.subtitle = `${this.trimmedMean}`;
+    // } else if (this.dataTable.length == 1) {
+    //   this.histogram.options.title = `${this.title} NOT FOUND`;
+    //   this.histogram.options.subtitle = `NOT FOUND`;
+    // }
+    console.log('histogram datatable',this.dataTable);
+    console.log('histogram.datatable',this.histogram.dataTable);
+
+    
+    
     this.cdr.detectChanges();
   }
 

@@ -37,7 +37,7 @@ export class FilterComponentComponent {
   changeOption(option: string){
     this.currentOption=option
     this.keywordEvent.emit(option)
-    console.log(this.currentOption);
+    console.log('currentOption',this.currentOption);
     
     
   }

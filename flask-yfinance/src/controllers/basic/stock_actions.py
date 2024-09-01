@@ -13,7 +13,10 @@ def get_actions(symbol):
         stock = yf.Ticker(symbol)   
         actions = stock.actions
         actions_dict = convert_timestamp(actions.to_dict())
-        return jsonify(actions_dict)    
+        if actions_dict is not None :
+            return jsonify(actions_dict)
+        else:
+            return {}
     except Exception as e:
         logging.error(f"Error getting stock info for {symbol}: {e}")
         return jsonify({"error": str(e)}), 500

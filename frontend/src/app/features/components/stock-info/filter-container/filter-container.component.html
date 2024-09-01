@@ -8,7 +8,7 @@
       <li class="grid">
         @for (item of listingBoard; track $index) {
         <a
-          class="cell button is-primary is-light  filter-button is-size-7"
+          class="cell button is-primary is-light  filter-button is-size-7 "
           [ngClass]="{ 'monkey-01-active': item == currentListingBoard }"
           (click)="changeListingBoard(item)"
           >{{ item }}</a
@@ -24,10 +24,10 @@
       <!-- <label class="menu-label has-text-grey-light	is-size-6">Recommendation:</label> -->
 
     <ul class="fixed-grid has-5-cols">
-      <li class="grid">
+      <li class="grid ">
         @for (item of recommendation; track $index) {
         <a
-          class="cell button is-primary is-light filter-button is-size-7"
+          class="cell button is-primary is-light filter-button is-size-7 "
           [ngClass]="{ 'monkey-01-active': item == currentRecommendation }"
           (click)="changeRecommendation(item)"
           >{{ item }}</a

@@ -19,7 +19,10 @@
     "@angular/router": "^17.3.0",
     "@fortawesome/fontawesome-free": "^6.6.0",
     "bulma": "^1.0.1",
+    "bulma-carousel": "^4.0.24",
     "ng2-google-charts": "^7.0.0",
+    "primeicons": "^7.0.0",
+    "primeng": "^17.18.8",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.3"

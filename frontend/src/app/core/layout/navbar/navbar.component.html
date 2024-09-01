@@ -1,6 +1,6 @@
 <nav class="navbar has-shadow" role="navigation" aria-label="main navigation">
   <div class="navbar-brand">
-    <a title="navbar-item" class="navbar-item" href="https://bulma.io">
+    <a title="navbar-item" class="navbar-item" routerLink="/">
       <svg
         height="160"
         xmlns="http://www.w3.org/2000/svg"
@@ -67,31 +67,85 @@
     </a>
   </div>
 
-  <div class="panel-block">
-    <p class="control has-icons-left">
-      <input class="input is-success" type="text" placeholder="Search" />
-      <span class="icon is-left">
-        <i class="fas fa-search" aria-hidden="true"></i>
-        <i class="fal fa-undefined"></i>
-      </span>
-    </p>
+  <div class="panel-block dropdown is-active" role="main">
+    <div class="dropdown-trigger">
+      <!-- <div class="control has-icons-left form-group"> -->
+      <input
+        class="input is-success form-control"
+        [(ngModel)]="searchText"
+        (input)="onSearchInput()"
+        appClickOutside
+        (clickOutside)="clickOutsideSearchBar()"
+        type="text"
+        id="search-text"
+        placeholder="Search"
+        aria-label="Search"
+        aria-describedby="search-text"
+        autofocus
+      />
+      <!-- <button title="Search button" class="icon is-left" type="button">
+          <i class="fas fa-search" aria-hidden="true"></i>
+          <i class="fal fa-undefined"></i>
+        </button> -->
+      <!-- </div> -->
+    </div>
+
+    <div
+      class="dropdown-menu"
+      id="dropdown-menu2"
+      [class.is-active]="showDropdown"
+    >
+      <div class="dropdown-content" *ngIf="showDropdown">
+        <div
+          class="dropdown-item"
+          *ngFor="let item of filteredData"
+          
+        >
+          <a (click)="selectStock(item)"
+            ><p class="is-size-6 has-text-primary" appSearch
+            [searchedWord]="searchText"
+            [content]="item.symbol"
+            [classToApply]="'has-text-weight-bold'"
+            [setTitle]="true">{{ item.symbol }}</p>
+            <p class="is-size-7 has-text-info" appSearch
+            [searchedWord]="searchText"
+            [content]="item.company_name"
+            [classToApply]="'has-text-weight-bold'"
+            [setTitle]="true">{{ item.company_name }}</p>
+          </a>
+          <!-- <hr class="dropdown-divider" /> -->
+        </div>
+      </div>
+    </div>
   </div>
+
+  <!-- <div
+    |
+    search
+    :
+    searchText
+    appSearch
+    [searchedWord]="searchText"
+    [content]="item.symbol"
+    [classToApply]="'font-weight-bold'"
+    [setTitle]="true"
+  ></div> -->
 
   <div id="navbarBasicExample" class="navbar-menu">
     <div class="navbar-start">
-      <a class="navbar-item"> Home </a>
+      <a class="navbar-item" [routerLink]="'/'"> Home </a>
 
-      <a class="navbar-item"> About Us </a>
+      <a class="navbar-item" routerLink="about-us"> About Us </a>
 
       <div class="navbar-item has-dropdown is-hoverable">
         <a class="navbar-link"> More </a>
 
         <div class="navbar-dropdown">
-          <a class="navbar-item"> About </a>
-          <a class="navbar-item is-selected"> Jobs </a>
-          <a class="navbar-item"> Contact </a>
+          <a class="navbar-item" routerLink="/"> Home </a>
+          <!-- <a class="navbar-item is-selected"> Jobs </a> -->
+          <!-- <a class="navbar-item"> Contact </a> -->
           <hr class="navbar-divider" />
-          <a class="navbar-item"> Report an issue </a>
+          <a class="navbar-item" routerLink="/"> There is nothing more here sir, go back 'Home' </a>
         </div>
       </div>
     </div>
@@ -99,10 +153,10 @@
     <div class="navbar-end">
       <div class="navbar-item">
         <div class="buttons">
-          <a class="button is-primary">
+          <a class="button is-primary" [routerLink]="'auth/register'">
             <strong>Sign up</strong>
           </a>
-          <a class="button is-light"> Log in </a>
+          <a class="button is-light" [routerLink]="'auth/signin'"> Log in </a>
         </div>
       </div>
     </div>

@@ -1,0 +1,69 @@
+<div class="fixed-grid has-5-cols">
+  <div class="grid">
+    <div class="notification has-text-centered cell is-col-span-5">
+      <h1 class="title is-align-self-center">Companies Financials</h1>
+    </div>
+    <div class="cell is-row-span-3">
+      <app-radio
+      [items]="FinancialTypeList" 
+      [currentItem]="currentFinancialType" 
+      (itemEvent)="receiveSetFinancialType($event)"
+      [groupName]="'financialTypeGroup'"
+      [label]="'Financial Type: '"></app-radio>
+      <app-dropdown
+      (itemEvent)="receiveSetListingBoard($event)"
+      [currentItem]="currentListingBoard"
+      [items]="listingBoardList"
+      [label]="'Listing Board: '">
+      </app-dropdown>
+      <!-- <app-dropdown> </app-dropdown> -->
+    </div>
+    <div class="cell is-col-span-4">
+      <ng-container>
+        <app-radio
+        [items]="sectorList"
+        [currentItem]="currentSector"
+        [groupName]="'sectorGroup'"
+        (itemEvent)="receiveSetSector($event)"
+        [label]="'Sector: '"></app-radio>
+        <app-radio
+        [items]="industryList"
+        [currentItem]="currentIndustry"
+        [groupName]="'industryGroup'"
+        [label]="'Industry: '"
+        (itemEvent)="receiveSetIndustry($event)"></app-radio>
+        <app-checkboxes
+        [items]="symbolList"
+        [currentItem]="selectedSymbol"
+        [groupName]="'symbolGroup'"
+        [label]="'Ticker:'"
+        (itemEvent)="receiveSetSymbol($event)"
+        ></app-checkboxes>
+      </ng-container>
+
+      <!-- <ng-container>
+       
+        <app-checkboxes></app-checkboxes>
+      </ng-container> -->
+
+      <hr class="new1" />
+      <!-- <app-checkboxes
+            [items]="listingBoard"
+            (itemEvent)="receiveSetMetric($event)"
+          ></app-checkboxes> -->
+
+      <div class="fixed-grid is-fluid">
+        <div
+          class="grid notification is-white has-3-cols-fullhd has-3-cols-widescreen has-2-cols-desktop has-2-cols-tablet has-1-cols-mobile"
+        >
+          <ng-container *ngFor="let item of lineChart">
+            <app-line-chart 
+            [dataTable]="item.dataTable"
+            [title]="item.title"
+            ></app-line-chart>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
