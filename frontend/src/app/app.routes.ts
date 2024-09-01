@@ -53,11 +53,13 @@ export const routes: Routes = [
         (m) => m.StockPageComponent
       ),
   },
-
-  // {
-  //   path: '',
-  //   loadComponent: () => import('./components/dashboard/dashboard.component').then(m => m.DashboardComponent)
-  // },
+  {
+    path: 'about-us',
+    loadComponent: () =>
+      import('./core/layout/about-us/about-us.component').then(
+        (m) => m.AboutUsComponent
+      ),
+  },
   {
     path: 'auth/register',
     loadComponent: () =>

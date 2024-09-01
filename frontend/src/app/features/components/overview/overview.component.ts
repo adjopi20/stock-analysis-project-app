@@ -78,11 +78,11 @@ export class OverviewComponent {
       this.topDividendRate = this.stocks
         .filter((item) => item.dividendRate)
         .sort((a, b) => b.dividendRate - a.dividendRate)
-        .slice(0, 10);
+        .slice(0, 12);
       this.topDividendYield = this.stocks
         .filter((item) => item.dividendYield)
         .sort((a, b) => b.dividendYield - a.dividendYield)
-        .slice(0, 10);
+        .slice(0, 12);
       this.topMarketCaps = this.stocks
         .filter((item) => item.marketCap)
         .sort((a, b) => b.marketCap - a.marketCap)

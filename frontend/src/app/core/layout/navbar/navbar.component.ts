@@ -20,7 +20,8 @@ import { ClickOutsideDirective } from '../../../shared/directive/click-outside-d
     SearchDirective,
     SearchPipe,
     NgIf,
-    ClickOutsideDirective
+    ClickOutsideDirective,
+    RouterLink
   ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss',

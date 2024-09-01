@@ -1,1 +1,54 @@
-<p>register works!</p>
+<div
+  class="container"
+  
+>
+  <form class="box" >
+    <div class="block">
+        <p class="is-size-7">So, you can't login. So how do you expect to be able to register, you can't, but help yourself if you insist.</p>
+    <p class="is-size-7">Meanwhile, just enjoy my design portfolio below!</p>
+    </div>
+    
+
+    <div class="columns">
+      <div class="column">
+        <img src="../../../../assets/TES4.png" alt="cat" style="height: 100%;">
+      </div>
+      <div class="column">
+        <div class="field">
+          <label class="label">Email</label>
+          <div class="control">
+            <input
+              class="input"
+              type="email"
+              placeholder="e.g. alex@example.com"
+            />
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Password</label>
+          <div class="control">
+            <input class="input" type="password" placeholder="********" />
+          </div>
+        </div>
+        <div class="field">
+            <label class="label">Confirm Password</label>
+            <div class="control">
+              <input class="input" type="password" placeholder="********" />
+            </div>
+          </div>
+
+        <!-- <div class="container" style="display: flex; flex-direction: column;"> -->
+            <a class="button is-info" (click)="onSignUp()"   >Sign up</a>
+
+
+            <hr class="new1">
+            <p class="subtitle is-size-7 has-text-warning">Already have an account? Log in below:</p>
+            <a class="button is-primary" (click)="onSignIn()">Sign in</a>            
+        <!-- </div> -->
+        
+
+      </div>
+    </div>
+  </form>
+</div>
